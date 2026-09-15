@@ -1,0 +1,13 @@
+{
+  "name": "direito-2026",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "Biblioteca de estudos em Direito com índices automáticos para o GitHub Pages.",
+  "engines": { "node": ">=22" },
+  "scripts": {
+    "build": "node scripts/build.mjs",
+    "test": "node --test",
+    "preview": "node scripts/preview.mjs"
+  }
+}
