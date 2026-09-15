@@ -1,0 +1,863 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Caderno de Questões — Poder Judiciário e Funções Essenciais à Justiça</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:opsz,wght@8..60,400;8..60,600;8..60,700&family=IBM+Plex+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#14213D;
+    --ink-soft:#4B5262;
+    --paper:#EAE6DA;
+    --paper-raised:#F8F6EF;
+    --gold:#A9812D;
+    --gold-soft:#DCC98F;
+    --certo:#1F6F4A;
+    --certo-bg:#E1EEE6;
+    --errado:#9C2B2B;
+    --errado-bg:#F3E2DF;
+    --rule:#C9C2AE;
+    --rule-strong:#8B8368;
+    --font-display:'Source Serif 4', Georgia, serif;
+    --font-body:'IBM Plex Sans', Arial, sans-serif;
+    --radius:3px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:var(--font-body);
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+  }
+  a{color:var(--ink);}
+  .wrap{max-width:920px;margin:0 auto;padding:0 20px 80px;}
+
+  /* ===== Masthead ===== */
+  .masthead{
+    background:var(--ink);
+    color:var(--paper-raised);
+    padding:38px 20px 26px;
+  }
+  .masthead-inner{max-width:920px;margin:0 auto;}
+  .masthead-top{
+    display:flex;justify-content:space-between;align-items:baseline;gap:16px;flex-wrap:wrap;
+  }
+  .masthead h1{
+    font-family:var(--font-display);
+    font-weight:700;
+    font-size:2.15rem;
+    margin:0;
+    letter-spacing:0.2px;
+  }
+  .masthead .edicao{
+    font-size:0.82rem;
+    color:var(--gold-soft);
+    text-align:right;
+    line-height:1.5;
+  }
+  .masthead-rule{
+    margin-top:18px;
+    border-top:3px solid var(--gold);
+    border-bottom:1px solid rgba(255,255,255,0.25);
+    padding-top:4px;
+  }
+  .masthead-sub{
+    margin-top:10px;
+    font-size:0.97rem;
+    color:#C9CEDC;
+    max-width:640px;
+  }
+
+  /* ===== Dashboard ===== */
+  .dashboard{
+    background:var(--paper-raised);
+    border:1px solid var(--rule);
+    margin-top:-1px;
+    padding:22px 24px 20px;
+  }
+  .dashboard h2{
+    font-family:var(--font-display);
+    font-size:1.15rem;
+    margin:0 0 14px;
+    font-weight:600;
+  }
+  .stat-row{
+    display:flex;
+    flex-wrap:wrap;
+    gap:0;
+    border-top:1px solid var(--rule);
+    border-bottom:1px solid var(--rule);
+  }
+  .stat{
+    flex:1 1 140px;
+    padding:14px 18px;
+    border-right:1px solid var(--rule);
+  }
+  .stat:last-child{border-right:none;}
+  .stat .num{
+    font-family:var(--font-display);
+    font-size:1.9rem;
+    font-weight:700;
+    color:var(--ink);
+  }
+  .stat.hero .num{font-size:2.6rem;color:var(--gold);}
+  .stat .lbl{
+    font-size:0.8rem;
+    color:var(--ink-soft);
+    margin-top:2px;
+  }
+  .stat .lbl small{display:block;font-size:0.75rem;color:var(--ink-soft);margin-top:1px;}
+
+  .temas-bars{margin-top:18px;}
+  .temas-bars h3{
+    font-size:0.85rem;
+    font-weight:600;
+    color:var(--ink-soft);
+    margin:0 0 10px;
+  }
+  .tema-bar-row{
+    display:grid;
+    grid-template-columns:230px 1fr 90px;
+    align-items:center;
+    gap:10px;
+    padding:5px 0;
+    font-size:0.82rem;
+  }
+  .tema-bar-row .tname{color:var(--ink);}
+  .tema-bar-track{
+    height:9px;background:#E2DECE;border-radius:2px;overflow:hidden;display:flex;
+  }
+  .tema-bar-certo{background:var(--certo);height:100%;}
+  .tema-bar-errado{background:var(--errado);height:100%;}
+  .tema-bar-nums{color:var(--ink-soft);text-align:right;white-space:nowrap;}
+  .empty-hint{font-size:0.85rem;color:var(--ink-soft);font-style:italic;}
+
+  .foco-fraco{
+    margin-top:16px;
+    display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;
+    background:#F1ECDD;border:1px dashed var(--gold);padding:10px 14px;border-radius:var(--radius);
+  }
+  .foco-fraco span{font-size:0.85rem;}
+  .foco-fraco strong{color:var(--errado);}
+
+  /* ===== Tabs ===== */
+  .tabs{
+    display:flex;gap:6px;margin-top:26px;padding:0 4px;
+  }
+  .tab-btn{
+    font-family:var(--font-display);
+    font-size:1rem;
+    font-weight:600;
+    background:#DED9C8;
+    color:var(--ink-soft);
+    border:1px solid var(--rule);
+    border-bottom:none;
+    padding:10px 22px 12px;
+    border-radius:6px 6px 0 0;
+    cursor:pointer;
+    position:relative;
+    top:1px;
+  }
+  .tab-btn.active{
+    background:var(--paper-raised);
+    color:var(--ink);
+    border-color:var(--rule-strong);
+  }
+  .panel{
+    background:var(--paper-raised);
+    border:1px solid var(--rule-strong);
+    padding:24px;
+    border-radius:0 6px 6px 6px;
+  }
+
+  /* ===== Controls ===== */
+  .controls{
+    display:flex;flex-wrap:wrap;gap:10px 16px;align-items:center;
+    margin-bottom:20px;padding-bottom:18px;border-bottom:1px solid var(--rule);
+  }
+  select, .btn, .search-input{
+    font-family:var(--font-body);
+    font-size:0.88rem;
+    padding:8px 12px;
+    border:1px solid var(--rule-strong);
+    border-radius:var(--radius);
+    background:#fff;
+    color:var(--ink);
+  }
+  .btn{
+    background:var(--ink);
+    color:#fff;
+    cursor:pointer;
+    border-color:var(--ink);
+    font-weight:600;
+  }
+  .btn:hover{background:#233457;}
+  .btn.secondary{
+    background:transparent;
+    color:var(--ink);
+    border-color:var(--rule-strong);
+    font-weight:500;
+  }
+  .btn.secondary:hover{background:#EFEAD9;}
+  .btn:disabled{opacity:0.45;cursor:not-allowed;}
+  .checkline{display:flex;align-items:center;gap:6px;font-size:0.85rem;color:var(--ink-soft);}
+  .search-input{flex:1 1 220px;}
+
+  /* ===== Question card ===== */
+  .progress-line{
+    font-size:0.8rem;color:var(--ink-soft);margin-bottom:10px;display:flex;justify-content:space-between;
+  }
+  .qcard{
+    position:relative;
+    background:#fff;
+    border:1px solid var(--rule);
+    border-left:5px solid var(--rule-strong);
+    padding:26px 28px;
+    border-radius:var(--radius);
+    overflow:hidden;
+    min-height:180px;
+  }
+  .qcard.answered.certo{border-left-color:var(--certo);}
+  .qcard.answered.errado{border-left-color:var(--errado);}
+  .qcard .tema-pill{
+    display:inline-block;font-size:0.72rem;letter-spacing:0.3px;color:var(--gold);
+    background:#F5EFDC;border:1px solid var(--gold-soft);padding:3px 9px;border-radius:20px;margin-bottom:14px;
+  }
+  .qcard .enunciado{
+    font-size:1.08rem;line-height:1.65;color:var(--ink);margin:0 0 22px;
+  }
+  .answer-buttons{display:flex;gap:12px;}
+  .stamp-btn{
+    flex:1;
+    padding:13px 10px;
+    font-family:var(--font-body);
+    font-weight:700;
+    font-size:0.95rem;
+    border-radius:var(--radius);
+    cursor:pointer;
+    border:2px solid var(--rule-strong);
+    background:#fff;
+    color:var(--ink);
+    transition:transform 0.08s ease, background 0.15s ease;
+  }
+  .stamp-btn:hover{transform:translateY(-1px);}
+  .stamp-btn.certo-btn:hover{border-color:var(--certo);color:var(--certo);}
+  .stamp-btn.errado-btn:hover{border-color:var(--errado);color:var(--errado);}
+  .stamp-btn:disabled{opacity:0.4;cursor:not-allowed;transform:none;}
+
+  .stamp{
+    position:absolute;
+    top:14px;right:22px;
+    font-family:var(--font-display);
+    font-weight:700;
+    font-size:1.5rem;
+    letter-spacing:2px;
+    padding:6px 18px;
+    border:4px double currentColor;
+    border-radius:4px;
+    transform:rotate(-9deg) scale(1.35);
+    opacity:0;
+    pointer-events:none;
+    transition:opacity 0.35s ease, transform 0.35s ease;
+  }
+  .stamp.show{opacity:0.85;transform:rotate(-9deg) scale(1);}
+  .stamp.certo{color:var(--certo);}
+  .stamp.errado{color:var(--errado);}
+
+  .feedback{
+    margin-top:20px;
+    padding-top:18px;
+    border-top:1px dashed var(--rule);
+    display:none;
+  }
+  .feedback.show{display:block;}
+  .feedback .resultado{
+    font-weight:700;font-size:0.95rem;margin-bottom:10px;
+  }
+  .feedback .resultado.ok{color:var(--certo);}
+  .feedback .resultado.no{color:var(--errado);}
+  .feedback .gabarito-badge{
+    display:inline-block;font-size:0.78rem;font-weight:700;padding:2px 9px;border-radius:20px;margin-left:8px;
+  }
+  .gabarito-badge.C{background:var(--certo-bg);color:var(--certo);}
+  .gabarito-badge.E{background:var(--errado-bg);color:var(--errado);}
+  .feedback .artigo{
+    font-size:0.82rem;color:var(--gold);font-weight:600;margin-bottom:8px;
+  }
+  .feedback .comentario{font-size:0.93rem;color:var(--ink-soft);line-height:1.6;}
+  .feedback .refazer{
+    display:inline-block;margin-top:12px;font-size:0.78rem;color:var(--ink-soft);text-decoration:underline;cursor:pointer;background:none;border:none;padding:0;font-family:var(--font-body);
+  }
+
+  .nav-row{display:flex;justify-content:space-between;align-items:center;margin-top:18px;}
+  .fim-msg{
+    text-align:center;padding:40px 20px;color:var(--ink-soft);
+  }
+  .fim-msg .num{font-family:var(--font-display);font-size:2rem;color:var(--gold);}
+
+  /* ===== Review list ===== */
+  .review-list{display:flex;flex-direction:column;gap:10px;margin-top:4px;}
+  .review-item{
+    background:#fff;border:1px solid var(--rule);border-left:4px solid #cfc9b6;
+    border-radius:var(--radius);padding:14px 18px;
+  }
+  .review-item.status-ok{border-left-color:var(--certo);}
+  .review-item.status-no{border-left-color:var(--errado);}
+  .review-item .top-row{display:flex;gap:10px;align-items:flex-start;}
+  .review-item .badge{
+    flex-shrink:0;font-size:0.72rem;font-weight:700;padding:2px 8px;border-radius:20px;margin-top:2px;
+  }
+  .review-item .badge.C{background:var(--certo-bg);color:var(--certo);}
+  .review-item .badge.E{background:var(--errado-bg);color:var(--errado);}
+  .review-item .enun{font-size:0.95rem;color:var(--ink);}
+  .review-item .meta-row{
+    display:flex;justify-content:space-between;align-items:center;margin-top:8px;
+  }
+  .review-item .tema-tag{font-size:0.72rem;color:var(--ink-soft);}
+  .review-item .toggle-coment{
+    font-size:0.78rem;color:var(--gold);background:none;border:none;cursor:pointer;font-family:var(--font-body);font-weight:600;
+  }
+  .review-item .coment-box{
+    display:none;margin-top:10px;padding-top:10px;border-top:1px dashed var(--rule);font-size:0.88rem;color:var(--ink-soft);
+  }
+  .review-item .coment-box.show{display:block;}
+  .review-item .coment-box .art{color:var(--gold);font-weight:600;font-size:0.8rem;margin-bottom:5px;}
+  .review-count{font-size:0.85rem;color:var(--ink-soft);margin-bottom:14px;}
+
+  footer{
+    max-width:920px;margin:34px auto 0;padding:0 24px;font-size:0.78rem;color:var(--ink-soft);
+    border-top:1px solid var(--rule);padding-top:16px;
+  }
+
+  @media (max-width:640px){
+    .masthead h1{font-size:1.6rem;}
+    .masthead-top{flex-direction:column;}
+    .masthead .edicao{text-align:left;}
+    .stat{flex:1 1 45%;}
+    .tema-bar-row{grid-template-columns:1fr;gap:2px;}
+    .tema-bar-nums{text-align:left;}
+    .panel{padding:16px;}
+    .qcard{padding:20px 18px;}
+    .stamp{font-size:1rem;padding:4px 10px;right:14px;top:10px;}
+  }
+</style>
+</head>
+<body>
+
+<div class="masthead">
+  <div class="masthead-inner">
+    <div class="masthead-top">
+      <h1>Caderno de Questões</h1>
+      <div class="edicao">Banca: CESPE/CEBRASPE — modelo Certo/Errado<br>Poder Judiciário &amp; Funções Essenciais à Justiça</div>
+    </div>
+    <div class="masthead-rule"></div>
+    <div class="masthead-sub">Banco de itens de lei seca para fixação dos arts. 92 a 135 da Constituição, com ênfase em competências do STF, do STJ e da Justiça Federal. Cada item traz gabarito, dispositivo e fundamentação.</div>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <div class="dashboard" id="dashboard">
+    <h2>Painel de desempenho da sessão</h2>
+    <div class="stat-row">
+      <div class="stat hero">
+        <div class="num" id="stat-aproveitamento">—</div>
+        <div class="lbl">Aproveitamento</div>
+      </div>
+      <div class="stat">
+        <div class="num" id="stat-respondidas">0</div>
+        <div class="lbl">Respondidas<small id="stat-total-disp">de 0</small></div>
+      </div>
+      <div class="stat">
+        <div class="num" id="stat-acertos">0</div>
+        <div class="lbl">Acertos</div>
+      </div>
+      <div class="stat">
+        <div class="num" id="stat-erros">0</div>
+        <div class="lbl">Erros</div>
+      </div>
+      <div class="stat">
+        <div class="num" id="stat-tema-critico" style="font-size:1.05rem;line-height:1.3;">—</div>
+        <div class="lbl">Tema mais crítico</div>
+      </div>
+    </div>
+
+    <div class="temas-bars">
+      <h3>Desempenho por tema</h3>
+      <div id="temas-bars-list"><div class="empty-hint">Responda algumas questões na aba Praticar para ver o desempenho por tema.</div></div>
+    </div>
+
+    <div class="foco-fraco" id="foco-fraco" style="display:none;">
+      <span>Tema com mais erros no momento: <strong id="foco-fraco-nome">—</strong></span>
+      <button class="btn secondary" id="btn-foco-fraco">Praticar este tema agora</button>
+    </div>
+  </div>
+
+  <div class="tabs">
+    <button class="tab-btn active" id="tab-praticar" onclick="switchTab('praticar')">Praticar</button>
+    <button class="tab-btn" id="tab-revisar" onclick="switchTab('revisar')">Revisar / consultar</button>
+  </div>
+
+  <!-- ===== PRATICAR ===== -->
+  <div class="panel" id="view-praticar">
+    <div class="controls">
+      <select id="filtro-tema-praticar" onchange="rebuildQueue()"></select>
+      <label class="checkline"><input type="checkbox" id="chk-aleatorio" checked onchange="rebuildQueue()"> Ordem aleatória</label>
+      <button class="btn secondary" onclick="rebuildQueue()">Reiniciar sessão neste filtro</button>
+    </div>
+
+    <div id="praticar-content"></div>
+  </div>
+
+  <!-- ===== REVISAR ===== -->
+  <div class="panel" id="view-revisar" style="display:none;">
+    <div class="controls">
+      <input type="text" class="search-input" id="busca-revisar" placeholder="Buscar por palavra-chave ou artigo..." oninput="renderReview()">
+      <select id="filtro-tema-revisar" onchange="renderReview()"></select>
+      <label class="checkline"><input type="checkbox" id="chk-somente-erros" onchange="renderReview()"> Somente meus erros</label>
+    </div>
+    <div class="review-count" id="review-count"></div>
+    <div class="review-list" id="review-list"></div>
+  </div>
+
+</div>
+
+<footer>
+  Material de estudo elaborado a partir da pesquisa normativa fornecida (Constituição Federal, arts. 92–135, emendas constitucionais e súmulas indicadas) e de conhecimento consolidado de direito constitucional. As estatísticas do painel valem apenas para a sessão atual do navegador e são reiniciadas ao recarregar a página.
+</footer>
+
+<script>
+const TEMAS = [
+  "Magistratura — Ingresso e Garantias",
+  "Administração do Judiciário e Súmula Vinculante",
+  "Composição dos Tribunais",
+  "Competências: STF, STJ e Justiça Federal",
+  "CNJ e CNMP",
+  "Precatórios",
+  "Quinto Constitucional",
+  "Ministério Público",
+  "Advocacia Pública",
+  "Advocacia",
+  "Defensoria Pública",
+  "Súmulas"
+];
+
+const QUESTIONS = [
+{id:1, tema:TEMAS[0], enunciado:`O ingresso na carreira da magistratura, cujo cargo inicial é o de juiz substituto, dar-se-á mediante concurso público de provas e títulos, com a participação da OAB em todas as fases, exigindo-se do bacharel em direito, no mínimo, três anos de atividade jurídica.`, resposta:'C', artigo:'Art. 93, I, CF', comentario:`Certo. É exatamente o que dispõe o art. 93, I: concurso de provas e títulos, participação obrigatória da OAB em todas as fases e três anos mínimos de atividade jurídica.`},
+{id:2, tema:TEMAS[0], enunciado:`As promoções de entrância para entrância, alternadamente, por antiguidade e merecimento, dispensam a promoção obrigatória do juiz que figure por três vezes consecutivas ou cinco alternadas em lista de merecimento.`, resposta:'E', artigo:'Art. 93, II, "a", CF', comentario:`Errado. O art. 93, II, "a" prevê justamente o contrário: a promoção é obrigatória (e não dispensada) para o juiz que figurar por três vezes consecutivas ou cinco alternadas em lista de merecimento.`},
+{id:3, tema:TEMAS[0], enunciado:`Considera-se merecimento a apresentação de dois anos de exercício na respectiva entrância e a inclusão do juiz na primeira quinta parte da lista de antiguidade desta, salvo se não houver, com tais requisitos, quem aceite o lugar vago.`, resposta:'C', artigo:'Art. 93, II, "b", CF', comentario:`Certo. A promoção por merecimento pressupõe dois anos de exercício na entrância e posição na primeira quinta parte da lista de antiguidade, ressalvada a exceção prevista no próprio dispositivo.`},
+{id:4, tema:TEMAS[0], enunciado:`A recusa do juiz mais antigo em lista de antiguidade depende de deliberação da maioria simples do tribunal competente, assegurada ampla defesa.`, resposta:'E', artigo:'Art. 93, II, "d", CF', comentario:`Errado. Exige-se voto fundamentado de dois terços do tribunal competente, e não maioria simples, para a recusa do juiz mais antigo, assegurada ampla defesa.`},
+{id:5, tema:TEMAS[0], enunciado:`A remoção, a disponibilidade e a aposentadoria do magistrado, por interesse público, fundar-se-ão em decisão por voto de dois terços do respectivo tribunal ou do Conselho Nacional de Justiça, assegurada ampla defesa.`, resposta:'E', artigo:'Art. 93, VIII, CF', comentario:`Errado. O quórum exigido é o de maioria absoluta do respectivo tribunal ou do CNJ, e não de dois terços.`},
+{id:6, tema:TEMAS[0], enunciado:`Nos tribunais com número superior a vinte e cinco julgadores, poderá ser constituído órgão especial, com o mínimo de onze e o máximo de vinte e cinco membros, para o exercício de atribuições administrativas e jurisdicionais delegadas, provendo-se metade das vagas por antiguidade e a outra metade por eleição pelo tribunal pleno.`, resposta:'C', artigo:'Art. 93, XI, CF', comentario:`Certo. É facultativa a criação do órgão especial nesses termos, com metade das vagas por antiguidade e metade por eleição, conforme o art. 93, XI.`},
+{id:7, tema:TEMAS[0], enunciado:`Todos os julgamentos dos órgãos do Poder Judiciário devem ser sempre públicos, sem qualquer exceção constitucional, sob pena de nulidade.`, resposta:'E', artigo:'Art. 93, IX, CF', comentario:`Errado. A própria Constituição admite que a lei limite a presença, em determinados atos, às próprias partes e a seus advogados, ou somente a estes, quando o interesse público à informação prejudicar o interesse à intimidade do interessado no sigilo.`},
+{id:8, tema:TEMAS[0], enunciado:`As decisões administrativas dos tribunais serão motivadas e em sessão pública, sendo as disciplinares tomadas pelo voto da maioria absoluta de seus membros.`, resposta:'C', artigo:'Art. 93, X, CF', comentario:`Certo. É a redação do art. 93, X: motivação, publicidade e, para as decisões disciplinares, quórum de maioria absoluta.`},
+{id:9, tema:TEMAS[0], enunciado:`A distribuição de processos deve ser imediata, em todos os graus de jurisdição.`, resposta:'C', artigo:'Art. 93, XV, CF', comentario:`Certo. O art. 93, XV, exige distribuição imediata de processos em todos os graus de jurisdição.`},
+{id:10, tema:TEMAS[0], enunciado:`Compete privativamente ao Presidente da República a iniciativa de lei complementar que disporá sobre o Estatuto da Magistratura.`, resposta:'E', artigo:'Art. 93, caput, CF', comentario:`Errado. A iniciativa da lei complementar sobre o Estatuto da Magistratura é do Supremo Tribunal Federal, e não do Presidente da República.`},
+{id:11, tema:TEMAS[0], enunciado:`A Emenda Constitucional nº 130/2023 instituiu a permuta entre magistrados vinculados a tribunais diferentes, inclusive de segundo grau, desde que pertencentes ao mesmo segmento de Justiça e observados os requisitos constitucionais.`, resposta:'C', artigo:'EC 130/2023', comentario:`Certo. A EC 130/2023 acrescentou essa possibilidade de permuta entre magistrados, ponto frequentemente ausente em materiais desatualizados.`},
+{id:12, tema:TEMAS[0], enunciado:`São garantias dos magistrados a vitaliciedade, a inamovibilidade e a irredutibilidade de subsídio, sendo que, no primeiro grau, a vitaliciedade é adquirida após dois anos de exercício, dependendo a perda do cargo, nesse período, de deliberação do tribunal a que o juiz estiver vinculado.`, resposta:'C', artigo:'Art. 95, I, CF', comentario:`Certo. No primeiro grau, a vitaliciedade depende de dois anos de exercício, e a perda do cargo nesse período exige deliberação do tribunal correspondente.`},
+{id:13, tema:TEMAS[0], enunciado:`Após adquirida a vitaliciedade, a perda do cargo do magistrado somente pode ocorrer por sentença judicial transitada em julgado.`, resposta:'C', artigo:'Art. 95, I, CF', comentario:`Certo. Adquirida a vitaliciedade, exige-se sentença judicial definitiva (transitada em julgado) para a perda do cargo.`},
+{id:14, tema:TEMAS[0], enunciado:`É vedado aos juízes exercer, ainda que em disponibilidade, qualquer outro cargo ou função, salvo uma de magistério.`, resposta:'C', artigo:'Art. 95, parágrafo único, I, CF', comentario:`Certo. A única exceção constitucional à vedação de acumulação é o exercício de uma função de magistério.`},
+{id:15, tema:TEMAS[0], enunciado:`É permitido ao magistrado receber, a qualquer título ou pretexto, custas ou participação em processo.`, resposta:'E', artigo:'Art. 95, parágrafo único, II, CF', comentario:`Errado. É expressamente vedado ao magistrado receber, a qualquer título ou pretexto, custas ou participação em processo.`},
+{id:16, tema:TEMAS[0], enunciado:`É vedado ao juiz dedicar-se a atividade político-partidária, sem ressalva constitucional.`, resposta:'C', artigo:'Art. 95, parágrafo único, III, CF', comentario:`Certo. Desde a redação dada pela EC 45/2004, a vedação ao exercício de atividade político-partidária não comporta mais a ressalva de filiação que constava do texto original.`},
+{id:17, tema:TEMAS[0], enunciado:`É vedado ao magistrado, dentro de três anos do afastamento do cargo por aposentadoria ou exoneração, exercer a advocacia no juízo ou tribunal do qual se afastou.`, resposta:'C', artigo:'Art. 95, parágrafo único, V, CF', comentario:`Certo. A quarentena de três anos e a limitação ao juízo ou tribunal de origem são os dois elementos centrais dessa vedação — prazo e local de atuação.`},
+
+{id:18, tema:TEMAS[1], enunciado:`Compete privativamente aos tribunais eleger seus órgãos diretivos e elaborar seus regimentos internos, com observância das normas de processo e das garantias processuais das partes.`, resposta:'C', artigo:'Art. 96, I, "a", CF', comentario:`Certo. É competência privativa dos tribunais eleger seus órgãos diretivos e elaborar seus regimentos internos, respeitadas as garantias processuais.`},
+{id:19, tema:TEMAS[1], enunciado:`A criação e a extinção de cargos e a fixação de vencimentos de seus membros, dos serviços auxiliares e dos juízos que lhes forem vinculados são de competência exclusiva dos tribunais, independentemente de proposta ao Poder Legislativo.`, resposta:'E', artigo:'Art. 96, II, "b", CF', comentario:`Errado. Essa matéria não é de execução direta e automática pelo tribunal: exige proposta do respectivo tribunal ao Poder Legislativo, nos termos do art. 96, II.`},
+{id:20, tema:TEMAS[1], enunciado:`Somente pelo voto da maioria absoluta de seus membros ou dos membros do respectivo órgão especial poderão os tribunais declarar a inconstitucionalidade de lei ou ato normativo do Poder Público.`, resposta:'C', artigo:'Art. 97, CF', comentario:`Certo. É a cláusula de reserva de plenário (full bench), exigindo maioria absoluta do plenário ou do órgão especial.`},
+{id:21, tema:TEMAS[1], enunciado:`A União, no Distrito Federal e nos Territórios, e os Estados criarão justiça de paz, remunerada, composta de cidadãos eleitos pelo voto direto, universal e secreto, com mandato de quatro anos, tendo, entre suas atribuições, competência jurisdicional plena em matéria cível de pequeno valor.`, resposta:'E', artigo:'Art. 98, II, CF', comentario:`Errado. As atribuições da justiça de paz são conciliatórias, sem caráter jurisdicional; ela não possui competência jurisdicional para julgar causas cíveis.`},
+{id:22, tema:TEMAS[1], enunciado:`Lei federal disporá sobre a criação de juizados especiais, providos por juízes togados, ou togados e leigos, competentes para a conciliação, o julgamento e a execução de causas cíveis de menor complexidade e infrações penais de menor potencial ofensivo, permitidos, nas hipóteses previstas em lei, a transação e o julgamento de recursos por turmas de juízes de primeiro grau.`, resposta:'C', artigo:'Art. 98, I, CF', comentario:`Certo. É a redação do art. 98, I, inclusive quanto à possibilidade de recursos serem julgados por turmas recursais formadas por juízes de primeiro grau.`},
+{id:23, tema:TEMAS[1], enunciado:`Ao Poder Judiciário é assegurada autonomia administrativa e financeira, cabendo aos tribunais elaborar suas propostas orçamentárias dentro dos limites estipulados conjuntamente com os demais Poderes na lei de diretrizes orçamentárias.`, resposta:'C', artigo:'Art. 99, CF', comentario:`Certo. O art. 99 assegura essa autonomia administrativa e financeira, com a propositura orçamentária vinculada aos limites da LDO.`},
+{id:24, tema:TEMAS[1], enunciado:`Compete exclusivamente ao Supremo Tribunal Federal a edição, revisão e cancelamento de súmula vinculante, mediante decisão de dois terços dos seus membros, após reiteradas decisões sobre matéria constitucional.`, resposta:'C', artigo:'Art. 103-A, CF', comentario:`Certo. A competência é exclusiva do STF, de ofício ou por provocação, exigindo-se dois terços dos membros e reiteradas decisões sobre matéria constitucional.`},
+{id:25, tema:TEMAS[1], enunciado:`A súmula vinculante terá efeito somente em relação aos demais órgãos do Poder Judiciário, não alcançando a administração pública direta e indireta.`, resposta:'E', artigo:'Art. 103-A, caput, CF', comentario:`Errado. O efeito vinculante alcança também a administração pública direta e indireta, nas esferas federal, estadual e municipal, e não apenas o Judiciário.`},
+{id:26, tema:TEMAS[1], enunciado:`A Emenda Constitucional nº 134/2024 criou regra específica para a eleição da direção de tribunais de justiça com mais de cento e setenta desembargadores em efetivo exercício, prevendo mandato de dois anos, com direito a uma recondução sucessiva.`, resposta:'C', artigo:'EC 134/2024', comentario:`Certo. A EC 134/2024 instituiu essa regra: eleição por maioria absoluta e voto direto e secreto entre os integrantes do pleno, mandato bienal, com uma recondução sucessiva permitida.`},
+{id:27, tema:TEMAS[1], enunciado:`Lei complementar, de iniciativa do Presidente da República, disciplinará o processo de edição, revisão e cancelamento de súmulas vinculantes.`, resposta:'E', artigo:'Lei 11.417/2006', comentario:`Errado. A disciplina do procedimento consta de lei ordinária (Lei 11.417/2006), e não de lei complementar de iniciativa do Presidente da República; a iniciativa e a decisão sobre o conteúdo das súmulas cabem ao próprio STF.`},
+
+{id:28, tema:TEMAS[2], enunciado:`O Supremo Tribunal Federal compõe-se de onze ministros, escolhidos dentre cidadãos com mais de trinta e cinco e menos de setenta anos de idade, de notável saber jurídico e reputação ilibada.`, resposta:'C', artigo:'Art. 101, CF', comentario:`Certo. É a composição e os requisitos do art. 101: onze ministros, faixa etária de 35 a 70 anos, notável saber jurídico e reputação ilibada.`},
+{id:29, tema:TEMAS[2], enunciado:`Os ministros do Supremo Tribunal Federal serão nomeados pelo Presidente da República, depois de aprovada a escolha pela maioria simples do Senado Federal.`, resposta:'E', artigo:'Art. 101, parágrafo único, CF', comentario:`Errado. Exige-se aprovação pela maioria absoluta do Senado Federal, e não por maioria simples.`},
+{id:30, tema:TEMAS[2], enunciado:`O Superior Tribunal de Justiça compõe-se de, no mínimo, trinta e três ministros.`, resposta:'C', artigo:'Art. 104, CF (redação da EC 122/2022)', comentario:`Certo. Desde a EC 122/2022, o STJ passou a ter, no mínimo, 33 ministros.`},
+{id:31, tema:TEMAS[2], enunciado:`Os ministros do Superior Tribunal de Justiça devem preencher o requisito etário de mais de trinta e cinco e menos de setenta anos, tal qual exigido para os ministros do STF.`, resposta:'C', artigo:'Art. 104, parágrafo único, CF', comentario:`Certo. O requisito etário dos ministros do STJ é o mesmo do STF: mais de 35 e menos de 70 anos, além de notável saber jurídico e reputação ilibada.`},
+{id:32, tema:TEMAS[2], enunciado:`A composição do Superior Tribunal de Justiça observa a proporção de um terço dentre juízes dos Tribunais Regionais Federais, um terço dentre desembargadores dos Tribunais de Justiça e um terço, alternadamente, dentre advogados e membros do Ministério Público.`, resposta:'C', artigo:'Art. 104, parágrafo único, CF', comentario:`Certo. É a divisão em terços prevista no art. 104, parágrafo único — não confundir esse terço misto com o quinto constitucional do art. 94, que segue procedimento próprio.`},
+{id:33, tema:TEMAS[2], enunciado:`O Tribunal Superior do Trabalho compõe-se de vinte e sete ministros, exigindo-se, para o preenchimento das vagas destinadas a advogados e membros do Ministério Público do Trabalho, os mesmos requisitos etários aplicáveis aos ministros do STF.`, resposta:'C', artigo:'Art. 111-A, CF', comentario:`Certo. O TST tem 27 ministros, com o mesmo requisito etário (mais de 35 e menos de 70 anos) para as vagas de advogados e membros do MPT.`},
+{id:34, tema:TEMAS[2], enunciado:`Os Tribunais Regionais Federais compõem-se de, no mínimo, sete juízes, recrutados, quando possível, na respectiva região, e nomeados pelo Presidente da República dentre brasileiros com mais de trinta e cinco e menos de setenta anos.`, resposta:'E', artigo:'Art. 107, CF', comentario:`Errado. O requisito etário para os TRFs é de mais de trinta (30) e menos de setenta anos, e não mais de trinta e cinco, como ocorre no STF e no STJ.`},
+{id:35, tema:TEMAS[2], enunciado:`Os Tribunais Regionais do Trabalho compõem-se de, no mínimo, sete juízes, recrutados, quando possível, na respectiva região, e nomeados pelo Presidente da República.`, resposta:'C', artigo:'Art. 115, CF', comentario:`Certo. Os TRTs seguem a mesma lógica de composição mínima de sete juízes, com recrutamento regional preferencial.`},
+{id:36, tema:TEMAS[2], enunciado:`O Tribunal Superior Eleitoral compor-se-á de, no máximo, sete membros.`, resposta:'E', artigo:'Art. 119, CF', comentario:`Errado. O texto constitucional fixa "no mínimo" sete membros, e não "no máximo" sete.`},
+{id:37, tema:TEMAS[2], enunciado:`O Superior Tribunal Militar compõe-se de quinze ministros vitalícios, sendo que, quanto aos ministros civis, exige-se idade superior a trinta e cinco e inferior a setenta anos.`, resposta:'C', artigo:'Art. 123, CF', comentario:`Certo. O STM tem 15 ministros vitalícios, com o requisito etário de 35 a 70 anos aplicável aos ministros civis.`},
+{id:38, tema:TEMAS[2], enunciado:`Os Tribunais Regionais Eleitorais compõem-se, entre outros integrantes, de dois juízes escolhidos, por eleição secreta, dentre os desembargadores do Tribunal de Justiça, e de dois juízes, dentre juízes de direito, escolhidos pelo Tribunal de Justiça.`, resposta:'C', artigo:'Art. 120, CF', comentario:`Certo. É parte da composição mista dos TREs prevista no art. 120, que combina desembargadores, juízes de direito, um juiz federal (ou do TRF) e advogados indicados.`},
+{id:39, tema:TEMAS[2], enunciado:`A nomeação presidencial dos ministros do STJ prescinde de aprovação pelo Senado Federal, bastando a escolha do Presidente da República a partir de lista tríplice elaborada pelo próprio tribunal.`, resposta:'E', artigo:'Art. 104, parágrafo único, CF', comentario:`Errado. Assim como ocorre no STF, a nomeação dos ministros do STJ também depende de aprovação da escolha pelo Senado Federal.`},
+
+{id:40, tema:TEMAS[3], enunciado:`Compete ao Supremo Tribunal Federal processar e julgar, originariamente, a extradição solicitada por Estado estrangeiro.`, resposta:'C', artigo:'Art. 102, I, "g", CF', comentario:`Certo. A extradição solicitada por Estado estrangeiro é competência originária do STF.`},
+{id:41, tema:TEMAS[3], enunciado:`Compete ao Superior Tribunal de Justiça processar e julgar, originariamente, a homologação de sentenças estrangeiras e a concessão de exequatur às cartas rogatórias.`, resposta:'C', artigo:'Art. 105, I, "i", CF', comentario:`Certo. Desde a EC 45/2004, essa competência foi transferida do STF para o STJ.`},
+{id:42, tema:TEMAS[3], enunciado:`Compete ao Supremo Tribunal Federal processar e julgar, originariamente, a homologação de sentenças estrangeiras e a concessão de exequatur às cartas rogatórias, por se tratar de matéria correlata à soberania nacional.`, resposta:'E', artigo:'Art. 105, I, "i", CF', comentario:`Errado. Essa competência pertence ao STJ, e não ao STF, desde a EC 45/2004. É uma das confusões mais comuns em prova, pois antes de 2004 era de fato competência do STF.`},
+{id:43, tema:TEMAS[3], enunciado:`Compete ao Supremo Tribunal Federal julgar, mediante recurso extraordinário, as causas decididas em única ou última instância quando a decisão recorrida contrariar dispositivo desta Constituição.`, resposta:'C', artigo:'Art. 102, III, "a", CF', comentario:`Certo. É a hipótese mais clássica de cabimento do recurso extraordinário.`},
+{id:44, tema:TEMAS[3], enunciado:`Compete ao Superior Tribunal de Justiça julgar, em recurso especial, as causas decididas em única ou última instância pelos Tribunais Regionais Federais ou pelos tribunais dos Estados, do Distrito Federal e Territórios, quando a decisão recorrida contrariar tratado ou lei federal, ou negar-lhes vigência.`, resposta:'C', artigo:'Art. 105, III, "a", CF', comentario:`Certo. É a hipótese mais clássica de cabimento do recurso especial.`},
+{id:45, tema:TEMAS[3], enunciado:`Cabe recurso extraordinário quando a decisão recorrida julgar válida lei ou ato de governo local contestado em face desta Constituição.`, resposta:'C', artigo:'Art. 102, III, "c", CF', comentario:`Certo. Quando o parâmetro de controle é a própria Constituição — mesmo envolvendo lei ou ato local —, a via cabível é o recurso extraordinário.`},
+{id:46, tema:TEMAS[3], enunciado:`Cabe recurso extraordinário quando a decisão recorrida julgar válida lei local contestada em face de lei federal.`, resposta:'C', artigo:'Art. 102, III, "d", CF', comentario:`Certo. Mesmo se tratando de conflito entre lei local e lei federal (normas infraconstitucionais), a Constituição atribuiu expressamente essa hipótese ao recurso extraordinário — é o ponto que mais gera confusão com o recurso especial.`},
+{id:47, tema:TEMAS[3], enunciado:`Cabe recurso especial quando a decisão recorrida julgar válido ato de governo local contestado em face de lei federal.`, resposta:'C', artigo:'Art. 105, III, "b", CF', comentario:`Certo. Aqui a chave é "ato" (e não "lei") de governo local contestado em face de lei federal — hipótese de recurso especial.`},
+{id:48, tema:TEMAS[3], enunciado:`Cabe recurso especial, e não recurso extraordinário, quando a decisão recorrida julgar válida lei local contestada em face de lei federal, uma vez que se trata de conflito entre normas infraconstitucionais.`, resposta:'E', artigo:'Art. 102, III, "d", CF', comentario:`Errado. Essa é a clássica pegadinha invertida: "lei local x lei federal" é hipótese de recurso extraordinário (art. 102, III, "d"), e não de recurso especial. Já "ato de governo local x lei federal" é que cabe em recurso especial (art. 105, III, "b").`},
+{id:49, tema:TEMAS[3], enunciado:`Compete originariamente ao Superior Tribunal de Justiça processar e julgar Governador de Estado nos crimes comuns.`, resposta:'C', artigo:'Art. 105, I, "a", CF', comentario:`Certo. Governadores de Estado e do Distrito Federal, nos crimes comuns, são julgados originariamente pelo STJ.`},
+{id:50, tema:TEMAS[3], enunciado:`Compete originariamente ao Supremo Tribunal Federal processar e julgar Governador de Estado nos crimes comuns.`, resposta:'E', artigo:'Art. 105, I, "a", CF', comentario:`Errado. Essa competência é do STJ, e não do STF — trocar essas competências é um erro clássico em prova.`},
+{id:51, tema:TEMAS[3], enunciado:`O Procurador-Geral da República pode suscitar, perante o Superior Tribunal de Justiça, incidente de deslocamento de competência para a Justiça Federal, nas hipóteses de grave violação de direitos humanos, com a finalidade de assegurar o cumprimento de obrigações decorrentes de tratados internacionais de direitos humanos dos quais o Brasil seja parte.`, resposta:'C', artigo:'Art. 109, § 5º, CF', comentario:`Certo. É o chamado IDC — incidente de deslocamento de competência —, de iniciativa do PGR, dirigido ao STJ.`},
+{id:52, tema:TEMAS[3], enunciado:`Compete à Justiça Federal processar e julgar as causas em que a União, entidade autárquica ou empresa pública federal forem interessadas na condição de autoras, rés, assistentes ou oponentes, à exceção das de falência, das de acidentes de trabalho e das sujeitas à Justiça Eleitoral e à Justiça do Trabalho.`, resposta:'C', artigo:'Art. 109, I, CF', comentario:`Certo. É a regra geral de competência da Justiça Federal em razão da pessoa, com as exceções expressas no próprio inciso.`},
+{id:53, tema:TEMAS[3], enunciado:`Compete à Justiça Federal julgar as causas em que sociedade de economia mista federal for parte, em qualquer hipótese.`, resposta:'E', artigo:'Art. 109, I, CF', comentario:`Errado. O rol do art. 109, I, contempla União, autarquias federais e empresas públicas federais; sociedade de economia mista federal não se inclui nesse rol, de modo que, via de regra, processa-se na Justiça Estadual, salvo exceção legal ou constitucional específica.`},
+{id:54, tema:TEMAS[3], enunciado:`Compete ao Supremo Tribunal Federal processar e julgar, originariamente, a ação direta de inconstitucionalidade de lei ou ato normativo federal ou estadual e a ação declaratória de constitucionalidade de lei ou ato normativo federal.`, resposta:'C', artigo:'Art. 102, I, "a", CF', comentario:`Certo. É a competência para o controle concentrado de constitucionalidade por ADI e ADC.`},
+{id:55, tema:TEMAS[3], enunciado:`Compete ao Supremo Tribunal Federal processar e julgar, originariamente, o habeas corpus quando o coator for tribunal superior ou quando o coator ou o paciente for autoridade ou funcionário cujos atos estejam diretamente sujeitos à jurisdição do próprio Supremo.`, resposta:'C', artigo:'Art. 102, I, "d", CF', comentario:`Certo. É uma das hipóteses de habeas corpus de competência originária do STF.`},
+{id:56, tema:TEMAS[3], enunciado:`Compete ao Superior Tribunal de Justiça processar e julgar, originariamente, os mandados de segurança e os habeas data contra ato de Ministro de Estado, dos Comandantes da Marinha, do Exército e da Aeronáutica ou do próprio Tribunal.`, resposta:'C', artigo:'Art. 105, I, "b", CF', comentario:`Certo. É competência originária do STJ, distinta do mandado de segurança contra ato do Presidente da República, que é do STF.`},
+{id:57, tema:TEMAS[3], enunciado:`Compete ao Supremo Tribunal Federal, e não ao Superior Tribunal de Justiça, processar e julgar o mandado de segurança contra ato de Ministro de Estado.`, resposta:'E', artigo:'Art. 105, I, "b", CF', comentario:`Errado. O mandado de segurança contra ato de Ministro de Estado é competência do STJ, não do STF, que julga o mandado de segurança contra atos do Presidente da República, das Mesas da Câmara e do Senado, do TCU, do PGR e do próprio STF.`},
+{id:58, tema:TEMAS[3], enunciado:`Compete ao Superior Tribunal de Justiça processar e julgar os conflitos de competência entre quaisquer tribunais, ressalvado o disposto no art. 102, I, "o", bem como entre tribunal e juízes a ele não vinculados e entre juízes vinculados a tribunais diversos.`, resposta:'C', artigo:'Art. 105, I, "d", CF', comentario:`Certo. É a competência residual do STJ para conflitos de competência, ressalvados os conflitos que a Constituição atribui ao STF.`},
+{id:59, tema:TEMAS[3], enunciado:`Compete ao Supremo Tribunal Federal dirimir os conflitos de competência entre o Superior Tribunal de Justiça e quaisquer tribunais, entre Tribunais Superiores, ou entre estes e qualquer outro tribunal.`, resposta:'C', artigo:'Art. 102, I, "o", CF', comentario:`Certo. Esses conflitos de competência "de cúpula" são reservados ao STF.`},
+{id:60, tema:TEMAS[3], enunciado:`Cabe ao Supremo Tribunal Federal a reclamação para a preservação de sua competência e garantia da autoridade de suas decisões, sendo essa mesma prerrogativa estendida ao Superior Tribunal de Justiça em relação às suas próprias decisões.`, resposta:'C', artigo:'Art. 102, I, "l" e art. 105, I, "f", CF', comentario:`Certo. Tanto o STF quanto o STJ têm competência originária para reclamação voltada à preservação de sua competência e à garantia da autoridade de suas decisões.`},
+{id:61, tema:TEMAS[3], enunciado:`A relevância da questão federal infraconstitucional, como requisito de admissibilidade do recurso especial, foi introduzida pela Emenda Constitucional nº 125/2022, e sua ausência somente poderá ser reconhecida pela manifestação de dois terços dos membros do órgão competente para o julgamento.`, resposta:'C', artigo:'Art. 105, § 2º, CF (EC 125/2022)', comentario:`Certo. A EC 125/2022 criou esse novo requisito, exigindo quórum qualificado de dois terços para a recusa do recurso por ausência de relevância.`},
+{id:62, tema:TEMAS[3], enunciado:`Entre as hipóteses constitucionais em que se presume a relevância da questão federal para fins de recurso especial estão as causas cujo valor supere quinhentos salários mínimos, as ações penais e as ações de improbidade administrativa.`, resposta:'C', artigo:'Art. 105, § 2º, CF (EC 125/2022)', comentario:`Certo. Essas são justamente algumas das hipóteses em que a relevância é presumida pelo próprio texto constitucional.`},
+{id:63, tema:TEMAS[3], enunciado:`O critério de relevância do recurso especial, conforme o Enunciado Administrativo nº 8 do STJ, deve ser exigido em todos os recursos interpostos após a promulgação da Emenda Constitucional nº 125/2022, independentemente da data de publicação do acórdão recorrido.`, resposta:'E', artigo:'Enunciado Administrativo 8/STJ', comentario:`Errado. O Enunciado Administrativo nº 8 condiciona a exigência da demonstração de relevância à publicação do acórdão recorrido após a entrada em vigor da lei regulamentadora, e não simplesmente à data da emenda constitucional.`},
+{id:64, tema:TEMAS[3], enunciado:`Compete ao Supremo Tribunal Federal processar e julgar originariamente as infrações penais comuns cometidas por membros do Congresso Nacional.`, resposta:'C', artigo:'Art. 102, I, "b", CF', comentario:`Certo. Membros do Congresso Nacional respondem por infrações penais comuns originariamente perante o STF.`},
+{id:65, tema:TEMAS[3], enunciado:`Compete ao Supremo Tribunal Federal julgar as ações contra o Conselho Nacional de Justiça e contra o Conselho Nacional do Ministério Público.`, resposta:'C', artigo:'Art. 102, I, "r", CF', comentario:`Certo. As ações contra o CNJ e o CNMP são de competência originária do STF.`},
+{id:66, tema:TEMAS[3], enunciado:`Compete originariamente ao Superior Tribunal de Justiça processar e julgar os mandados de segurança impetrados contra ato do Presidente da República.`, resposta:'E', artigo:'Art. 102, I, "d", CF', comentario:`Errado. O mandado de segurança contra ato do Presidente da República é de competência originária do STF, não do STJ.`},
+{id:67, tema:TEMAS[3], enunciado:`Compete ao Superior Tribunal de Justiça julgar, em recurso ordinário, o habeas corpus decidido em única ou última instância pelos Tribunais Regionais Federais ou pelos tribunais dos Estados, do Distrito Federal e Territórios, quando a decisão for denegatória.`, resposta:'C', artigo:'Art. 105, II, "a", CF', comentario:`Certo. É hipótese de recurso ordinário (e não especial) para o STJ, cabível apenas quando a decisão de segundo grau for denegatória.`},
+{id:68, tema:TEMAS[3], enunciado:`Compete ao Supremo Tribunal Federal julgar, em recurso ordinário, o crime político.`, resposta:'C', artigo:'Art. 102, II, "b", CF', comentario:`Certo. O crime político julgado em única instância é submetido ao STF por meio de recurso ordinário, não de recurso extraordinário.`},
+{id:69, tema:TEMAS[3], enunciado:`Compete à Justiça Federal, e não à Justiça Estadual, processar e julgar os crimes praticados em detrimento de bens, serviços ou interesse da União, de suas entidades autárquicas ou de empresas públicas federais, ressalvadas as exceções constitucionais.`, resposta:'C', artigo:'Art. 109, IV, CF', comentario:`Certo. É a competência penal federal em razão da natureza do bem jurídico afetado, ressalvadas as exceções da Justiça Militar e da Justiça Eleitoral.`},
+
+{id:70, tema:TEMAS[4], enunciado:`O Conselho Nacional de Justiça compõe-se de quinze membros, com mandato de dois anos, admitida uma recondução, sendo presidido pelo Presidente do Supremo Tribunal Federal.`, resposta:'C', artigo:'Art. 103-B, CF', comentario:`Certo. É a composição, o mandato e a presidência do CNJ, presidido pelo Presidente do STF.`},
+{id:71, tema:TEMAS[4], enunciado:`O Conselho Nacional do Ministério Público compõe-se de quatorze membros, sendo presidido pelo Procurador-Geral da República.`, resposta:'C', artigo:'Art. 130-A, CF', comentario:`Certo. O CNMP tem 14 integrantes e é presidido pelo PGR — número e presidência distintos dos do CNJ.`},
+{id:72, tema:TEMAS[4], enunciado:`A função de Corregedor Nacional de Justiça, no âmbito do CNJ, é exercida por um Ministro do Superior Tribunal de Justiça, ao passo que, no CNMP, a Corregedoria é exercida por membro do Ministério Público escolhido pelo Conselho, vedada a recondução.`, resposta:'C', artigo:'Art. 103-B, § 5º e art. 130-A, § 3º, CF', comentario:`Certo. No CNJ a Corregedoria cabe a Ministro do STJ; no CNMP, a membro do MP escolhido pelo próprio colegiado, sem direito a recondução — pontos que costumam ser invertidos em prova.`},
+{id:73, tema:TEMAS[4], enunciado:`O CNMP é composto, entre outros integrantes, pelo Procurador-Geral da República, por quatro representantes do Ministério Público da União, por três representantes dos Ministérios Públicos estaduais, por dois juízes, por dois advogados e por dois cidadãos.`, resposta:'C', artigo:'Art. 130-A, CF', comentario:`Certo. É a composição mista do CNMP, reunindo membros do MPU, dos MPs estaduais, juízes, advogados e cidadãos, presidida pelo PGR.`},
+{id:74, tema:TEMAS[4], enunciado:`Os membros do Conselho Nacional de Justiça, com exceção do Presidente do Supremo Tribunal Federal, que o integra por sua posição institucional, são nomeados pelo Presidente da República, depois de aprovada a escolha pela maioria absoluta do Senado Federal.`, resposta:'C', artigo:'Art. 103-B, § 2º, CF', comentario:`Certo. Os demais conselheiros do CNJ passam pelo mesmo rito de nomeação presidencial com aprovação do Senado por maioria absoluta.`},
+{id:75, tema:TEMAS[4], enunciado:`Compete ao Conselho Nacional de Justiça o controle da atuação administrativa e financeira do Poder Judiciário e do cumprimento dos deveres funcionais dos juízes, cabendo-lhe rever, de ofício ou mediante provocação, os processos disciplinares de juízes e membros de tribunais julgados há menos de um ano.`, resposta:'C', artigo:'Art. 103-B, § 4º, CF', comentario:`Certo. É a competência correcional e de controle administrativo-financeiro do CNJ, com prazo de um ano para a revisão de processos disciplinares.`},
+{id:76, tema:TEMAS[4], enunciado:`Compete ao Conselho Nacional do Ministério Público rever, de ofício ou mediante provocação, os processos disciplinares de membros do Ministério Público da União ou dos Estados julgados há mais de cinco anos.`, resposta:'E', artigo:'Art. 130-A, § 2º, CF', comentario:`Errado. Assim como no CNJ, o prazo para revisão dos processos disciplinares pelo CNMP é de menos de um ano, e não de mais de cinco anos.`},
+{id:77, tema:TEMAS[4], enunciado:`Tanto o CNJ quanto o CNMP têm mandato de seus membros fixado em dois anos, admitida uma recondução.`, resposta:'C', artigo:'Art. 103-B e art. 130-A, CF', comentario:`Certo. Em ambos os conselhos, o mandato é de dois anos, permitida uma recondução.`},
+{id:78, tema:TEMAS[4], enunciado:`A criação do Conselho Nacional de Justiça e do Conselho Nacional do Ministério Público decorreu da Emenda Constitucional nº 45/2004, tendo o CNMP recebido posteriormente alterações pela Emenda Constitucional nº 61/2009.`, resposta:'C', artigo:'EC 45/2004 e EC 61/2009', comentario:`Certo. Ambos os conselhos foram criados pela reforma do Judiciário (EC 45/2004), com o CNMP sofrendo ajustes posteriores pela EC 61/2009.`},
+{id:79, tema:TEMAS[4], enunciado:`O Conselho Nacional de Justiça possui competência para apreciar a constitucionalidade de leis em tese, podendo determinar a suspensão de sua eficácia em caráter geral.`, resposta:'E', artigo:'Art. 103-B, § 4º, CF', comentario:`Errado. O CNJ é órgão de controle administrativo, financeiro e correcional do Judiciário; não exerce controle abstrato de constitucionalidade, competência do Poder Judiciário (em especial do STF), conforme entendimento consolidado.`},
+{id:80, tema:TEMAS[4], enunciado:`O CNMP fiscaliza o Ministério Público da União e dos Estados quanto à legalidade dos atos administrativos praticados por seus membros e órgãos, podendo, inclusive, avocar processos disciplinares em curso.`, resposta:'C', artigo:'Art. 130-A, § 2º, CF', comentario:`Certo. Entre as competências do CNMP estão o controle da legalidade dos atos administrativos e a possibilidade de avocação de processos disciplinares em curso.`},
+{id:81, tema:TEMAS[4], enunciado:`É vedada a recondução dos membros do Conselho Nacional de Justiça e do Conselho Nacional do Ministério Público, admitindo-se apenas um mandato de dois anos para cada conselheiro.`, resposta:'E', artigo:'Art. 103-B e art. 130-A, CF', comentario:`Errado. Em regra, é admitida uma recondução para os membros de ambos os conselhos (ressalvada a Corregedoria do CNMP, que não admite recondução).`},
+
+{id:82, tema:TEMAS[5], enunciado:`Segundo a Emenda Constitucional nº 136/2025, os precatórios apresentados até 1º de fevereiro serão incluídos no orçamento do exercício seguinte, para pagamento até o encerramento deste.`, resposta:'C', artigo:'Art. 100, § 5º, CF (EC 136/2025)', comentario:`Certo. A EC 136/2025 atualizou a data de corte para inclusão orçamentária dos precatórios para 1º de fevereiro.`},
+{id:83, tema:TEMAS[5], enunciado:`Os débitos de natureza alimentícia não gozam de qualquer preferência em relação aos demais créditos, devendo obedecer estritamente à ordem cronológica geral de apresentação dos precatórios.`, resposta:'E', artigo:'Art. 100, §§ 1º e 2º, CF', comentario:`Errado. Os débitos de natureza alimentícia têm preferência sobre os demais créditos, havendo ainda superpreferência para idosos, portadores de doença grave e pessoas com deficiência, dentro de determinado limite.`},
+{id:84, tema:TEMAS[5], enunciado:`Débitos de pequeno valor podem ser excepcionados do regime de precatórios, sendo pagos independentemente de expedição de precatório, conforme definido em lei.`, resposta:'C', artigo:'Art. 100, § 3º, CF', comentario:`Certo. As obrigações de pequeno valor, definidas em lei por cada ente federado, dispensam a expedição de precatório.`},
+{id:85, tema:TEMAS[5], enunciado:`É vedada, em qualquer hipótese, a cessão de créditos inscritos em precatórios a terceiros.`, resposta:'E', artigo:'Art. 100, § 13, CF', comentario:`Errado. A Constituição admite expressamente a cessão de créditos em precatórios, total ou parcialmente, a terceiros.`},
+{id:86, tema:TEMAS[5], enunciado:`Os precatórios devem obedecer, como regra geral, à estrita ordem cronológica de apresentação, exigência essa restrita ao Poder Judiciário.`, resposta:'E', artigo:'Art. 100, § 1º, CF', comentario:`Errado. A ordem cronológica é exigida por entidade devedora (União, Estados, Distrito Federal e Municípios), e não apenas no âmbito do Poder Judiciário.`},
+{id:87, tema:TEMAS[5], enunciado:`A Emenda Constitucional nº 136/2025 estabeleceu limites e mecanismos próprios de pagamento de precatórios para Estados, Distrito Federal e Municípios.`, resposta:'C', artigo:'EC 136/2025', comentario:`Certo. Além de alterar a data de corte, a EC 136/2025 trouxe regras específicas de limites e mecanismos de pagamento para os entes subnacionais.`},
+{id:88, tema:TEMAS[5], enunciado:`Existe regime de superpreferência para o pagamento de precatórios de titulares que, na data de expedição, contem sessenta anos de idade ou sejam portadores de doença grave, limitado a determinado múltiplo do salário mínimo.`, resposta:'C', artigo:'Art. 100, § 2º, CF', comentario:`Certo. É o regime de superpreferência para idosos, portadores de doença grave e pessoas com deficiência, dentro do limite fixado em lei.`},
+{id:89, tema:TEMAS[5], enunciado:`O pagamento de precatório de natureza alimentícia dispensa a inclusão orçamentária no exercício correspondente, podendo ser realizado a qualquer momento pelo ente devedor, independentemente de previsão orçamentária.`, resposta:'E', artigo:'Art. 100, § 5º, CF', comentario:`Errado. Mesmo os precatórios de natureza alimentícia seguem o regime de inclusão orçamentária, ainda que com preferência de pagamento sobre os demais.`},
+
+{id:90, tema:TEMAS[6], enunciado:`O quinto constitucional prevê que um quinto dos lugares dos Tribunais Regionais Federais e dos Tribunais dos Estados e do Distrito Federal e Territórios será composto por membros do Ministério Público e advogados, com notório saber jurídico e reputação ilibada.`, resposta:'C', artigo:'Art. 94, caput, CF', comentario:`Certo. É a regra geral do quinto constitucional.`},
+{id:91, tema:TEMAS[6], enunciado:`O procedimento do quinto constitucional inicia-se com a formação de lista sêxtupla pelos órgãos de representação das respectivas classes, cabendo ao tribunal formar lista tríplice, enviando-a ao Poder Executivo, que escolherá um de seus integrantes no prazo de vinte dias.`, resposta:'C', artigo:'Art. 94, parágrafo único, CF', comentario:`Certo. É a sequência correta: lista sêxtupla, redução a lista tríplice pelo tribunal e escolha pelo Executivo em vinte dias.`},
+{id:92, tema:TEMAS[6], enunciado:`Para concorrer ao quinto constitucional, exige-se dos membros do Ministério Público mais de dez anos de carreira e dos advogados mais de dez anos de efetiva atividade profissional, além das demais qualificações exigidas.`, resposta:'C', artigo:'Art. 94, caput, CF', comentario:`Certo. É exatamente o requisito temporal exigido de cada classe para concorrer às vagas do quinto.`},
+{id:93, tema:TEMAS[6], enunciado:`Tanto os membros do Ministério Público quanto os advogados concorrentes ao quinto constitucional devem ostentar reputação ilibada, além dos requisitos específicos de tempo de carreira ou de atividade profissional.`, resposta:'C', artigo:'Art. 94, caput, CF', comentario:`Certo. A reputação ilibada é exigência comum às duas classes, somada ao requisito temporal próprio de cada uma.`},
+{id:94, tema:TEMAS[6], enunciado:`A regra do quinto constitucional não se aplica aos Tribunais Regionais do Trabalho, tendo em vista que a composição destes decorre de dispositivos próprios da Justiça do Trabalho.`, resposta:'C', artigo:'Arts. 111-A e 115, CF', comentario:`Certo. A composição dos TRTs segue disciplina própria da Justiça do Trabalho, e não o procedimento do art. 94.`},
+{id:95, tema:TEMAS[6], enunciado:`A Emenda Constitucional nº 134/2024 criou regra de eleição direta e secreta para a direção dos Tribunais de Justiça com mais de cento e setenta desembargadores em efetivo exercício, com mandato de dois anos e vedada qualquer recondução.`, resposta:'E', artigo:'EC 134/2024', comentario:`Errado. A EC 134/2024 admite uma recondução sucessiva para o mandato bienal, e não a veda.`},
+{id:96, tema:TEMAS[6], enunciado:`Nos tribunais alcançados pela Emenda Constitucional nº 134/2024, a eleição para a direção ocorre entre os integrantes do pleno, exigindo-se maioria absoluta e voto direto e secreto.`, resposta:'C', artigo:'EC 134/2024', comentario:`Certo. São esses os requisitos de quórum e de forma de votação trazidos pela EC 134/2024.`},
+{id:97, tema:TEMAS[6], enunciado:`O quinto constitucional aplica-se exclusivamente aos Tribunais de Justiça dos Estados, não alcançando os Tribunais Regionais Federais.`, resposta:'E', artigo:'Art. 94, caput, CF', comentario:`Errado. O quinto constitucional alcança tanto os Tribunais Regionais Federais quanto os Tribunais de Justiça dos Estados, do Distrito Federal e Territórios.`},
+
+{id:98, tema:TEMAS[7], enunciado:`O Ministério Público é instituição permanente, essencial à função jurisdicional do Estado, incumbindo-lhe a defesa da ordem jurídica, do regime democrático e dos interesses sociais e individuais indisponíveis.`, resposta:'C', artigo:'Art. 127, caput, CF', comentario:`Certo. É a missão institucional do Ministério Público conforme o caput do art. 127.`},
+{id:99, tema:TEMAS[7], enunciado:`São princípios institucionais do Ministério Público a unidade, a indivisibilidade e a independência funcional.`, resposta:'C', artigo:'Art. 127, § 1º, CF', comentario:`Certo. São esses os três princípios institucionais expressamente elencados.`},
+{id:100, tema:TEMAS[7], enunciado:`Ao Ministério Público é assegurada autonomia funcional e administrativa, podendo propor ao Poder Legislativo a criação e extinção de seus cargos e serviços auxiliares, provendo-os por concurso público de provas ou de provas e títulos.`, resposta:'C', artigo:'Art. 127, § 2º, CF', comentario:`Certo. É a autonomia funcional e administrativa do MP, com iniciativa de proposta ao Legislativo para criação e extinção de cargos.`},
+{id:101, tema:TEMAS[7], enunciado:`O Ministério Público da União compreende o Ministério Público Federal, o Ministério Público do Trabalho, o Ministério Público Militar e o Ministério Público do Distrito Federal e Territórios.`, resposta:'C', artigo:'Art. 128, I, CF', comentario:`Certo. É exatamente a composição do MPU.`},
+{id:102, tema:TEMAS[7], enunciado:`Os Ministérios Públicos dos Estados integram, para fins de unidade nacional da instituição, o Ministério Público da União.`, resposta:'E', artigo:'Art. 128, I e II, CF', comentario:`Errado. Os Ministérios Públicos dos Estados constituem ramo próprio e distinto do MPU, não integrando sua estrutura.`},
+{id:103, tema:TEMAS[7], enunciado:`O Procurador-Geral da República será nomeado pelo Presidente da República dentre integrantes da carreira, maiores de trinta e cinco anos, após aprovação de seu nome pela maioria absoluta do Senado Federal, para mandato de dois anos, permitida a recondução.`, resposta:'C', artigo:'Art. 128, § 1º, CF', comentario:`Certo. É a regra de escolha, aprovação e mandato do PGR.`},
+{id:104, tema:TEMAS[7], enunciado:`A destituição do Procurador-Geral da República, por iniciativa do Presidente da República, depende de autorização da maioria absoluta do Senado Federal.`, resposta:'C', artigo:'Art. 128, § 2º, CF', comentario:`Certo. A destituição do PGR antes do fim do mandato depende dessa autorização qualificada do Senado.`},
+{id:105, tema:TEMAS[7], enunciado:`Nos Ministérios Públicos dos Estados, o Procurador-Geral de Justiça é nomeado pelo Chefe do Poder Executivo dentre integrantes de lista sêxtupla formada pelos membros da carreira, para mandato de dois anos, permitida uma recondução.`, resposta:'E', artigo:'Art. 128, § 3º, CF', comentario:`Errado. A lista formada pela carreira para a escolha do Procurador-Geral de Justiça estadual é tríplice, e não sêxtupla — a lista sêxtupla é característica do quinto constitucional (art. 94), não da escolha do chefe do MP estadual.`},
+{id:106, tema:TEMAS[7], enunciado:`Os membros do Ministério Público gozam de vitaliciedade, após dois anos de exercício, não podendo perder o cargo senão por sentença judicial transitada em julgado.`, resposta:'C', artigo:'Art. 128, § 5º, I, "a", CF', comentario:`Certo. A garantia da vitaliciedade do membro do MP segue a mesma lógica aplicada à magistratura.`},
+{id:107, tema:TEMAS[7], enunciado:`É vedado ao membro do Ministério Público, ainda que em disponibilidade, exercer qualquer outra função pública, salvo uma de magistério.`, resposta:'C', artigo:'Art. 128, § 5º, II, "d", CF', comentario:`Certo. A única ressalva constitucional a essa vedação é o exercício de uma função de magistério.`},
+{id:108, tema:TEMAS[7], enunciado:`É vedado ao membro do Ministério Público exercer atividade político-partidária, sem qualquer ressalva legal.`, resposta:'C', artigo:'Art. 128, § 5º, II, "e", CF', comentario:`Certo. Desde a EC 45/2004, essa vedação, tal como ocorre para a magistratura, não comporta mais a ressalva de filiação partidária que constava do texto original.`},
+{id:109, tema:TEMAS[7], enunciado:`Compete ao Ministério Público, com exclusividade absoluta, a defesa judicial de quaisquer interesses difusos ou coletivos, não podendo outros legitimados ajuizar ação civil pública.`, resposta:'E', artigo:'Art. 129, § 1º, CF', comentario:`Errado. A titularidade privativa da ação penal pública é, de fato, exclusiva do MP; mas, na tutela civil coletiva, a legitimação do Ministério Público não impede a de terceiros, nas mesmas hipóteses, segundo a Constituição e a lei.`},
+{id:110, tema:TEMAS[7], enunciado:`É função institucional do Ministério Público promover, privativamente, a ação penal pública, na forma da lei.`, resposta:'C', artigo:'Art. 129, I, CF', comentario:`Certo. É a única hipótese de titularidade genuinamente privativa entre as funções listadas no art. 129.`},
+{id:111, tema:TEMAS[7], enunciado:`Compete ao Ministério Público promover o inquérito civil e a ação civil pública para a proteção do patrimônio público e social, do meio ambiente e de outros interesses difusos e coletivos.`, resposta:'C', artigo:'Art. 129, III, CF', comentario:`Certo. É a função de tutela coletiva mais clássica exercida pelo MP.`},
+{id:112, tema:TEMAS[7], enunciado:`Compete ao Ministério Público exercer o controle externo da atividade policial, na forma da lei complementar respectiva.`, resposta:'C', artigo:'Art. 129, VII, CF', comentario:`Certo. É uma das funções institucionais expressas do MP.`},
+{id:113, tema:TEMAS[7], enunciado:`É função institucional do Ministério Público representar judicialmente e prestar consultoria jurídica às entidades públicas, quando solicitado pelo respectivo ente federativo.`, resposta:'E', artigo:'Art. 129, IX, CF', comentario:`Errado. É expressamente vedada ao MP a representação judicial e a consultoria jurídica de entidades públicas — funções atribuídas à Advocacia Pública (AGU e procuradorias).`},
+{id:114, tema:TEMAS[7], enunciado:`O Ministério Público pode requisitar diligências investigatórias e a instauração de inquérito policial, indicados os fundamentos jurídicos de suas manifestações processuais.`, resposta:'C', artigo:'Art. 129, VIII, CF', comentario:`Certo. É uma das funções institucionais previstas expressamente no art. 129.`},
+{id:115, tema:TEMAS[7], enunciado:`É função institucional do Ministério Público a defesa judicial dos direitos e interesses das populações indígenas.`, resposta:'C', artigo:'Art. 129, V, CF', comentario:`Certo. A defesa judicial dos direitos e interesses das populações indígenas está expressamente listada entre as funções institucionais do MP.`},
+{id:116, tema:TEMAS[7], enunciado:`O ingresso na carreira do Ministério Público exige concurso público de provas e títulos, assegurada a participação da Ordem dos Advogados do Brasil, exigindo-se do bacharel em direito, no mínimo, três anos de atividade jurídica, e devendo a nomeação obedecer à ordem de classificação.`, resposta:'C', artigo:'Art. 129, § 3º, CF', comentario:`Certo. É a mesma lógica de ingresso aplicada à magistratura, adaptada ao MP.`},
+{id:117, tema:TEMAS[7], enunciado:`Os membros do Ministério Público devem residir na comarca da respectiva lotação, salvo autorização do chefe da instituição.`, resposta:'C', artigo:'LC 75/1993 e Lei 8.625/1993, c/c art. 129, CF', comentario:`Certo. A exigência de residência na comarca, ressalvada autorização da chefia, segue a mesma lógica prevista para a magistratura no art. 93, VII.`},
+{id:118, tema:TEMAS[7], enunciado:`Aplicam-se ao Ministério Público, no que couber, as disposições do art. 93 da Constituição, relativo à Magistratura.`, resposta:'C', artigo:'Art. 129, § 4º, CF', comentario:`Certo. A própria Constituição determina a aplicação subsidiária das regras do art. 93 ao Ministério Público, no que for compatível.`},
+{id:119, tema:TEMAS[7], enunciado:`É permitido ao membro do Ministério Público exercer a advocacia, desde que fora das atribuições institucionais e mediante prévia autorização do respectivo Procurador-Geral.`, resposta:'E', artigo:'Art. 128, § 5º, II, "b", CF', comentario:`Errado. É vedado ao membro do Ministério Público exercer a advocacia, sem qualquer ressalva de autorização da chefia — trata-se de vedação absoluta.`},
+
+{id:120, tema:TEMAS[8], enunciado:`A Advocacia-Geral da União é a instituição que representa a União, judicial e extrajudicialmente, cabendo-lhe, nos termos de lei complementar, as atividades de consultoria e assessoramento jurídico do Poder Executivo.`, resposta:'C', artigo:'Art. 131, caput, CF', comentario:`Certo. É a definição constitucional da AGU.`},
+{id:121, tema:TEMAS[8], enunciado:`O Advogado-Geral da União é escolhido pelo Presidente da República dentre cidadãos maiores de trinta e cinco anos, de notável saber jurídico e reputação ilibada, dependendo sua nomeação de aprovação pela maioria absoluta do Senado Federal.`, resposta:'E', artigo:'Art. 131, § 1º, CF', comentario:`Errado. Diferentemente do Procurador-Geral da República, a nomeação do Advogado-Geral da União é livre, feita pelo Presidente da República, sem necessidade de aprovação pelo Senado Federal.`},
+{id:122, tema:TEMAS[8], enunciado:`A cobrança judicial da dívida ativa de natureza tributária da União compete à Procuradoria-Geral da Fazenda Nacional.`, resposta:'C', artigo:'Art. 131, § 3º, CF', comentario:`Certo. É atribuição específica da PGFN, distinta da representação judicial genérica exercida pela AGU.`},
+{id:123, tema:TEMAS[8], enunciado:`Os Procuradores dos Estados e do Distrito Federal ingressarão na carreira mediante concurso público de provas e títulos, com a participação da Ordem dos Advogados do Brasil em todas as suas fases, exercendo a representação judicial e a consultoria jurídica das respectivas unidades federadas.`, resposta:'C', artigo:'Art. 132, caput, CF', comentario:`Certo. É a redação do art. 132.`},
+{id:124, tema:TEMAS[8], enunciado:`A estabilidade dos Procuradores dos Estados e do Distrito Federal é adquirida após três anos de efetivo exercício, mediante avaliação de desempenho perante os órgãos próprios, após relatório circunstanciado das corregedorias.`, resposta:'C', artigo:'Art. 132, parágrafo único, CF', comentario:`Certo. É o regime de estabilidade previsto para os procuradores estaduais e distritais.`},
+{id:125, tema:TEMAS[8], enunciado:`A estabilidade adquirida pelos Procuradores dos Estados equivale à vitaliciedade conferida aos membros da magistratura e do Ministério Público, sendo os regimes de perda do cargo idênticos.`, resposta:'E', artigo:'Art. 132, parágrafo único, CF', comentario:`Errado. Estabilidade e vitaliciedade são institutos distintos, com regimes de perda do cargo diferentes — não devem ser tratados como equivalentes em prova.`},
+{id:126, tema:TEMAS[8], enunciado:`O art. 132 da Constituição refere-se expressamente aos Procuradores dos Estados e do Distrito Federal, não havendo, no mesmo dispositivo, disciplina constitucional uniforme e obrigatória para a organização das procuradorias municipais.`, resposta:'C', artigo:'Art. 132, CF', comentario:`Certo. O texto do art. 132 menciona apenas Estados e Distrito Federal; a organização das procuradorias municipais não decorre desse dispositivo específico.`},
+{id:127, tema:TEMAS[8], enunciado:`A consultoria e o assessoramento jurídico do Poder Executivo da União competem à Advocacia-Geral da União, e não ao Ministério Público Federal.`, resposta:'C', artigo:'Art. 131, caput c/c art. 129, IX, CF', comentario:`Certo. É a distinção central entre as funções essenciais à Justiça: ao MP é vedada a consultoria jurídica de entes públicos, atribuição típica da AGU.`},
+{id:128, tema:TEMAS[8], enunciado:`Compete à Procuradoria-Geral da Fazenda Nacional a representação judicial da União em todas as causas fiscais, inclusive as não tributárias, com exclusividade sobre a AGU.`, resposta:'E', artigo:'Art. 131, § 3º, CF', comentario:`Errado. A atribuição específica da PGFN é a cobrança da dívida ativa de natureza tributária; as demais causas, inclusive fiscais não tributárias, permanecem no âmbito geral de representação da AGU.`},
+{id:129, tema:TEMAS[8], enunciado:`Lei complementar organizará a Advocacia-Geral da União, disciplinando a forma de ingresso na carreira, os cargos e a competência do Advogado-Geral da União.`, resposta:'C', artigo:'LC 73/1993', comentario:`Certo. A LC 73/1993 é a lei orgânica da AGU, cuidando de sua estrutura, chefia e atribuições.`},
+
+{id:130, tema:TEMAS[9], enunciado:`O advogado é indispensável à administração da justiça, sendo inviolável por seus atos e manifestações no exercício da profissão, nos limites da lei.`, resposta:'C', artigo:'Art. 133, CF', comentario:`Certo. É a redação literal do art. 133, associando a indispensabilidade do advogado à inviolabilidade, sempre nos limites legais.`},
+{id:131, tema:TEMAS[9], enunciado:`A inviolabilidade do advogado, por seus atos e manifestações, é absoluta, autorizando qualquer manifestação em qualquer contexto processual ou extraprocessual, sem qualquer limite legal.`, resposta:'E', artigo:'Art. 133, CF', comentario:`Errado. A própria Constituição condiciona a inviolabilidade aos limites da lei; não se trata de garantia absoluta.`},
+{id:132, tema:TEMAS[9], enunciado:`Em todo e qualquer ato processual, mesmo nas hipóteses expressamente previstas em lei, é indispensável a presença de advogado, não se admitindo capacidade postulatória própria da parte.`, resposta:'E', artigo:'Estatuto da Advocacia — Lei 8.906/1994', comentario:`Errado. Há hipóteses legais de atuação sem advogado (por exemplo, em causas de menor valor nos Juizados Especiais e no habeas corpus), o que afasta a indispensabilidade absoluta.`},
+{id:133, tema:TEMAS[9], enunciado:`As prerrogativas profissionais do advogado, tais como a inviolabilidade de seu escritório e de seus instrumentos de trabalho, decorrem da garantia constitucional de indispensabilidade à administração da justiça, disciplinadas nos termos da lei.`, resposta:'C', artigo:'Art. 133, CF c/c Lei 8.906/1994', comentario:`Certo. As prerrogativas profissionais concretizam, em nível legal, a garantia constitucional de indispensabilidade do advogado.`},
+{id:134, tema:TEMAS[9], enunciado:`O exercício da advocacia é incompatível, em qualquer hipótese, com o exercício de cargo público, ainda que em comissão.`, resposta:'E', artigo:'Lei 8.906/1994, arts. 27–30', comentario:`Errado. O Estatuto da Advocacia disciplina hipóteses específicas de incompatibilidade e impedimento, não havendo incompatibilidade absoluta em qualquer situação.`},
+{id:135, tema:TEMAS[9], enunciado:`A Lei nº 8.906/1994, Estatuto da Advocacia, disciplina as atividades privativas de advocacia, os direitos do advogado, bem como as hipóteses de incompatibilidade e impedimento para o exercício da profissão.`, resposta:'C', artigo:'Lei 8.906/1994', comentario:`Certo. É o objeto central da Lei 8.906/1994.`},
+
+{id:136, tema:TEMAS[10], enunciado:`A Defensoria Pública é instituição permanente, essencial à função jurisdicional do Estado, incumbindo-lhe, como expressão e instrumento do regime democrático, a orientação jurídica, a promoção dos direitos humanos e a defesa, em todos os graus, judicial e extrajudicial, dos direitos individuais e coletivos, de forma integral e gratuita, aos necessitados.`, resposta:'C', artigo:'Art. 134, caput, CF', comentario:`Certo. É a definição constitucional da Defensoria Pública.`},
+{id:137, tema:TEMAS[10], enunciado:`À Defensoria Pública são asseguradas autonomia funcional e administrativa e a iniciativa de sua proposta orçamentária dentro dos limites estabelecidos na lei de diretrizes orçamentárias.`, resposta:'C', artigo:'Art. 134, §§ 2º e 3º, CF', comentario:`Certo. É o mesmo padrão de autonomia funcional, administrativa e orçamentária reconhecido a outras funções essenciais à Justiça.`},
+{id:138, tema:TEMAS[10], enunciado:`Aplica-se à Defensoria Pública, no que couber, o disposto no art. 93 da Constituição, quanto ao ingresso na carreira e demais garantias, bem como o previsto no art. 96, II, relativamente à iniciativa de lei.`, resposta:'C', artigo:'Art. 134, § 4º, CF', comentario:`Certo. A Constituição determina expressamente essa aplicação subsidiária dos arts. 93 e 96, II, à Defensoria Pública.`},
+{id:139, tema:TEMAS[10], enunciado:`São princípios institucionais da Defensoria Pública a unidade, a indivisibilidade e a independência funcional.`, resposta:'C', artigo:'Art. 134, § 4º, CF', comentario:`Certo. São os mesmos princípios institucionais consagrados para o Ministério Público, aplicados também à Defensoria.`},
+{id:140, tema:TEMAS[10], enunciado:`É vedado ao membro da Defensoria Pública o exercício da advocacia fora das atribuições institucionais.`, resposta:'C', artigo:'Art. 134, § 1º, CF', comentario:`Certo. É vedação expressa análoga à imposta aos membros do Ministério Público.`},
+{id:141, tema:TEMAS[10], enunciado:`A autonomia funcional e administrativa prevista para as Defensorias Públicas estaduais não se estende à Defensoria Pública da União nem à do Distrito Federal.`, resposta:'E', artigo:'Art. 134, § 3º, CF', comentario:`Errado. A autonomia funcional e administrativa das Defensorias estaduais estende-se expressamente à Defensoria Pública da União e à do Distrito Federal.`},
+{id:142, tema:TEMAS[10], enunciado:`O ingresso na carreira da Defensoria Pública depende de concurso público de provas e títulos, assegurada a participação da Ordem dos Advogados do Brasil em todas as suas fases.`, resposta:'C', artigo:'LC 80/1994 c/c art. 134, § 4º, CF', comentario:`Certo. Segue a mesma lógica de ingresso das demais carreiras jurídicas essenciais à Justiça.`},
+{id:143, tema:TEMAS[10], enunciado:`É garantida aos membros da Defensoria Pública a inamovibilidade, no exercício de suas funções.`, resposta:'C', artigo:'Art. 134, § 1º, CF', comentario:`Certo. A inamovibilidade é uma das garantias expressamente atribuídas aos membros da Defensoria Pública.`},
+{id:144, tema:TEMAS[10], enunciado:`A Defensoria Pública tem atuação restrita à esfera judicial, não lhe competindo atuação extrajudicial de orientação jurídica.`, resposta:'E', artigo:'Art. 134, caput, CF', comentario:`Errado. A atuação da Defensoria Pública é judicial e extrajudicial, abrangendo expressamente a orientação jurídica e a promoção dos direitos humanos.`},
+{id:145, tema:TEMAS[10], enunciado:`A Lei Complementar nº 80/1994 organiza a Defensoria Pública da União, do Distrito Federal e dos Territórios, e prescreve normas gerais para sua organização nos Estados.`, resposta:'C', artigo:'LC 80/1994', comentario:`Certo. É esse o objeto e o alcance da LC 80/1994.`},
+
+{id:146, tema:TEMAS[11], enunciado:`Segundo a Súmula Vinculante nº 10 do STF, viola a cláusula de reserva de plenário a decisão de órgão fracionário de tribunal que, embora não declare expressamente a inconstitucionalidade de lei ou ato normativo do Poder Público, afasta sua incidência, no todo ou em parte.`, resposta:'C', artigo:'Súmula Vinculante 10/STF', comentario:`Certo. É exatamente o teor da SV 10: a violação da reserva de plenário pode ocorrer mesmo sem declaração expressa de inconstitucionalidade.`},
+{id:147, tema:TEMAS[11], enunciado:`A Súmula Vinculante nº 13 do STF veda a nomeação de cônjuge, companheiro ou parente em linha reta, colateral ou por afinidade, até o terceiro grau, para cargo em comissão ou função de confiança, inclusive quando se tratar de designações recíprocas, ressalvados os cargos de natureza política.`, resposta:'C', artigo:'Súmula Vinculante 13/STF', comentario:`Certo. É o enunciado da chamada "Súmula do Nepotismo", com a ressalva expressa dos cargos de natureza política.`},
+{id:148, tema:TEMAS[11], enunciado:`Conforme a Súmula Vinculante nº 37, o Poder Judiciário, no exercício de sua função jurisdicional, pode conceder aumento de remuneração a servidores públicos sob o fundamento de isonomia, em substituição à atuação do Poder Legislativo.`, resposta:'E', artigo:'Súmula Vinculante 37/STF', comentario:`Errado. A SV 37 dispõe justamente o contrário: não cabe ao Poder Judiciário, em atuação como legislador positivo, conceder aumento de remuneração a servidores públicos sob fundamento de isonomia.`},
+{id:149, tema:TEMAS[11], enunciado:`Nos termos da Súmula Vinculante nº 45, compete ao tribunal do júri o julgamento dos crimes dolosos contra a vida praticados por autoridade cujo foro por prerrogativa de função seja fixado exclusivamente por Constituição estadual.`, resposta:'C', artigo:'Súmula Vinculante 45/STF', comentario:`Certo. Prevalece a competência do júri sobre o foro criado exclusivamente por norma estadual, e não por norma da própria Constituição Federal.`},
+{id:150, tema:TEMAS[11], enunciado:`A Súmula Vinculante nº 5 do STF estabelece que a falta de defesa técnica por advogado no processo administrativo disciplinar ofende, por si só, a Constituição.`, resposta:'E', artigo:'Súmula Vinculante 5/STF', comentario:`Errado. A SV 5 dispõe o inverso: a ausência de defesa técnica por advogado no PAD não ofende, por si só, a Constituição.`},
+{id:151, tema:TEMAS[11], enunciado:`Conforme a Súmula Vinculante nº 14, é direito do defensor, no interesse do representado, ter acesso amplo aos elementos de prova que, já documentados em procedimento investigatório realizado por órgão com competência de polícia judiciária, digam respeito ao exercício do direito de defesa.`, resposta:'C', artigo:'Súmula Vinculante 14/STF', comentario:`Certo. É o teor da SV 14, importante também para a atuação do Ministério Público como órgão investigante e controlador externo da atividade policial.`},
+{id:152, tema:TEMAS[11], enunciado:`A Súmula nº 234 do STJ dispõe que a participação de membro do Ministério Público na fase investigatória criminal implica seu automático impedimento ou suspeição para o oferecimento da denúncia.`, resposta:'E', artigo:'Súmula 234/STJ', comentario:`Errado. A Súmula 234/STJ dispõe exatamente o contrário: a participação na investigação criminal não torna, por si só, o membro do MP impedido ou suspeito para denunciar.`},
+{id:153, tema:TEMAS[11], enunciado:`Segundo a Súmula nº 594 do STJ, o Ministério Público tem legitimidade para ajuizar ação de alimentos em favor de criança ou adolescente, independentemente do exercício do poder familiar dos pais, das situações de risco descritas no Estatuto da Criança e do Adolescente ou da existência de Defensoria Pública na comarca.`, resposta:'C', artigo:'Súmula 594/STJ', comentario:`Certo. A legitimidade do MP nesses casos independe dessas condições, conforme fixado pela Súmula 594/STJ.`},
+{id:154, tema:TEMAS[11], enunciado:`A Súmula nº 601 do STJ reconhece a legitimidade do Ministério Público para promover ação civil pública em defesa de interesses dos consumidores, ainda que decorrentes da prestação de serviços públicos.`, resposta:'C', artigo:'Súmula 601/STJ', comentario:`Certo. A legitimidade do MP para a tutela coletiva dos consumidores alcança inclusive relações decorrentes de serviços públicos.`},
+{id:155, tema:TEMAS[11], enunciado:`A Súmula nº 421 do Superior Tribunal de Justiça, que vedava a condenação da Defensoria Pública em honorários advocatícios quando atuasse contra pessoa jurídica de direito público à qual pertença, permanece plenamente vigente e deve ser aplicada em todos os julgamentos atuais.`, resposta:'E', artigo:'Súmula 421/STJ (cancelada em 2024)', comentario:`Errado. A Súmula 421 foi cancelada em 2024, após o STF reconhecer, no Tema 1.002, o direito da Defensoria Pública aos honorários sucumbenciais mesmo quando vencer ente público ao qual pertença. Materiais que reproduzem a antiga vedação como entendimento vigente estão desatualizados.`}
+];
+
+/* ================= APP STATE ================= */
+const answers = {}; // id -> {userAnswer, correct}
+let queue = [];
+let queueIndex = 0;
+
+const $ = (id) => document.getElementById(id);
+
+function switchTab(name){
+  $('tab-praticar').classList.toggle('active', name==='praticar');
+  $('tab-revisar').classList.toggle('active', name==='revisar');
+  $('view-praticar').style.display = name==='praticar' ? 'block' : 'none';
+  $('view-revisar').style.display = name==='revisar' ? 'block' : 'none';
+  if(name==='revisar') renderReview();
+}
+
+function populateTemaSelects(){
+  const optsHtml = '<option value="Todos">Todos os temas</option>' +
+    TEMAS.map(t=>`<option value="${t}">${t}</option>`).join('');
+  $('filtro-tema-praticar').innerHTML = optsHtml;
+  $('filtro-tema-revisar').innerHTML = optsHtml;
+}
+
+function shuffle(arr){
+  const a = arr.slice();
+  for(let i=a.length-1;i>0;i--){
+    const j = Math.floor(Math.random()*(i+1));
+    [a[i],a[j]]=[a[j],a[i]];
+  }
+  return a;
+}
+
+function rebuildQueue(){
+  const tema = $('filtro-tema-praticar').value;
+  let ids = QUESTIONS.filter(q => tema==='Todos' || q.tema===tema).map(q=>q.id);
+  if($('chk-aleatorio').checked) ids = shuffle(ids);
+  queue = ids;
+  queueIndex = 0;
+  renderPractice();
+}
+
+function currentQuestion(){
+  if(queueIndex >= queue.length) return null;
+  return QUESTIONS.find(q=>q.id===queue[queueIndex]);
+}
+
+function renderPractice(){
+  const container = $('praticar-content');
+  const q = currentQuestion();
+  if(!q){
+    container.innerHTML = `<div class="fim-msg"><div class="num">Fim da lista</div>
+      <p>Você percorreu todas as questões deste filtro nesta sessão.</p>
+      <button class="btn" onclick="rebuildQueue()">Recomeçar este filtro</button></div>`;
+    return;
+  }
+  const existing = answers[q.id];
+  const answeredClass = existing ? (existing.correct ? 'answered certo' : 'answered errado') : '';
+  container.innerHTML = `
+    <div class="progress-line">
+      <span>Questão ${queueIndex+1} de ${queue.length}</span>
+      <span>${q.tema}</span>
+    </div>
+    <div class="qcard ${answeredClass}" id="qcard">
+      <span class="tema-pill">${q.artigo}</span>
+      <p class="enunciado">${q.enunciado}</p>
+      <div class="answer-buttons">
+        <button class="stamp-btn certo-btn" id="btn-certo" onclick="answerQuestion('C')" ${existing?'disabled':''}>Certo</button>
+        <button class="stamp-btn errado-btn" id="btn-errado" onclick="answerQuestion('E')" ${existing?'disabled':''}>Errado</button>
+      </div>
+      <div class="stamp ${existing? (existing.correct?'certo show':'errado show') : ''}" id="stamp">
+        ${existing ? (existing.correct?'CERTO':'ERRADO') : ''}
+      </div>
+      <div class="feedback ${existing?'show':''}" id="feedback">
+        ${existing ? feedbackHtml(q, existing) : ''}
+      </div>
+    </div>
+    <div class="nav-row">
+      <button class="btn secondary" onclick="prevQuestion()" ${queueIndex===0?'disabled':''}>&larr; Anterior</button>
+      <button class="btn" onclick="nextQuestion()">Próxima questão &rarr;</button>
+    </div>
+  `;
+}
+
+function feedbackHtml(q, rec){
+  const acertou = rec.correct;
+  return `
+    <div class="resultado ${acertou?'ok':'no'}">
+      ${acertou ? 'Você acertou.' : 'Você errou.'}
+      <span class="gabarito-badge ${q.resposta}">Gabarito: ${q.resposta==='C'?'Certo':'Errado'}</span>
+    </div>
+    <div class="artigo">${q.artigo}</div>
+    <div class="comentario">${q.comentario}</div>
+    <button class="refazer" onclick="refazer(${q.id})">Refazer esta questão</button>
+  `;
+}
+
+function answerQuestion(choice){
+  const q = currentQuestion();
+  if(!q || answers[q.id]) return;
+  const correct = choice === q.resposta;
+  answers[q.id] = {userAnswer:choice, correct};
+  renderPractice();
+  renderDashboard();
+}
+
+function refazer(id){
+  delete answers[id];
+  renderPractice();
+  renderDashboard();
+}
+
+function nextQuestion(){
+  if(queueIndex < queue.length) queueIndex++;
+  renderPractice();
+}
+function prevQuestion(){
+  if(queueIndex > 0) queueIndex--;
+  renderPractice();
+}
+
+/* ================= DASHBOARD ================= */
+function computeStats(){
+  const perTema = {};
+  TEMAS.forEach(t => perTema[t] = {respondidas:0, acertos:0, erros:0});
+  let totalRespondidas=0, totalAcertos=0, totalErros=0;
+  QUESTIONS.forEach(q=>{
+    const rec = answers[q.id];
+    if(!rec) return;
+    totalRespondidas++;
+    perTema[q.tema].respondidas++;
+    if(rec.correct){ totalAcertos++; perTema[q.tema].acertos++; }
+    else { totalErros++; perTema[q.tema].erros++; }
+  });
+  return {perTema, totalRespondidas, totalAcertos, totalErros};
+}
+
+function renderDashboard(){
+  const {perTema, totalRespondidas, totalAcertos, totalErros} = computeStats();
+  $('stat-respondidas').textContent = totalRespondidas;
+  $('stat-total-disp').textContent = 'de ' + QUESTIONS.length;
+  $('stat-acertos').textContent = totalAcertos;
+  $('stat-erros').textContent = totalErros;
+  $('stat-aproveitamento').textContent = totalRespondidas ? Math.round((totalAcertos/totalRespondidas)*100) + '%' : '—';
+
+  // tema mais crítico = maior número absoluto de erros (com pelo menos 1 erro)
+  let pior = null;
+  TEMAS.forEach(t=>{
+    const s = perTema[t];
+    if(s.erros > 0 && (!pior || s.erros > perTema[pior].erros)) pior = t;
+  });
+  $('stat-tema-critico').textContent = pior ? pior : '—';
+
+  const barsWrap = $('temas-bars-list');
+  if(totalRespondidas === 0){
+    barsWrap.innerHTML = '<div class="empty-hint">Responda algumas questões na aba Praticar para ver o desempenho por tema.</div>';
+  } else {
+    const temasComDados = TEMAS.filter(t=>perTema[t].respondidas>0)
+      .sort((a,b)=> perTema[b].erros - perTema[a].erros || perTema[b].respondidas - perTema[a].respondidas);
+    const maxResp = Math.max(...temasComDados.map(t=>perTema[t].respondidas), 1);
+    barsWrap.innerHTML = temasComDados.map(t=>{
+      const s = perTema[t];
+      const certoPct = (s.acertos/maxResp)*100;
+      const erradoPct = (s.erros/maxResp)*100;
+      return `<div class="tema-bar-row">
+        <div class="tname">${t}</div>
+        <div class="tema-bar-track">
+          <div class="tema-bar-certo" style="width:${certoPct}%"></div>
+          <div class="tema-bar-errado" style="width:${erradoPct}%"></div>
+        </div>
+        <div class="tema-bar-nums">${s.erros} erros / ${s.respondidas}</div>
+      </div>`;
+    }).join('');
+  }
+
+  if(pior){
+    $('foco-fraco').style.display = 'flex';
+    $('foco-fraco-nome').textContent = pior + ' (' + perTema[pior].erros + ' erro' + (perTema[pior].erros>1?'s':'') + ')';
+    $('btn-foco-fraco').onclick = () => {
+      $('filtro-tema-praticar').value = pior;
+      $('chk-aleatorio').checked = true;
+      rebuildQueue();
+      switchTab('praticar');
+      window.scrollTo({top:0, behavior:'smooth'});
+    };
+  } else {
+    $('foco-fraco').style.display = 'none';
+  }
+}
+
+/* ================= REVIEW VIEW ================= */
+function renderReview(){
+  const tema = $('filtro-tema-revisar').value;
+  const busca = $('busca-revisar').value.trim().toLowerCase();
+  const somenteErros = $('chk-somente-erros').checked;
+
+  let list = QUESTIONS.filter(q => tema==='Todos' || q.tema===tema);
+  if(busca){
+    list = list.filter(q =>
+      q.enunciado.toLowerCase().includes(busca) ||
+      q.artigo.toLowerCase().includes(busca) ||
+      q.comentario.toLowerCase().includes(busca)
+    );
+  }
+  if(somenteErros){
+    list = list.filter(q => answers[q.id] && !answers[q.id].correct);
+  }
+
+  $('review-count').textContent = list.length + ' questão(ões) encontrada(s)';
+
+  $('review-list').innerHTML = list.map(q=>{
+    const rec = answers[q.id];
+    const statusClass = rec ? (rec.correct ? 'status-ok' : 'status-no') : '';
+    return `<div class="review-item ${statusClass}">
+      <div class="top-row">
+        <span class="badge ${q.resposta}">${q.resposta}</span>
+        <div class="enun">${q.enunciado}</div>
+      </div>
+      <div class="meta-row">
+        <span class="tema-tag">${q.tema}</span>
+        <button class="toggle-coment" onclick="toggleComent(this)">Ver fundamentação</button>
+      </div>
+      <div class="coment-box">
+        <div class="art">${q.artigo}</div>
+        ${q.comentario}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function toggleComent(btn){
+  const box = btn.closest('.review-item').querySelector('.coment-box');
+  box.classList.toggle('show');
+  btn.textContent = box.classList.contains('show') ? 'Ocultar fundamentação' : 'Ver fundamentação';
+}
+
+/* ================= INIT ================= */
+function init(){
+  populateTemaSelects();
+  rebuildQueue();
+  renderDashboard();
+}
+init();
+</script>
+</body>
+</html>
