@@ -1,0 +1,1549 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#F1EADB" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#121821" media="(prefers-color-scheme: dark)">
+<title>Extinção do processo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,400..800&family=Literata:ital,opsz,wght@0,7..72,400..700;1,7..72,400..600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --fundo:#F1EADB;
+  --superficie:#FBF7EE;
+  --superficie-2:#F5EFE1;
+  --tinta:#231E17;
+  --tinta-suave:#5C5345;
+  --linha:#D8CDB8;
+  --sem:#854A00;
+  --sem-fundo:#F4DFB8;
+  --sem-traco:#A8701A;
+  --com:#27408B;
+  --com-fundo:#DEE3F3;
+  --com-traco:#5068B8;
+  --certo:#176443;
+  --certo-fundo:#DCEBD8;
+  --errado:#9E2F27;
+  --errado-fundo:#F4DCD3;
+  --foco:#1A56B8;
+  --titulo:"Archivo","Arial Narrow","Helvetica Neue",Arial,sans-serif;
+  --texto:"Literata",Georgia,"Times New Roman",serif;
+  --ui:"Archivo","Helvetica Neue",Arial,sans-serif;
+  --raio:6px;
+  color-scheme:light;
+  --linha-ctrl:#8C7D66;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme:dark; --linha-ctrl:#6B7889;
+    --fundo:#121821; --superficie:#1B232E; --superficie-2:#222C39; --tinta:#E8ECF1; --tinta-suave:#A7B2C0; --linha:#36414F;
+    --sem:#F0BE62; --sem-fundo:#3A2C10; --sem-traco:#B5842A;
+    --com:#A9BBF5; --com-fundo:#1E2A52; --com-traco:#5F78C8;
+    --certo:#6FD3A2; --certo-fundo:#133325; --errado:#F29A91; --errado-fundo:#3D1B18; --foco:#7FB2FF;
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme:dark; --linha-ctrl:#6B7889;
+  --fundo:#121821; --superficie:#1B232E; --superficie-2:#222C39; --tinta:#E8ECF1; --tinta-suave:#A7B2C0; --linha:#36414F;
+  --sem:#F0BE62; --sem-fundo:#3A2C10; --sem-traco:#B5842A;
+  --com:#A9BBF5; --com-fundo:#1E2A52; --com-traco:#5F78C8;
+  --certo:#6FD3A2; --certo-fundo:#133325; --errado:#F29A91; --errado-fundo:#3D1B18; --foco:#7FB2FF;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;scroll-padding-top:20px}
+@media (prefers-reduced-motion: reduce){html{scroll-behavior:auto} *{transition:none!important;animation:none!important}}
+body{margin:0;background:var(--fundo);color:var(--tinta);font-family:var(--texto);font-size:18px;line-height:1.65;-webkit-font-smoothing:antialiased}
+:focus-visible{outline:3px solid var(--foco);outline-offset:2px;border-radius:3px}
+a{color:var(--com)}
+button{font:inherit;color:inherit;cursor:pointer}
+
+/* estrutura */
+.pagina{display:grid;grid-template-columns:270px minmax(0,1fr);min-height:100vh}
+.lateral{position:sticky;top:0;align-self:start;height:100vh;overflow:auto;padding:28px 22px;border-right:1px solid var(--linha);font-family:var(--ui);font-size:15px;line-height:1.35}
+.lateral .marca{font-family:var(--titulo);font-stretch:70%;font-weight:800;font-size:27px;line-height:1.02;letter-spacing:-.01em;margin:0 0 4px}
+.lateral .sub{color:var(--tinta-suave);margin:0 0 22px;font-size:14px}
+.lateral nav a{display:block;padding:7px 10px;margin:0 -10px;border-radius:var(--raio);color:var(--tinta);text-decoration:none;border-left:3px solid transparent}
+.lateral nav a:hover{background:var(--superficie)}
+.lateral nav a[aria-current="true"]{background:var(--superficie);border-left-color:var(--tinta);font-weight:650}
+.lateral nav .grupo{margin:18px 0 6px;color:var(--tinta-suave);font-size:13px}
+.placar{margin-top:22px;padding-top:18px;border-top:1px solid var(--linha)}
+.placar p{margin:0 0 6px;color:var(--tinta-suave);font-size:14px}
+.placar strong{color:var(--tinta)}
+.barra{height:8px;background:var(--linha);border-radius:99px;overflow:hidden;margin:8px 0 12px}
+.barra i{display:block;height:100%;width:0;background:var(--certo);transition:width .3s}
+.tema-btn{margin-top:14px;background:none;border:1px solid var(--linha);border-radius:var(--raio);padding:6px 10px;font-family:var(--ui);font-size:14px}
+main{padding:0 clamp(18px,4.5vw,64px) 96px;min-width:0}
+section{padding-top:72px}
+section{max-width:46rem;margin-inline:auto;scroll-margin-top:20px}
+section > *{max-width:none}
+
+h1,h2,h3,h4{font-family:var(--titulo);line-height:1.08;margin:0}
+h1{font-stretch:66%;font-weight:800;font-size:clamp(46px,6.2vw,104px);letter-spacing:-.02em;line-height:.92}
+h2{font-stretch:72%;font-weight:800;font-size:clamp(32px,4.2vw,50px);letter-spacing:-.012em;margin-bottom:18px}
+h3{font-stretch:88%;font-weight:700;font-size:23px;margin:38px 0 10px}
+h4{font-stretch:95%;font-weight:700;font-size:18px;margin:22px 0 6px}
+p{margin:0 0 16px}
+ul,ol{margin:0 0 16px;padding-left:22px}
+li{margin-bottom:6px}
+.chamada{font-size:21px;line-height:1.5;color:var(--tinta-suave);max-width:58ch}
+.sem{color:var(--sem)} .com{color:var(--com)}
+.etq{display:inline-block;font-family:var(--ui);font-size:13.5px;font-weight:650;padding:2px 9px;border-radius:99px;line-height:1.5;white-space:nowrap}
+.etq.sem{background:var(--sem-fundo);color:var(--sem)}
+.etq.com{background:var(--com-fundo);color:var(--com)}
+.etq.neutra{background:var(--superficie-2);color:var(--tinta-suave);border:1px solid var(--linha)}
+
+/* letra da lei */
+blockquote.lei{margin:18px 0 22px;padding:16px 20px;background:var(--superficie);border-left:4px solid var(--tinta);border-radius:0 var(--raio) var(--raio) 0;font-size:17px;line-height:1.55}
+blockquote.lei.sem{border-left-color:var(--sem-traco);color:inherit}
+blockquote.lei.com{border-left-color:var(--com-traco);color:inherit}
+blockquote.lei p{margin:0 0 8px} blockquote.lei p:last-child{margin:0}
+blockquote.lei cite{display:block;font-family:var(--ui);font-style:normal;font-size:14px;color:var(--tinta-suave);margin-top:10px}
+
+/* notas */
+.nota{margin:20px 0;padding:14px 18px;border:1px solid var(--linha);border-radius:var(--raio);background:var(--superficie-2);font-size:16.5px;line-height:1.55}
+.nota > strong:first-child{font-family:var(--ui);display:block;margin-bottom:4px}
+.nota p:last-child{margin:0}
+details.prever{margin:20px 0;border:1px dashed var(--tinta-suave);border-radius:var(--raio);padding:0 18px;background:transparent}
+details.prever summary{font-family:var(--ui);font-weight:650;padding:14px 0;cursor:pointer;font-size:16.5px;line-height:1.4}
+details.prever[open] summary{border-bottom:1px dashed var(--linha);margin-bottom:12px}
+details.prever > div{padding-bottom:6px;font-size:17px}
+
+/* abertura */
+#inicio{padding-top:56px}
+#inicio .chamada{margin:22px 0 0}
+.trilho{margin:36px 0 0;max-width:1040px}
+.trilho svg{width:100%;height:auto;display:block}
+.trilho text{font-family:var(--ui);fill:var(--tinta)}
+.trilho .rot{font-size:18px;fill:var(--tinta-suave)}
+.trilho .fim{font-family:var(--titulo);font-stretch:72%;font-weight:800;font-size:34px}
+.trilho .ramo{fill:none;stroke-width:5;stroke-linecap:round;transition:stroke-width .25s,opacity .25s}
+.trilho .tronco{stroke:var(--tinta)}
+.trilho .r-sem{stroke:var(--sem-traco)} .trilho .r-com{stroke:var(--com-traco)}
+.trilho[data-ativo="sem"] .r-sem,.trilho[data-ativo="com"] .r-com{stroke-width:11}
+.trilho[data-ativo="sem"] .r-com,.trilho[data-ativo="com"] .r-sem{opacity:.3}
+.triagem{max-width:1040px;margin-top:8px;background:var(--superficie);border:1px solid var(--linha);border-radius:var(--raio);padding:clamp(18px,3vw,30px)}
+.triagem h3{margin:0 0 4px}
+.triagem .conta{font-family:var(--ui);font-size:14.5px;color:var(--tinta-suave);margin:0 0 16px}
+.triagem .caso{font-size:21px;line-height:1.45;min-height:3.2em;margin:0 0 20px;max-width:60ch}
+.escolhas{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.escolhas button{font-family:var(--ui);font-weight:650;font-size:17px;text-align:left;padding:15px 18px;border-radius:var(--raio);border:2px solid;line-height:1.3;transition:transform .08s}
+.escolhas button:active{transform:translateY(1px)}
+.escolhas .b-sem{background:var(--sem-fundo);border-color:var(--sem-traco);color:var(--sem)}
+.escolhas .b-com{background:var(--com-fundo);border-color:var(--com-traco);color:var(--com)}
+.escolhas button small{display:block;font-weight:450;font-size:14px;opacity:.9}
+.escolhas button[disabled]{cursor:default;opacity:.45}
+.escolhas button.marcada{opacity:1;box-shadow:0 0 0 3px var(--superficie),0 0 0 5px currentColor}
+.retorno{margin-top:18px;padding:14px 18px;border-radius:var(--raio);font-size:17px;line-height:1.5}
+.retorno.ok{background:var(--certo-fundo)} .retorno.no{background:var(--errado-fundo)}
+.retorno b{font-family:var(--ui)}
+.retorno.ok b{color:var(--certo)} .retorno.no b{color:var(--errado)}
+.acao{font-family:var(--ui);font-weight:650;font-size:16px;background:var(--tinta);color:var(--fundo);border:0;border-radius:var(--raio);padding:10px 18px;margin-top:16px}
+.acao.sec{background:none;color:var(--tinta);border:1px solid var(--tinta-suave)}
+
+/* incisos */
+.incisos{max-width:1040px;display:grid;gap:8px;margin:22px 0}
+.incisos details{background:var(--superficie);border:1px solid var(--linha);border-radius:var(--raio)}
+.incisos summary{display:grid;grid-template-columns:54px 1fr auto;gap:14px;align-items:center;padding:14px 18px;cursor:pointer;list-style:none;font-family:var(--ui)}
+.incisos summary::-webkit-details-marker{display:none}
+.incisos .num{font-family:var(--titulo);font-stretch:70%;font-weight:800;font-size:30px;line-height:1}
+.incisos .nome{font-weight:650;font-size:18px;line-height:1.3}
+.incisos details{min-width:0}
+.incisos summary > *{min-width:0}
+.incisos .sinais{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end;max-width:420px}
+.incisos .sinais .etq{white-space:normal;border-radius:12px;text-align:left}
+.incisos .corpo{padding:4px 18px 16px 86px;font-size:17px;max-width:none}
+.incisos .corpo p{max-width:68ch}
+.incisos .corpo .txt{font-style:italic;color:var(--tinta-suave)}
+.incisos details[open]{border-color:var(--tinta-suave)}
+.grupo-sem .num{color:var(--sem)} .grupo-com .num{color:var(--com)}
+
+/* tabelas */
+.rolagem{overflow-x:auto;max-width:1040px;margin:20px 0;border:1px solid var(--linha);border-radius:var(--raio);background:var(--superficie)}
+table{border-collapse:collapse;width:100%;font-size:16px;line-height:1.45;min-width:640px}
+th,td{padding:12px 16px;text-align:left;vertical-align:top;border-bottom:1px solid var(--linha)}
+tr:last-child td{border-bottom:0}
+thead th{font-family:var(--ui);font-weight:700;font-size:15px;background:var(--superficie-2)}
+tbody th{font-family:var(--ui);font-weight:650;width:22%}
+th.c-sem{color:var(--sem);border-top:4px solid var(--sem-traco)} th.c-com{color:var(--com);border-top:4px solid var(--com-traco)}
+
+/* jurisprudência */
+.julgados{max-width:1040px;display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:12px;margin:22px 0}
+.julgado{background:var(--superficie);border:1px solid var(--linha);border-radius:var(--raio);padding:16px 18px;font-size:16px;line-height:1.5}
+.julgado h4{margin:0 0 6px;font-size:18px}
+.julgado p{margin:0 0 8px}
+.julgado .ref{font-family:var(--ui);font-size:13.5px;color:var(--tinta-suave);margin:0}
+.julgado .ref a{color:inherit}
+
+/* flashcards */
+.baralho{max-width:720px}
+.carta{width:100%;min-height:230px;background:var(--superficie);border:1px solid var(--tinta-suave);border-radius:var(--raio);padding:26px 28px;text-align:left;display:flex;flex-direction:column;justify-content:center;font-family:var(--texto);font-size:21px;line-height:1.45}
+.carta .lado{font-family:var(--ui);font-size:14px;color:var(--tinta-suave);margin-bottom:10px}
+.carta[data-virada="1"]{background:var(--superficie-2);border-style:solid}
+.carta-acoes{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:14px;font-family:var(--ui);font-size:15px;color:var(--tinta-suave)}
+.carta-acoes .acao{margin-top:0}
+.carta-acoes .espaco{flex:1}
+
+/* questões */
+.filtros{max-width:1040px;display:flex;flex-wrap:wrap;gap:14px 22px;align-items:end;margin:20px 0 10px;font-family:var(--ui);font-size:15px}
+.filtros label{display:grid;gap:4px;color:var(--tinta-suave)}
+.filtros select{font:inherit;color:var(--tinta);background:var(--superficie);border:1px solid var(--linha);border-radius:var(--raio);padding:8px 10px;min-width:180px}
+.resumo-q{font-family:var(--ui);font-size:15px;color:var(--tinta-suave);margin:0 0 18px}
+.lista-q{max-width:860px;display:grid;gap:16px}
+.questao{background:var(--superficie);border:1px solid var(--linha);border-radius:var(--raio);padding:20px 22px}
+.questao header{display:flex;gap:8px;flex-wrap:wrap;align-items:center;font-family:var(--ui);font-size:14px;color:var(--tinta-suave);margin-bottom:10px}
+.questao header b{font-family:var(--titulo);font-stretch:72%;font-weight:800;font-size:22px;color:var(--tinta);margin-right:4px}
+.questao .enun{margin:0 0 14px;font-size:18px;line-height:1.55}
+.opcoes{display:grid;gap:8px}
+.opcoes.ce{grid-template-columns:1fr 1fr;max-width:340px}
+.opcoes button{font-family:var(--texto);font-size:17px;line-height:1.45;text-align:left;background:var(--superficie-2);border:1.5px solid var(--linha);border-radius:var(--raio);padding:10px 14px;display:grid;grid-template-columns:auto 1fr;gap:10px}
+.opcoes.ce button{font-family:var(--ui);font-weight:650;display:block;text-align:center}
+.opcoes button:hover:not([disabled]){border-color:var(--tinta-suave)}
+.opcoes button .letra{font-family:var(--ui);font-weight:700}
+.opcoes button[disabled]{cursor:default}
+.opcoes button.certa{background:var(--certo-fundo);border-color:var(--certo);color:var(--tinta)}
+.opcoes button.errada{background:var(--errado-fundo);border-color:var(--errado);color:var(--tinta)}
+.comentario{margin-top:14px;padding-top:14px;border-top:1px solid var(--linha);font-size:16.5px;line-height:1.55}
+.comentario .veredito{font-family:var(--ui);font-weight:700;margin:0 0 6px}
+.comentario .veredito.ok{color:var(--certo)} .comentario .veredito.no{color:var(--errado)}
+.comentario .fund{font-family:var(--ui);font-size:14px;color:var(--tinta-suave);margin:8px 0 0}
+.vazio{font-family:var(--ui);color:var(--tinta-suave);padding:24px;border:1px dashed var(--linha);border-radius:var(--raio)}
+
+.fontes li{font-size:16.5px;overflow-wrap:anywhere}
+footer{margin-top:72px;padding-top:20px;border-top:1px solid var(--linha);font-family:var(--ui);font-size:14px;color:var(--tinta-suave);max-width:70ch}
+
+/* ajustes gerais de interface */
+.pular{position:absolute;left:12px;top:-60px;background:var(--tinta);color:var(--fundo);padding:10px 14px;border-radius:var(--raio);font-family:var(--ui);font-weight:650;z-index:10;text-decoration:none}
+.pular:focus{top:12px}
+h1,h2,h3{text-wrap:balance}
+p,li{text-wrap:pretty}
+h3[id]{scroll-margin-top:24px}
+button,summary,select,a{touch-action:manipulation}
+.placar strong,.conta,.resumo-q,.fc-topo,.apoio{font-variant-numeric:tabular-nums}
+.acao{transition:filter .12s,background-color .12s}
+.acao:hover{filter:brightness(1.18)}
+.acao.sec:hover{filter:none;background:var(--superficie)}
+.tema-btn:hover{background:var(--superficie)}
+.escolhas button:hover:not([disabled]){filter:brightness(.97);box-shadow:0 0 0 2px currentColor inset}
+.incisos summary:hover .nome{text-decoration:underline;text-underline-offset:3px}
+details.prever summary:hover{text-decoration:underline;text-underline-offset:3px}
+.comentario:focus{outline:none}
+.comentario:focus-visible{outline:3px solid var(--foco);outline-offset:6px;border-radius:3px}
+.trilho .rot{font-size:21px} .trilho .fim{font-size:38px}
+.triagem h2{font-stretch:88%;font-weight:700;font-size:23px;letter-spacing:0;margin:0 0 4px}
+.julgado h3{margin:0 0 6px;font-size:18px}
+.lista-q{max-width:none;grid-template-columns:minmax(0,1fr)}
+.incisos .corpo p,.incisos .corpo ul{max-width:none}
+
+.julgados{grid-template-columns:minmax(0,1fr)}
+.opcoes button,.filtros select{border-color:var(--linha-ctrl)}
+.carta{border-color:var(--linha-ctrl)}
+.trilho{max-width:620px}
+.trilho-legenda{list-style:none;padding:0;margin:10px 0 0;font-family:var(--ui);font-size:15.5px;line-height:1.45;color:var(--tinta-suave)}
+.trilho-legenda li{margin:0 0 4px}
+.trilho-legenda b{font-weight:700;margin-right:6px}
+.incisos summary{grid-template-columns:54px 1fr}
+.incisos .sinais{grid-column:2;justify-content:flex-start;max-width:none}
+#q-reset{margin-left:auto}
+.opcoes button.certa .letra::after{content:" \2713"}
+.opcoes button.errada .letra::after{content:" \2717"}
+.opcoes.ce button.certa::after{content:" \2713"}
+.opcoes.ce button.errada::after{content:" \2717"}
+.rolagem:focus-visible{outline:3px solid var(--foco);outline-offset:2px}
+.apoio .bloco[hidden] + .bloco{margin-top:0;padding-top:0;border-top:0}
+
+/* flashcards */
+.baralho{max-width:none}
+.fc-topo{display:grid;grid-template-columns:auto 1fr auto;gap:14px;align-items:center;font-family:var(--ui);font-size:14.5px;color:var(--tinta-suave);margin:22px 0 12px}
+.fc-topo .barra{margin:0}
+.carta{position:relative;width:100%;min-height:290px;display:grid;grid-template-columns:minmax(0,1fr);grid-template-rows:auto 1fr auto;justify-items:start;gap:18px;text-align:left;padding:22px 28px 20px 34px;border:1px solid var(--linha);border-radius:14px;background:var(--superficie);box-shadow:0 1px 0 var(--linha),0 18px 30px -24px rgba(35,30,23,.45);font-family:var(--texto);overflow:hidden;transition:box-shadow .15s,border-color .15s}
+.carta::before{content:"";position:absolute;inset:0 auto 0 0;width:8px;background:var(--tinta-suave)}
+.carta[data-virada="1"]{background:var(--superficie-2);border-color:var(--tinta-suave);border-style:solid}
+.carta[data-virada="1"]::before{background:var(--tinta)}
+.carta:hover{border-color:var(--tinta-suave)}
+.carta .lado{font-family:var(--ui);font-size:13.5px;font-weight:700;margin:0;color:var(--tinta-suave)}
+.carta[data-virada="1"] .lado{color:var(--tinta)}
+.carta .texto{align-self:center;font-size:clamp(20px,1.1vw + 14px,26px);line-height:1.4;max-width:34ch;color:var(--tinta)}
+.carta[data-virada="1"] .texto{font-size:clamp(18px,.6vw + 14px,21px);max-width:60ch;line-height:1.5}
+.carta .dica{font-family:var(--ui);font-size:13.5px;color:var(--tinta-suave)}
+.carta-acoes{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
+.carta-acoes .acao{margin-top:0;padding:13px 18px;font-size:17px}
+.fc-rodape{display:flex;justify-content:flex-end;margin-top:10px}
+.botao-texto{background:none;border:0;padding:6px 2px;font-family:var(--ui);font-size:14.5px;color:var(--tinta-suave);text-decoration:underline;text-underline-offset:3px}
+.botao-texto:hover{color:var(--tinta)}
+
+/* coluna de apoio à direita (só em telas largas) */
+.apoio{display:none}
+@media (min-width: 1500px){
+  body{font-size:20px}
+  .pagina{grid-template-columns:290px minmax(0,1fr) 320px}
+  section{max-width:47rem}
+  .nota,.julgado{font-size:.86em}
+  blockquote.lei,.incisos .corpo,details.prever > div{font-size:.9em}
+  .questao .enun{font-size:1em}
+  .apoio{display:block;position:sticky;top:0;align-self:start;height:100vh;overflow:auto;padding:30px 24px;border-left:1px solid var(--linha);font-family:var(--ui);font-size:14.5px;line-height:1.4}
+  .apoio h2{font-stretch:95%;font-weight:700;font-size:15px;letter-spacing:0;margin:0 0 10px;color:var(--tinta)}
+  .apoio .bloco + .bloco{margin-top:26px;padding-top:22px;border-top:1px solid var(--linha)}
+  .apoio ol{list-style:none;margin:0;padding:0}
+  .apoio li{margin:0}
+  .apoio a{display:block;padding:6px 10px;margin:0 -10px;border-radius:var(--raio);color:var(--tinta-suave);text-decoration:none}
+  .apoio a:hover{background:var(--superficie);color:var(--tinta)}
+  .tema-linha{display:grid;grid-template-columns:1fr auto;gap:2px 10px;margin-bottom:11px;color:var(--tinta-suave)}
+  .tema-linha b{font-weight:650;color:var(--tinta)}
+  .tema-linha .barra{grid-column:1 / -1;height:5px;margin:0}
+  .tema-linha button{all:unset;cursor:pointer;color:var(--tinta);font-weight:650}
+  .tema-linha button:hover{text-decoration:underline;text-underline-offset:3px}
+  .tema-linha button:focus-visible{outline:3px solid var(--foco);outline-offset:2px;border-radius:3px}
+}
+@media (max-width: 900px){
+  .tema-btn,.filtros select,.botao-texto,.lateral nav a{min-height:44px}
+  .lateral nav a{display:flex;align-items:center}
+  .tema-btn{padding:10px 14px}
+  #q-reset{margin-left:0}
+  body{font-size:17px}
+  .pagina{display:block}
+  .lateral{position:static;height:auto;border-right:0;border-bottom:1px solid var(--linha);padding:18px 16px}
+  .lateral nav{display:flex;gap:4px;overflow-x:auto;padding-bottom:6px}
+  .lateral nav a{white-space:nowrap;margin:0;border-left:0;border-bottom:3px solid transparent}
+  .lateral nav a[aria-current="true"]{border-bottom-color:var(--tinta)}
+  .lateral nav .grupo{display:none}
+  .lateral .sub{margin-bottom:12px}
+  .placar{margin-top:10px;padding-top:10px}
+  main{padding:0 16px 72px}
+  section{padding-top:52px}
+  .escolhas{grid-template-columns:1fr}
+  .incisos summary{grid-template-columns:40px 1fr}
+  .incisos .sinais{grid-column:2;justify-content:flex-start}
+  .incisos .corpo{padding-left:18px}
+}
+@media print{
+  .lateral,.apoio,.pular,.triagem,.trilho,.filtros,.tema-btn,.carta-acoes,.fc-topo,.fc-rodape{display:none}
+  .pagina{display:block} body{background:#fff;font-size:12pt}
+}
+</style>
+</head>
+<body>
+<a class="pular" href="#conteudo">Pular para o conteúdo</a>
+<div class="pagina">
+<aside class="lateral">
+  <p class="marca">Extinção do processo</p>
+  <p class="sub">e sentença. Processo civil brasileiro, CPC/2015</p>
+  <nav aria-label="Seções">
+    <a href="#inicio">Triagem inicial</a>
+    <div class="grupo">Extinção do processo</div>
+    <a href="#panorama">Panorama</a>
+    <a href="#art485">Sem mérito: art. 485</a>
+    <a href="#art487">Com mérito: art. 487</a>
+    <a href="#classificacao">Classificação das sentenças</a>
+    <a href="#repropositura">Propor de novo</a>
+    <a href="#primazia">Primazia do mérito</a>
+    <a href="#recursos">Recursos</a>
+    <a href="#comparativo">Quadro comparativo</a>
+    <div class="grupo">A sentença</div>
+    <a href="#estrutura">Estrutura e fundamentação</a>
+    <a href="#congruencia">Limites: congruência</a>
+    <a href="#efeitos">Efeitos, hipoteca e remessa</a>
+    <div class="grupo">Apoio</div>
+    <a href="#jurisprudencia">Jurisprudência</a>
+    <div class="grupo">Prática</div>
+    <a href="#flashcards">Flashcards</a>
+    <a href="#questoes">Questões</a>
+    <a href="#fontes">Fontes</a>
+  </nav>
+  <div class="placar">
+    <p>Questões: <strong id="pl-resp">0</strong> de <strong id="pl-total">0</strong> respondidas</p>
+    <div class="barra" aria-hidden="true"><i id="pl-barra"></i></div>
+    <p>Acertos: <strong id="pl-acertos">0</strong> <span id="pl-pct"></span></p>
+    <p>Flashcards dominados: <strong id="pl-cartas">0</strong> de <strong id="pl-cartas-total">0</strong></p>
+    <button class="tema-btn" id="tema-btn" type="button">Alternar tema claro/escuro</button>
+  </div>
+</aside>
+
+<main id="conteudo">
+
+<!-- ============ ABERTURA ============ -->
+<section id="inicio">
+  <h1>Todo processo acaba. A&nbsp;pergunta é como.</h1>
+  <p class="chamada">O CPC conhece dois finais. No art. 485, o juiz encerra o processo sem dizer quem tem razão. No art. 487, ele diz. Quase tudo neste tema decorre de saber em qual dos dois trilhos uma situação cai.</p>
+
+  <div class="trilho largo" id="trilho" data-ativo="">
+    <svg viewBox="0 0 780 250" role="img" aria-label="Diagrama: o processo segue por um tronco e se divide em dois finais, art. 485 sem resolução de mérito e art. 487 com resolução de mérito">
+      <path class="ramo tronco" d="M20 125 H330"/>
+      <path class="ramo r-sem" d="M330 125 C420 125 420 55 510 55 H580"/>
+      <path class="ramo r-com" d="M330 125 C420 125 420 195 510 195 H580"/>
+      <circle cx="20" cy="125" r="9" style="fill:var(--tinta)"/>
+      <text class="rot" x="12" y="96">petição inicial</text>
+      <text class="fim" x="600" y="68" style="fill:var(--sem)">Art. 485</text>
+      <text class="fim" x="600" y="208" style="fill:var(--com)">Art. 487</text>
+    </svg>
+  </div>
+  <ul class="trilho-legenda">
+    <li><b class="sem">Art. 485</b> sem resolução de mérito: em regra, dá para propor de novo</li>
+    <li><b class="com">Art. 487</b> com resolução de mérito: a questão fica decidida</li>
+  </ul>
+
+  <div class="triagem largo" id="triagem">
+    <h2>Antes de estudar, teste sua intuição</h2>
+    <p class="conta" id="tri-conta"></p>
+    <p class="caso" id="tri-caso"></p>
+    <div class="escolhas">
+      <button type="button" class="b-sem" data-r="sem">Sem resolução de mérito<small>art. 485</small></button>
+      <button type="button" class="b-com" data-r="com">Com resolução de mérito<small>art. 487</small></button>
+    </div>
+    <div id="tri-retorno" aria-live="polite"></div>
+    <button type="button" class="acao" id="tri-prox" hidden>Próxima situação</button>
+  </div>
+</section>
+
+<!-- ============ PANORAMA ============ -->
+<section id="panorama">
+  <h2>Panorama</h2>
+  <div class="nota"><strong>Alinhado aos slides da disciplina</strong><p>Este material segue os três módulos dos slides “Extinção do processo e sentença” (Processo Civil de Conhecimento, UEL), que têm como livro-base o Curso de Direito Processual Civil de Humberto Theodoro Júnior: extinção e sentença terminativa, sentença definitiva e primazia do mérito, e estrutura, limites e efeitos da sentença. Os trechos marcados com “Na aula” trazem pontos que o professor destaca.</p></div>
+  <p>O ponto de partida da aula é que o juiz deve julgar. O pedido regularmente deduzido tem direito a uma resposta, ainda que de improcedência, e a dúvida sobre os fatos não autoriza o juiz a deixar de decidir: sem prova, decide-se pelas regras do ônus da prova (art. 373). O mérito só fica sem resposta nas hipóteses do art. 485.</p>
+  <p>O processo nasce por iniciativa da parte e se desenvolve por impulso oficial (CPC, art. 2º). Ele termina por um ato específico do juiz:</p>
+  <blockquote class="lei"><p>Art. 316. A extinção do processo dar-se-á por sentença.</p><cite>CPC, art. 316</cite></blockquote>
+  <p>O próprio Código define sentença a partir desses dois artigos: ressalvadas as disposições expressas dos procedimentos especiais, é o pronunciamento por meio do qual o juiz, com fundamento nos arts. 485 e 487, põe fim à fase cognitiva do procedimento comum, bem como extingue a execução (art. 203, § 1º). Repare na expressão “fase cognitiva”: desde o processo sincrético, a sentença condenatória não encerra tudo, porque o cumprimento de sentença segue nos mesmos autos. Por isso parte da doutrina prefere dizer que o art. 487 trata de “resolução do mérito”, e não propriamente de extinção do processo. O CPC/2015 regula o tema em dois lugares: o título “Da extinção do processo” (arts. 316 e 317) e a seção “Disposições gerais” (arts. 485 a 488) do capítulo “Da sentença e da coisa julgada” (arts. 485 a 508). Nos arts. 485 e 487, usa os verbos “não resolverá” e “haverá resolução”.</p>
+
+  <h3>Dois tipos de sentença</h3>
+  <p>A sentença <span class="etq sem">terminativa</span> (art. 485) encerra o processo sem examinar o pedido, por vício ou obstáculo processual, por inércia das partes ou por desistência. A sentença <span class="etq com">definitiva</span> (art. 487) acolhe ou rejeita o pedido, decide sobre prescrição ou decadência, ou homologa ato de autocomposição.</p>
+  <p>A diferença prática está na estabilidade. Segundo a doutrina, a sentença terminativa transitada em julgado faz apenas <em>coisa julgada formal</em>: naquele processo a discussão acabou, mas o autor pode, em regra, propor a ação outra vez (art. 486). A sentença definitiva faz <em>coisa julgada material</em>, definida como “a autoridade que torna imutável e indiscutível a decisão de mérito não mais sujeita a recurso” (art. 502). Ressalvadas a ação rescisória (art. 966) e a revisão das relações de trato continuado (art. 505, I), a mesma demanda não poderá ser decidida de novo.</p>
+
+  <details class="prever">
+    <summary>Pense antes de abrir: se o juiz reconhece a prescrição logo no início, sem ouvir testemunhas nem analisar provas, isso é sentença terminativa ou definitiva?</summary>
+    <div><p>Definitiva. O critério não é o quanto o juiz trabalhou, e sim o que a lei classifica como mérito. Decidir sobre prescrição ou decadência é resolver o mérito (art. 487, II), e a sentença faz coisa julgada material. É uma das confusões mais cobradas em prova.</p></div>
+  </details>
+
+  <div class="nota"><strong>Na aula: vocabulário e dois avisos</strong><p>O professor usa “condições da ação” para legitimidade e interesse, e “carência de ação” para a falta delas. Também separa heterocomposição (o juiz decide: art. 487, I e II) de autocomposição homologada (as partes resolvem: art. 487, III).</p><p>Segundo o livro-base, a sentença, sozinha, não encerra a relação processual: isso só ocorre com a coisa julgada formal, quando se esgotam os recursos. E, se a sentença for condenatória, o processo ainda prossegue no cumprimento de sentença.</p></div>
+  <h3>Em que momento a sentença terminativa pode vir</h3>
+  <ul>
+    <li>Logo após a propositura: indeferimento da petição inicial (arts. 330 e 485, I).</li>
+    <li>No julgamento conforme o estado do processo: acolhimento de preliminar do art. 485 (art. 354).</li>
+    <li>Ao final do procedimento: sentença depois da instrução.</li>
+    <li>No curso do processo: abandono (art. 485, III, §§ 1º e 6º), desistência (até a sentença, § 5º), convenção de arbitragem (alegada na contestação, ou superveniente) e, em qualquer tempo e grau de jurisdição, as matérias do § 3º (incisos IV, V, VI e IX).</li>
+  </ul>
+  <div class="nota"><strong>Extinção parcial</strong><p>Nem toda decisão baseada nos arts. 485 e 487 encerra o processo inteiro. Se ela atinge apenas parte do processo (um dos pedidos, um dos litisconsortes), é decisão interlocutória, não sentença, e o recurso cabível é o agravo de instrumento: art. 354, parágrafo único, para as hipóteses do art. 485 e do art. 487, II e III; art. 356, § 5º, para o julgamento antecipado parcial do pedido. Veja a seção Recursos.</p></div>
+</section>
+
+<!-- ============ ART. 485 ============ -->
+<section id="art485">
+  <h2>Sem resolução de mérito: art. 485</h2>
+  <p>O caput diz que “o juiz não resolverá o mérito quando” ocorrer uma das dez hipóteses abaixo. Abra cada inciso para ver o que ele significa, um exemplo e os detalhes que costumam ser cobrados. As etiquetas resumem quem provoca a extinção e como fica a repropositura (art. 486). O regime de conhecimento de ofício “em qualquer tempo e grau de jurisdição” (§ 3º) vale só para os incisos IV, V, VI e IX.</p>
+  <div class="incisos grupo-sem largo" id="lista-485"></div>
+
+  <h3>Os parágrafos do art. 485</h3>
+  <blockquote class="lei sem">
+    <p>§ 1º Nas hipóteses descritas nos incisos II e III, a parte será intimada pessoalmente para suprir a falta no prazo de 5 (cinco) dias.</p>
+    <p>§ 2º No caso do § 1º, quanto ao inciso II, as partes pagarão proporcionalmente as custas, e, quanto ao inciso III, o autor será condenado ao pagamento das despesas e dos honorários de advogado.</p>
+    <p>§ 3º O juiz conhecerá de ofício da matéria constante dos incisos IV, V, VI e IX, em qualquer tempo e grau de jurisdição, enquanto não ocorrer o trânsito em julgado.</p>
+    <p>§ 4º Oferecida a contestação, o autor não poderá, sem o consentimento do réu, desistir da ação.</p>
+    <p>§ 5º A desistência da ação pode ser apresentada até a sentença.</p>
+    <p>§ 6º Oferecida a contestação, a extinção do processo por abandono da causa pelo autor depende de requerimento do réu.</p>
+    <p>§ 7º Interposta a apelação em qualquer dos casos de que tratam os incisos deste artigo, o juiz terá 5 (cinco) dias para retratar-se.</p>
+    <cite>CPC, art. 485, §§ 1º a 7º</cite>
+  </blockquote>
+
+  <h4>Como ler esses parágrafos</h4>
+  <ul>
+    <li><strong>Inércia (§§ 1º, 2º e 6º).</strong> Processo parado por culpa das partes (inciso II) ou abandonado pelo autor (inciso III) só pode ser extinto depois de intimação <em>pessoal</em> da parte, com cinco dias para agir. Intimar apenas o advogado não basta. Se o réu já contestou, a extinção por abandono depende ainda de requerimento dele: o réu pode preferir uma sentença de mérito que o livre de vez da demanda.</li>
+    <li><strong>Matérias de ordem pública (§ 3º).</strong> Pressupostos processuais (IV), perempção, litispendência e coisa julgada (V), legitimidade e interesse (VI) e intransmissibilidade (IX) podem ser conhecidos de ofício, em qualquer tempo e grau de jurisdição, até o trânsito em julgado. Nos recursos especial e extraordinário, a jurisprudência dos tribunais superiores exige, em regra, prequestionamento também para essas matérias. Mesmo assim, o juiz deve ouvir as partes antes de decidir (arts. 9º e 10): poder conhecer de ofício não dispensa o contraditório.</li>
+    <li><strong>Desistência (§§ 4º e 5º).</strong> Até a contestação, o autor desiste sozinho. Depois dela, precisa do consentimento do réu. Em qualquer caso, só pode desistir até a sentença, e a desistência só produz efeitos depois de homologada pelo juiz (art. 200, parágrafo único).</li>
+    <li><strong>Retratação (§ 7º).</strong> Em todas as hipóteses do art. 485, a apelação permite ao juiz voltar atrás em cinco dias. É exceção à regra de que, publicada a sentença, o juiz não a altera (art. 494).</li>
+  </ul>
+
+  <div class="nota"><strong>O que o juiz não pode reconhecer sem provocação</strong><p>Dependem de iniciativa da parte: a convenção de arbitragem (o réu precisa alegar na contestação, sob pena de se entender que aceitou a jurisdição estatal, art. 337, §§ 5º e 6º), a desistência (ato do autor) e, havendo contestação, o abandono (depende de requerimento do réu). Os incisos I e II, e o III antes da contestação, também não estão no § 3º, mas neles o juiz age por iniciativa própria; o que lhes falta é o regime de “qualquer tempo e grau de jurisdição”.</p></div>
+
+  <h3>Desistir da ação, renunciar à pretensão ou desistir do recurso</h3>
+  <p>Quadro usado em aula. São três atos diferentes, com efeitos diferentes.</p>
+  <div class="rolagem largo" tabindex="0" role="region" aria-label="Tabela; role para os lados se necessário">
+    <table>
+      <thead><tr><th></th><th>Desistência da ação</th><th>Renúncia à pretensão</th><th>Desistência do recurso</th></tr></thead>
+      <tbody>
+        <tr><th>Dispositivo</th><td>Art. 485, VIII</td><td>Art. 487, III, c</td><td>Art. 998</td></tr>
+        <tr><th>Atinge</th><td>O processo</td><td>O direito material afirmado</td><td>Apenas o recurso</td></tr>
+        <tr><th>Anuência da outra parte</th><td>Sim, depois de oferecida a contestação (§ 4º)</td><td>Não</td><td>Não (art. 998)</td></tr>
+        <tr><th>Até quando</th><td>Até a sentença (§ 5º)</td><td>Até o trânsito em julgado, inclusive em grau de recurso</td><td>A qualquer tempo, antes do julgamento do recurso</td></tr>
+        <tr><th>Resultado</th><td>Coisa julgada formal; nova ação possível</td><td>Coisa julgada material</td><td>Trânsito em julgado da decisão recorrida, se não houver outro recurso pendente</td></tr>
+        <tr><th>Poderes especiais do advogado</th><td>Sim (art. 105)</td><td>Sim (art. 105)</td><td>Sim (art. 105)</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>Legitimidade e interesse: o que mudou no CPC/2015</h3>
+  <p>O CPC/1973 falava em “condições da ação” e incluía entre elas a possibilidade jurídica do pedido. O CPC/2015 não usa mais a expressão e menciona apenas legitimidade e interesse: “para postular em juízo é necessário ter interesse e legitimidade” (art. 17). A impossibilidade jurídica do pedido deixou de ser hipótese autônoma de extinção sem mérito; a tendência doutrinária é tratá-la como questão de mérito (improcedência). Discute-se ainda se a categoria “condições da ação” subsiste: o Código simplesmente não a nomeia.</p>
+  <p>Para decidir se falta legitimidade ou interesse, a doutrina majoritária e o STJ adotam a <strong>teoria da asserção</strong>: o juiz verifica essas exigências à luz do que o autor afirma na petição inicial, tomando as afirmações como verdadeiras em tese. Se for preciso produzir prova para concluir que o autor não é titular do direito, a decisão já é de mérito, e o resultado é improcedência, não extinção pelo art. 485, VI.</p>
+</section>
+
+<!-- ============ ART. 487 ============ -->
+<section id="art487">
+  <h2>Com resolução de mérito: art. 487</h2>
+  <blockquote class="lei com">
+    <p>Art. 487. Haverá resolução de mérito quando o juiz:</p>
+    <p>I - acolher ou rejeitar o pedido formulado na ação ou na reconvenção;</p>
+    <p>II - decidir, de ofício ou a requerimento, sobre a ocorrência de decadência ou prescrição;</p>
+    <p>III - homologar: a) o reconhecimento da procedência do pedido formulado na ação ou na reconvenção; b) a transação; c) a renúncia à pretensão formulada na ação ou na reconvenção.</p>
+    <p>Parágrafo único. Ressalvada a hipótese do § 1º do art. 332, a prescrição e a decadência não serão reconhecidas sem que antes seja dada às partes oportunidade de manifestar-se.</p>
+    <cite>CPC, art. 487</cite>
+  </blockquote>
+  <div class="incisos grupo-com largo" id="lista-487"></div>
+
+  <h3>Julgamento e autocomposição</h3>
+  <p>Nos incisos I e II quem decide é o juiz: é a heterocomposição. No inciso I ele diz quem tem razão; no inciso II, decide se o tempo consumiu a pretensão ou o direito. No inciso III quem resolve o conflito são as próprias partes, e o juiz apenas homologa: é a autocomposição. Para o Código, lide e mérito são sinônimos. A lei trata os três grupos da mesma forma porque em todos o conflito fica resolvido de modo definitivo, com coisa julgada material. Há uma diferença no modo de atacar a decisão: os atos de disposição das partes homologados pelo juízo estão sujeitos à anulação, nos termos da lei (art. 966, § 4º), de modo que contra a autocomposição homologada a via é, em regra, a ação anulatória, e não a rescisória.</p>
+
+  <div class="nota"><strong>Na aula: julga-se o pedido, nunca “a ação”</strong><p>A praxe forense escreve “julgo improcedente a ação”. A linguagem do Código é outra: o juiz resolve o mérito acolhendo ou rejeitando, no todo ou em parte, os pedidos formulados pelas partes (arts. 487, I, e 490). Escreva “julgo improcedente o pedido”.</p></div>
+  <details class="prever">
+    <summary>Pense antes de abrir: o autor quer encerrar o processo. Qual a diferença entre ele desistir da ação e renunciar à pretensão?</summary>
+    <div>
+      <p><strong>Desistência</strong> é ato processual: o autor abre mão daquele processo, não do direito. A sentença é terminativa (art. 485, VIII), e ele pode propor a ação de novo. Por isso, depois da contestação, depende do consentimento do réu, que tem interesse em uma decisão definitiva.</p>
+      <p><strong>Renúncia</strong> é ato de disposição do próprio direito material. A sentença é de mérito (art. 487, III, c), faz coisa julgada material e impede nova ação. Como o resultado é o melhor possível para o réu, não depende da concordância dele.</p>
+    </div>
+  </details>
+
+  <h3>Prescrição e decadência: de ofício, mas com contraditório</h3>
+  <p>O juiz pode reconhecer prescrição e decadência sem pedido da parte, mas não sem ouvi-las. O parágrafo único do art. 487 concretiza a proibição de decisão-surpresa do art. 10. A única ressalva está no art. 332, § 1º: o juiz pode julgar liminarmente improcedente o pedido, antes mesmo de citar o réu, se verificar desde logo a ocorrência de decadência ou de prescrição.</p>
+  <p><strong>Na aula:</strong> o livro-base propõe ler essa ressalva em conjunto com os arts. 9º e 10: mesmo na improcedência liminar, o juiz suscitaria a questão e só decidiria depois de ouvir o autor. A razão de fundo é que a prescrição é renunciável pelo devedor (Código Civil, art. 191), o que torna o contraditório indispensável. É posição doutrinária; o texto do parágrafo único dispensa a oitiva nessa hipótese.</p>
+  <h3>Prescrição e decadência lado a lado</h3>
+  <div class="rolagem largo" tabindex="0" role="region" aria-label="Tabela; role para os lados se necessário">
+    <table>
+      <thead><tr><th></th><th>Prescrição</th><th>Decadência</th></tr></thead>
+      <tbody>
+        <tr><th>Atinge</th><td>A pretensão, que nasce da violação do direito (CC, art. 189)</td><td>O próprio direito potestativo, que nasce com prazo de eficácia</td></tr>
+        <tr><th>Ações típicas (critério doutrinário)</th><td>Condenatórias</td><td>Constitutivas com prazo fixado em lei</td></tr>
+        <tr><th>Impedimento, suspensão e interrupção</th><td>Sim (CC, arts. 197 a 204)</td><td>Em regra, não (CC, art. 207)</td></tr>
+        <tr><th>Renúncia</th><td>Possível, depois de consumada (CC, art. 191)</td><td>Nula, se o prazo for fixado em lei (CC, art. 209)</td></tr>
+        <tr><th>Conhecimento de ofício</th><td>Sim, com oitiva prévia das partes (CPC, art. 487, parágrafo único)</td><td>A legal, sim (CC, art. 210), também com oitiva prévia</td></tr>
+        <tr><th>Natureza da sentença</th><td>Mérito (art. 487, II)</td><td>Mérito (art. 487, II)</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>As ações declaratórias, segundo o livro-base, são imprescritíveis, mas perdem o interesse quando o direito que justificaria a tutela já se extinguiu.</p>
+  <div class="nota"><strong>Uma ressalva de direito material</strong><p>A decadência que o juiz conhece de ofício é a estabelecida por lei (Código Civil, art. 210). A decadência convencional precisa ser alegada pela parte a quem aproveita, e o juiz não pode suprir a alegação (Código Civil, art. 211).</p></div>
+</section>
+
+<!-- ============ CLASSIFICAÇÃO ============ -->
+<section id="classificacao">
+  <h2>Classificação das sentenças</h2>
+  <p>Há dois critérios. Pelo conteúdo, a sentença é terminativa (art. 485) ou definitiva (art. 487), como visto até aqui. As definitivas, por sua vez, são classificadas pela tutela que concedem: declaratória, constitutiva ou condenatória. A homologatória apenas chancela a autocomposição das partes.</p>
+  <div class="rolagem largo" tabindex="0" role="region" aria-label="Tabela; role para os lados se necessário">
+    <table>
+      <thead><tr><th></th><th>Declaratória</th><th>Condenatória</th><th>Constitutiva</th></tr></thead>
+      <tbody>
+        <tr><th>O que faz</th><td>Certifica a existência, a inexistência ou o modo de ser de uma relação jurídica, ou a autenticidade ou falsidade de documento (art. 19).</td><td>Declara o direito e impõe uma prestação: dar, fazer, não fazer ou pagar.</td><td>Cria, modifica ou extingue uma relação jurídica.</td></tr>
+        <tr><th>Exemplo</th><td>Inexistência de débito. Toda sentença de improcedência é declaratória negativa.</td><td>Indenização; obrigação de fazer.</td><td>Divórcio; anulação de negócio jurídico; rescisão de contrato.</td></tr>
+        <tr><th>É título executivo?</th><td>Sim, se reconhecer a exigibilidade de uma obrigação (art. 515, I).</td><td>Em regra, sim. A genérica depende de liquidação; a do art. 501 dispensa execução.</td><td>Não precisa: o efeito se produz com a própria sentença.</td></tr>
+        <tr><th>Eficácia no tempo (doutrina)</th><td>Retroativa (ex tunc).</td><td>Retroage, em regra, à citação, que constitui o devedor em mora (art. 240).</td><td>Para o futuro (ex nunc). Na anulação, as partes são restituídas ao estado anterior (CC, art. 182), embora a anulabilidade não tenha efeito antes de julgada por sentença (CC, art. 177).</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="nota"><strong>Na aula: e as mandamentais e executivas?</strong><p>Parte da doutrina acrescenta duas categorias, as sentenças mandamentais e as executivas (classificação quinária). Para o livro-base, elas realizam a essência das condenatórias: o que muda é o procedimento de execução, não a sentença. Na prova da disciplina, siga a classificação em três espécies.</p></div>
+  <h3>Natureza e função da sentença definitiva</h3>
+  <p>Segundo o livro-base, a sentença de mérito tem a estrutura de um silogismo: a premissa maior é a norma jurídica, a premissa menor são os fatos provados, e a conclusão acolhe ou rejeita o pedido e emite um comando. Ela é ao mesmo tempo ato de inteligência e ato de vontade: sem a vontade não teria força obrigatória, e sem a razão seria puro arbítrio. Sua função é declaratória, mesmo quando o juiz preenche lacuna por analogia ou princípios gerais, e seu alcance fica limitado ao caso concreto.</p>
+</section>
+
+<!-- ============ REPROPOSITURA ============ -->
+<section id="repropositura">
+  <h2>Propor de novo: art. 486 e coisa julgada</h2>
+  <blockquote class="lei">
+    <p>Art. 486. O pronunciamento judicial que não resolve o mérito não obsta a que a parte proponha de novo a ação.</p>
+    <p>§ 1º No caso de extinção em razão de litispendência e nos casos dos incisos I, IV, VI e VII do art. 485, a propositura da nova ação depende da correção do vício que levou à sentença sem resolução do mérito.</p>
+    <p>§ 2º A petição inicial, todavia, não será despachada sem a prova do pagamento ou do depósito das custas e dos honorários de advogado.</p>
+    <p>§ 3º Se o autor der causa, por 3 (três) vezes, a sentença fundada em abandono da causa, não poderá propor nova ação contra o réu com o mesmo objeto, ficando-lhe ressalvada, entretanto, a possibilidade de alegar em defesa o seu direito.</p>
+    <cite>CPC, art. 486</cite>
+  </blockquote>
+
+  <h3>Três situações diferentes</h3>
+  <div class="rolagem largo" tabindex="0" role="region" aria-label="Tabela; role para os lados se necessário">
+    <table>
+      <thead><tr><th>Situação</th><th>Hipóteses</th><th>O autor pode propor de novo?</th></tr></thead>
+      <tbody>
+        <tr><th>Repropositura livre</th><td>Negligência das partes (II), abandono (III), desistência (VIII)</td><td>Sim, a mesma ação, desde que comprove o pagamento das custas e honorários do processo anterior (art. 486, § 2º; ver também art. 92).</td></tr>
+        <tr><th>Repropositura condicionada</th><td>Indeferimento da inicial (I), falta de pressuposto processual (IV), litispendência (V), ilegitimidade ou falta de interesse (VI), arbitragem (VII)</td><td>Só depois de corrigir o vício que causou a extinção (art. 486, § 1º). Repetir a ação com o mesmo defeito leva a nova extinção.</td></tr>
+        <tr><th>Repropositura vedada</th><td>Perempção e coisa julgada (V)</td><td>Não. A perempção impede nova ação contra o mesmo réu com o mesmo objeto, por texto expresso (art. 486, § 3º). A coisa julgada impede a repetição da demanda já decidida no mérito (arts. 502 e 508).</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>O § 1º do art. 486 cita apenas a litispendência entre as hipóteses do inciso V. A doutrina explica o silêncio quanto às outras duas: na perempção e na coisa julgada o obstáculo não é corrigível, de modo que a regra geral do caput simplesmente não se aplica a elas. Quanto à intransmissibilidade (IX), não há vedação legal, mas a repropositura é em regra inviável na prática, porque a parte morreu e o direito não passa aos sucessores.</p>
+  <div class="nota"><strong>Na aula: um ponto de atenção sobre a litispendência</strong><p>O texto do art. 486, § 1º, admite a nova ação depois de corrigido o vício também no caso de litispendência. Os slides registram que o livro-base a equipara, para esse fim, à coisa julgada. Se a questão pedir a letra da lei, responda pelo § 1º.</p></div>
+
+  <h3>Perempção</h3>
+  <p>É a perda do direito de demandar aquele réu sobre aquele objeto, como sanção ao autor que deu causa, por três vezes, a sentença fundada em abandono da causa (art. 485, III). Três detalhes importam:</p>
+  <ul>
+    <li>Só conta a extinção por <em>abandono do autor</em>. Extinção por desistência ou por negligência de ambas as partes não entra na conta.</li>
+    <li>É a quarta ação que fica barrada: são necessárias três extinções anteriores.</li>
+    <li>O direito material não desaparece. O autor não pode mais atacar, mas pode alegá-lo em defesa, se for demandado.</li>
+  </ul>
+
+  <h3>Coisa julgada formal e material</h3>
+  <p>O CPC só define a coisa julgada material; a coisa julgada formal é conceito da doutrina. Coisa julgada formal é a imutabilidade da decisão dentro do processo em que foi proferida, quando já não cabe recurso. Toda sentença transitada em julgado a produz, terminativa ou definitiva. Coisa julgada material (art. 502) vai além e projeta a imutabilidade para fora do processo; é exclusiva das decisões de mérito.</p>
+  <p>Há um ponto fino: nos casos do art. 486, § 1º, a sentença terminativa tem uma estabilidade que ultrapassa o processo, porque a mesma ação, com o mesmo vício, não pode ser reproposta. É isso que explica a regra a seguir.</p>
+  <div class="nota"><strong>Ação rescisória contra decisão terminativa</strong><p>Em regra, a rescisória ataca decisão de mérito. O art. 966, § 2º, porém, admite a rescisão de decisão transitada em julgado que, embora não seja de mérito, impeça a nova propositura da demanda ou a admissibilidade do recurso correspondente. É a consequência lógica do art. 486, § 1º: se o vício não puder ser corrigido, a porta ficaria fechada sem remédio.</p></div>
+
+  <h3>Quem paga</h3>
+  <ul>
+    <li>Processo parado por negligência das partes: custas proporcionais entre elas (art. 485, § 2º).</li>
+    <li>Abandono pelo autor: ele paga despesas e honorários (art. 485, § 2º).</li>
+    <li>Desistência, renúncia ou reconhecimento do pedido: despesas e honorários são pagos por quem desistiu, renunciou ou reconheceu (art. 90).</li>
+    <li>Perda do objeto: honorários devidos por quem deu causa ao processo (art. 85, § 10). É o princípio da causalidade.</li>
+  </ul>
+</section>
+
+<!-- ============ PRIMAZIA ============ -->
+<section id="primazia">
+  <h2>Primazia do julgamento de mérito</h2>
+  <p>O CPC/2015 tratou a sentença terminativa como último recurso. O processo existe para resolver o conflito, e as partes “têm o direito de obter em prazo razoável a solução integral do mérito” (art. 4º). Dessa ideia saem regras espalhadas por todo o Código, que obrigam o juiz a tentar salvar o processo antes de extingui-lo.</p>
+  <blockquote class="lei">
+    <p>Art. 317. Antes de proferir decisão sem resolução de mérito, o juiz deverá conceder à parte oportunidade para, se possível, corrigir o vício.</p>
+    <p>Art. 488. Desde que possível, o juiz resolverá o mérito sempre que a decisão for favorável à parte a quem aproveitaria eventual pronunciamento nos termos do art. 485.</p>
+    <cite>CPC, arts. 317 e 488</cite>
+  </blockquote>
+
+  <h3>Onde a primazia aparece</h3>
+  <ul>
+    <li><strong>Art. 139, IX:</strong> incumbe ao juiz determinar o suprimento de pressupostos processuais e o saneamento de outros vícios processuais.</li>
+    <li><strong>Art. 321:</strong> petição inicial com defeito gera prazo de 15 dias para emenda, e o juiz deve indicar com precisão o que precisa ser corrigido. Só depois cabe indeferimento.</li>
+    <li><strong>Art. 76:</strong> incapacidade processual ou irregularidade de representação gera suspensão do processo e prazo razoável para sanar. Só se o autor não cumprir, em primeiro grau, o processo é extinto.</li>
+    <li><strong>Arts. 338 e 339:</strong> se o réu alega ser parte ilegítima, o autor pode trocar o réu em 15 dias, em vez de ver o processo extinto.</li>
+    <li><strong>Art. 282, § 2º:</strong> quando puder decidir o mérito a favor da parte a quem aproveite a decretação da nulidade, o juiz não a pronunciará. É o paralelo do art. 488 no campo das nulidades.</li>
+    <li><strong>Art. 352:</strong> verificando irregularidades ou vícios sanáveis, o juiz determina a correção em prazo nunca superior a 30 dias.</li>
+    <li><strong>Art. 938, § 1º:</strong> constatado vício sanável no tribunal, o relator determina a realização ou a renovação do ato.</li>
+    <li><strong>Art. 1.029, § 3º:</strong> o STF e o STJ podem desconsiderar vício formal de recurso tempestivo, ou determinar sua correção, se não o reputarem grave.</li>
+    <li><strong>Art. 932, parágrafo único:</strong> antes de considerar inadmissível o recurso, o relator concede 5 dias para que o recorrente sane o vício ou complemente a documentação.</li>
+    <li><strong>Art. 1.013, § 3º, I:</strong> o tribunal que reforma sentença terminativa julga desde logo o mérito, se o processo estiver em condições de imediato julgamento.</li>
+  </ul>
+
+  <details class="prever">
+    <summary>Pense antes de abrir: o juiz percebe que o autor talvez seja parte ilegítima, mas também está convencido, pelas provas, de que o pedido é improcedente. O que o art. 488 manda fazer?</summary>
+    <div><p>Julgar improcedente. A extinção por ilegitimidade (art. 485, VI) aproveitaria ao réu, mas a improcedência o favorece mais, porque faz coisa julgada material e impede nova ação. Se a decisão de mérito beneficia justamente quem se beneficiaria da sentença terminativa, o juiz deve preferi-la, desde que possível.</p></div>
+  </details>
+  <h3>Na aula: o exemplo do livro-base e um limite</h3>
+  <p>Morre o advogado do autor e este, intimado, não constitui outro em 15 dias. A regra isolada manda extinguir o processo sem resolução de mérito (art. 313, § 3º). Mas, se a causa estiver madura e a prova for favorável ao réu, o sistema aponta outra solução: julgar improcedente o pedido (art. 488). O direito à tutela jurisdicional pertence ao autor e também ao réu. É nessa linha a ideia, atribuída ao STJ nos slides (REsp 802.497/MG), de que a extinção por meros óbices processuais deve ser medida de exceção.</p>
+  <p>O limite: quando extingue o processo sem resolução de mérito, o juiz não deve opinar sobre o mérito. A fórmula “extingo por ilegitimidade; ainda que assim não fosse, o pedido seria improcedente” é criticada pelo livro-base, porque a segunda parte é juízo emitido sem jurisdição.</p>
+</section>
+
+<!-- ============ RECURSOS ============ -->
+<section id="recursos">
+  <h2>Recursos e juízo de retratação</h2>
+  <p>Da sentença cabe apelação (art. 1.009), seja terminativa ou definitiva. O que muda é o que acontece depois da interposição.</p>
+
+  <h3>Quando o juiz pode voltar atrás</h3>
+  <div class="rolagem largo" tabindex="0" role="region" aria-label="Tabela; role para os lados se necessário">
+    <table>
+      <thead><tr><th>Situação</th><th>Base legal</th><th>Prazo para retratação</th></tr></thead>
+      <tbody>
+        <tr><th>Indeferimento da petição inicial</th><td>Art. 331</td><td>5 dias. Sem retratação, o réu é citado para responder ao recurso (§ 1º).</td></tr>
+        <tr><th>Improcedência liminar do pedido</th><td>Art. 332, § 3º</td><td>5 dias. Sem retratação, o réu é citado para apresentar contrarrazões em 15 dias (§ 4º).</td></tr>
+        <tr><th>Qualquer sentença do art. 485</th><td>Art. 485, § 7º</td><td>5 dias.</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>Se não se retratar, o juiz não examina a admissibilidade da apelação: cumpridas as formalidades, remete os autos ao tribunal, independentemente de juízo de admissibilidade (art. 1.010, § 3º).</p>
+  <p>Fora desses casos, no regime do CPC, a apelação não permite retratação: a sentença de mérito comum (art. 487, I, depois de citado o réu) só pode ser alterada pelo tribunal, ou pelo próprio juiz para corrigir erro material ou em embargos de declaração (art. 494).</p>
+
+  <h3>Teoria da causa madura</h3>
+  <p>Se o tribunal dá provimento à apelação contra sentença terminativa, não precisa devolver os autos ao primeiro grau. Estando o processo em condições de imediato julgamento, deve decidir desde logo o mérito (art. 1.013, § 3º, I). O mesmo vale quando reforma sentença que reconheceu decadência ou prescrição: se possível, julga o mérito, examinando as demais questões, sem determinar o retorno do processo ao juízo de primeiro grau (§ 4º).</p>
+
+  <h3>Decisão parcial: agravo de instrumento</h3>
+  <blockquote class="lei">
+    <p>Art. 354. Ocorrendo qualquer das hipóteses previstas nos arts. 485 e 487, incisos II e III, o juiz proferirá sentença.</p>
+    <p>Parágrafo único. A decisão a que se refere o caput pode dizer respeito a apenas parcela do processo, caso em que será impugnável por agravo de instrumento.</p>
+    <cite>CPC, art. 354</cite>
+  </blockquote>
+  <p>Exemplo: o autor formula dois pedidos e o juiz, no saneamento, reconhece a prescrição de um deles, ou exclui um dos réus por ilegitimidade. O processo continua quanto ao resto. A decisão é interlocutória e o recurso é o agravo de instrumento, não a apelação (ver também o art. 1.015, II, mérito do processo, e VII, exclusão de litisconsorte). O art. 354 alcança as hipóteses do art. 485 e do art. 487, II e III. Para a decisão que acolhe ou rejeita apenas parte dos pedidos (art. 487, I), a base é o julgamento antecipado parcial do mérito, igualmente agravável (art. 356, § 5º).</p>
+</section>
+
+<!-- ============ COMPARATIVO ============ -->
+<section id="comparativo">
+  <h2>Quadro comparativo</h2>
+  <div class="rolagem largo" tabindex="0" role="region" aria-label="Tabela; role para os lados se necessário">
+    <table>
+      <thead><tr><th></th><th class="c-sem">Art. 485</th><th class="c-com">Art. 487</th></tr></thead>
+      <tbody>
+        <tr><th>O que o juiz faz</th><td>Encerra o processo sem examinar o pedido.</td><td>Decide o pedido, reconhece prescrição ou decadência, ou homologa autocomposição.</td></tr>
+        <tr><th>Nome da sentença</th><td>Terminativa (ou processual).</td><td>Definitiva (ou de mérito).</td></tr>
+        <tr><th>Coisa julgada</th><td>Apenas formal.</td><td>Formal e material (art. 502).</td></tr>
+        <tr><th>Nova ação</th><td>Em regra possível (art. 486), com as condições e vedações vistas acima.</td><td>Impossível: a repetição esbarra na coisa julgada (art. 485, V).</td></tr>
+        <tr><th>Ação rescisória</th><td>Só na hipótese excepcional do art. 966, § 2º.</td><td>Cabível nas hipóteses do art. 966. Contra os atos de autocomposição homologados (487, III), a via é, em regra, a ação anulatória (art. 966, § 4º).</td></tr>
+        <tr><th>Dever prévio do juiz</th><td>Dar oportunidade de corrigir o vício (art. 317).</td><td>Ouvir as partes antes de reconhecer prescrição ou decadência (art. 487, parágrafo único), salvo art. 332, § 1º.</td></tr>
+        <tr><th>Retratação na apelação</th><td>Sempre, em 5 dias (art. 485, § 7º).</td><td>Só na improcedência liminar (art. 332, § 3º).</td></tr>
+        <tr><th>Recurso</th><td colspan="2">Apelação contra a sentença (art. 1.009). Agravo de instrumento se a decisão atingir apenas parcela do processo (arts. 354, parágrafo único, e 356, § 5º).</td></tr>
+        <tr><th>Tribunal que reforma</th><td>Julga o mérito desde logo, se a causa estiver madura (art. 1.013, § 3º, I).</td><td>Reformando prescrição ou decadência, julga o restante do mérito se possível (art. 1.013, § 4º).</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>Pares que as provas gostam de trocar</h3>
+  <div class="rolagem largo" tabindex="0" role="region" aria-label="Tabela; role para os lados se necessário">
+    <table>
+      <thead><tr><th>Parece igual</th><th class="c-sem">Sem mérito</th><th class="c-com">Com mérito</th></tr></thead>
+      <tbody>
+        <tr><th>O autor abre mão</th><td>Desistência da ação (485, VIII)</td><td>Renúncia à pretensão (487, III, c)</td></tr>
+        <tr><th>Decisão logo no início</th><td>Indeferimento da petição inicial (485, I; art. 330)</td><td>Improcedência liminar do pedido (art. 332), inclusive por prescrição ou decadência</td></tr>
+        <tr><th>O tempo passou</th><td>Abandono por mais de 30 dias (485, III); processo parado por mais de 1 ano (485, II)</td><td>Prescrição e decadência (487, II)</td></tr>
+        <tr><th>O autor não tem o direito</th><td>Ilegitimidade aferida pelas afirmações da inicial, segundo a teoria da asserção (485, VI)</td><td>Improcedência, quando a conclusão depende das provas (487, I)</td></tr>
+        <tr><th>As partes se entendem</th><td>Convenção de arbitragem acolhida (485, VII)</td><td>Transação homologada (487, III, b)</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ============ ESTRUTURA ============ -->
+<section id="estrutura">
+  <h2>Estrutura e fundamentação da sentença</h2>
+  <blockquote class="lei">
+    <p>Art. 489. São elementos essenciais da sentença:</p>
+    <p>I - o relatório, que conterá os nomes das partes, a identificação do caso, com a suma do pedido e da contestação, e o registro das principais ocorrências havidas no andamento do processo;</p>
+    <p>II - os fundamentos, em que o juiz analisará as questões de fato e de direito;</p>
+    <p>III - o dispositivo, em que o juiz resolverá as questões principais que as partes lhe submeterem.</p>
+    <cite>CPC, art. 489, caput</cite>
+  </blockquote>
+  <div class="rolagem largo" tabindex="0" role="region" aria-label="Tabela; role para os lados se necessário">
+    <table>
+      <thead><tr><th>Elemento</th><th>Para que serve</th><th>Se faltar (livro-base)</th></tr></thead>
+      <tbody>
+        <tr><th>Relatório</th><td>Conta a história do processo e delimita o pedido e as controvérsias que o juiz terá de resolver.</td><td>Nulidade.</td></tr>
+        <tr><th>Fundamentos</th><td>Trazem as premissas da decisão: a análise das questões de fato e de direito.</td><td>Nulidade (CF, art. 93, IX; CPC, art. 11).</td></tr>
+        <tr><th>Dispositivo</th><td>É a decisão propriamente dita, o elemento substancial do julgado.</td><td>Ato inexistente: sem dispositivo não há sentença.</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>A lei só comina expressamente a nulidade para a falta de fundamentação. As demais consequências são construção doutrinária, e a inexistência por falta de dispositivo é tese do livro-base: parte da doutrina fala em nulidade.</p>
+  <p>O dispositivo pode ser direto, quando especifica a prestação (“condeno o réu a pagar R$ X”), ou indireto, quando remete ao pedido (“julgo procedente o pedido”). Os motivos não fazem coisa julgada, ainda que importantes para determinar o alcance da parte dispositiva (art. 504, I).</p>
+  <div class="nota"><strong>Na aula: elementos ou requisitos?</strong><p>O CPC/1973 falava em “requisitos” da sentença; o CPC/2015 fala em “elementos”. Os slides atribuem a distinção a Barbosa Moreira: elementos são as partes da estrutura; requisitos são as qualidades que a sentença deve ter (clareza, precisão, certeza).</p></div>
+
+  <h3>Por que e para quem se fundamenta</h3>
+  <p>A motivação deve existir, ser completa e ser coerente. Dentro do processo, ela permite às partes saber por que ganharam ou perderam e delimitar o recurso e o cumprimento, e permite ao tribunal avaliar se mantém ou reforma a decisão. Fora do processo, permite o controle social das decisões judiciais e a identificação da razão de decidir que servirá de precedente.</p>
+
+  <h3>O que não é fundamentação: art. 489, § 1º</h3>
+  <p>Não se considera fundamentada qualquer decisão judicial, seja ela interlocutória, sentença ou acórdão, que:</p>
+  <ol type="I">
+    <li>se limitar à indicação, à reprodução ou à paráfrase de ato normativo, sem explicar sua relação com a causa ou a questão decidida;</li>
+    <li>empregar conceitos jurídicos indeterminados, sem explicar o motivo concreto de sua incidência no caso;</li>
+    <li>invocar motivos que se prestariam a justificar qualquer outra decisão;</li>
+    <li>não enfrentar todos os argumentos deduzidos no processo capazes de, em tese, infirmar a conclusão adotada pelo julgador;</li>
+    <li>se limitar a invocar precedente ou enunciado de súmula, sem identificar seus fundamentos determinantes nem demonstrar que o caso sob julgamento se ajusta àqueles fundamentos;</li>
+    <li>deixar de seguir enunciado de súmula, jurisprudência ou precedente invocado pela parte, sem demonstrar a existência de distinção no caso em julgamento ou a superação do entendimento.</li>
+  </ol>
+  <p>A decisão que incorre em qualquer dessas condutas é omissa para fins de embargos de declaração (art. 1.022, parágrafo único, II).</p>
+
+  <details class="prever">
+    <summary>Pense antes de abrir: o juiz precisa responder a todos os argumentos das partes?</summary>
+    <div>
+      <p>O filtro está no próprio inciso IV: precisa de resposta o argumento capaz de, em tese, infirmar a conclusão. Argumento irrelevante pode ser deixado de lado. É a síntese que o professor indica para a prova.</p>
+      <p>Há uma tensão registrada nos slides. Para o livro-base, a jurisprudência antiga que dispensava o juiz de responder a todos os argumentos não se ajusta ao CPC/2015. Já o STJ, segundo os slides, decidiu que o julgador não é obrigado a responder a todas as questões quando já encontrou motivo suficiente para decidir, e que o inciso IV veio confirmar a jurisprudência anterior (EDcl no MS 21.315/DF, de 2016, que o próprio professor marca como “a conferir”).</p>
+      <p>Quanto ao inciso VI, os slides citam o REsp 1.698.774/RS (2020): o dever de demonstrar distinção ou superação só valeria para súmulas e precedentes vinculantes, não para os apenas persuasivos.</p>
+    </div>
+  </details>
+
+  <h3>Fundamentação por remissão (per relationem)</h3>
+  <p>É a decisão que adota como razões de decidir os fundamentos de outra peça. Os slides resumem o quadro assim: o STF a considera técnica legítima e compatível com o art. 93, IX, da Constituição; o STJ a admite, mas não por remissão genérica, anulando o acórdão que só se reporta à sentença sem reproduzir trecho nem trazer motivação própria; o CPC/2015 proíbe o relator de limitar-se a reproduzir os fundamentos da decisão agravada para julgar improcedente o agravo interno (art. 1.021, § 3º); e o livro-base entende que manter a sentença “por seus próprios fundamentos” não cumpre o art. 489, § 1º, IV.</p>
+
+  <h3>Ponderação e interpretação da sentença</h3>
+  <p>Havendo colisão entre normas, o juiz deve justificar o objeto e os critérios gerais da ponderação efetuada, enunciando as razões que autorizam a interferência na norma afastada e as premissas fáticas que fundamentam a conclusão (art. 489, § 2º). E a decisão judicial deve ser interpretada a partir da conjugação de todos os seus elementos e em conformidade com o princípio da boa-fé (§ 3º).</p>
+  <p>Segundo o livro-base, o ponto de partida para interpretar a sentença é o pedido: entre dois sentidos possíveis, prevalece o que a mantém dentro dos limites do pedido. A interpretação não serve para corrigir erro do juiz.</p>
+
+  <h3>Clareza, precisão e certeza</h3>
+  <ul>
+    <li><strong>Clareza:</strong> a sentença deve ser inteligível e não admitir leituras ambíguas. Obscuridade e contradição se corrigem por embargos de declaração (art. 1.022, I). A falta de clareza nem sempre gera nulidade.</li>
+    <li><strong>Precisão:</strong> a sentença fica dentro dos limites do pedido, sem dar coisa diversa, nem mais, nem menos (arts. 490 e 492).</li>
+    <li><strong>Certeza:</strong> a decisão deve ser certa, ainda que resolva relação jurídica condicional (art. 492, parágrafo único).</li>
+  </ul>
+
+  <h3>Obrigação de pagar: a sentença deve ser líquida</h3>
+  <p>Na ação relativa à obrigação de pagar quantia, ainda que o pedido seja genérico, a decisão definirá desde logo a extensão da obrigação, o índice de correção monetária, a taxa de juros, o termo inicial de ambos e a periodicidade da capitalização dos juros, se for o caso (art. 491). Há duas exceções: quando não for possível determinar, de modo definitivo, o montante devido, e quando a apuração depender de prova de realização demorada ou excessivamente dispendiosa, assim reconhecida na sentença. Nesses casos, segue-se a liquidação (arts. 491, § 1º, e 509).</p>
+  <p><strong>Na aula:</strong> mesmo ilíquida, a sentença é certa, porque define o que se deve (verbas, bases, período). E, como o CPC/2015 não repetiu a regra do CPC/1973 que vedava sentença ilíquida diante de pedido certo, o livro-base entende que o juiz pode condenar genericamente, em vez de julgar improcedente, quando o pedido é certo mas a prova do valor é incerta. É posição doutrinária: há quem entenda que a sentença ilíquida só cabe nas duas hipóteses do art. 491 e que, fora delas, a falta de prova do valor se resolve pelo ônus da prova (art. 373, I).</p>
+
+  <h3>Fazer, não fazer e entregar coisa: tutela específica</h3>
+  <ul>
+    <li><strong>Tutela específica:</strong> procedente o pedido, o juiz concede a tutela específica ou determina providências que assegurem o resultado prático equivalente (art. 497).</li>
+    <li><strong>Tutela inibitória:</strong> para inibir a prática, a reiteração ou a continuação de um ilícito, ou removê-lo, é irrelevante demonstrar dano, culpa ou dolo (art. 497, parágrafo único).</li>
+    <li><strong>Perdas e danos:</strong> a obrigação só se converte em perdas e danos se o autor o requerer ou se for impossível a tutela específica ou o resultado prático equivalente (art. 499), sem prejuízo da multa (art. 500).</li>
+    <li><strong>Declaração de vontade:</strong> transitada em julgado, a sentença de procedência produz todos os efeitos da declaração não emitida (art. 501).</li>
+    <li><strong>Entrega de coisa:</strong> ao conceder a tutela específica, o juiz fixa o prazo para o cumprimento (art. 498).</li>
+  </ul>
+  <div class="nota"><strong>Atualização: Lei 14.833/2024</strong><p>A lei incluiu o parágrafo único do art. 499: nas hipóteses de responsabilidade contratual dos arts. 441, 618 e 757 do Código Civil, e de responsabilidade subsidiária e solidária, se requerida a conversão em perdas e danos, o juiz concederá primeiramente a faculdade para o cumprimento da tutela específica. Os slides avisam que a edição de 2023 do livro-base não traz essa regra.</p></div>
+</section>
+
+<!-- ============ CONGRUÊNCIA ============ -->
+<section id="congruencia">
+  <h2>Limites da sentença: demanda e congruência</h2>
+  <p>Dois princípios cercam o que o juiz pode decidir. Pelo <strong>princípio da demanda</strong>, o pedido é a condição da jurisdição: o juiz não instaura o processo de ofício, salvo as exceções previstas em lei (art. 2º), e não conhece de questões que dependem de iniciativa da parte (art. 141), o que protege a imparcialidade. Pelo <strong>princípio da congruência</strong>, o pedido é o limite da jurisdição: o juiz decide o mérito nos limites propostos pelas partes (arts. 141 e 492) e resolve todos os pedidos formulados (art. 490), o que protege o contraditório.</p>
+  <blockquote class="lei">
+    <p>Art. 492. É vedado ao juiz proferir decisão de natureza diversa da pedida, bem como condenar a parte em quantidade superior ou em objeto diverso do que lhe foi demandado.</p>
+    <cite>CPC, art. 492, caput</cite>
+  </blockquote>
+  <p>Os slides resumem os limites em três proibições, atribuídas a Chiovenda: não decidir sobre pessoas que não são sujeitos do processo, não conceder nem negar coisa distinta da pedida, e não alterar a causa de pedir eleita pela parte. O fato superveniente (art. 493) não viola a congruência, desde que não mude a causa de pedir e as partes sejam ouvidas.</p>
+
+  <h3>Sentenças extra, ultra e citra petita</h3>
+  <div class="rolagem largo" tabindex="0" role="region" aria-label="Tabela; role para os lados se necessário">
+    <table>
+      <thead><tr><th>Vício</th><th>O que é</th><th>Consequência</th><th>No tribunal</th></tr></thead>
+      <tbody>
+        <tr><th>Extra petita</th><td>Decide fora do pedido, ou o acolhe por causa de pedir não invocada.</td><td>Nulidade.</td><td>Anula; se a causa estiver madura, julga desde logo (art. 1.013, § 3º, II).</td></tr>
+        <tr><th>Ultra petita</th><td>Concede mais do que foi pedido.</td><td>Nulidade parcial, limitada ao excesso.</td><td>Decota o excesso, sem anular o resto.</td></tr>
+        <tr><th>Citra petita</th><td>Deixa de examinar um dos pedidos. A omissão de questão ou argumento relevante é, em regra, falta de fundamentação (art. 489, § 1º, IV).</td><td>Nulidade, se alegada e não suprível.</td><td>Completa o julgamento, se a causa estiver madura (art. 1.013, § 3º, III).</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>Transitada em julgado, a sentença extra ou ultra petita pode ser atacada por ação rescisória, por violação manifesta de norma jurídica (arts. 141, 492 e 966, V). Na citra petita, o pedido não examinado não foi decidido e não fica coberto pela coisa julgada: pode ser objeto de nova ação. Antes do trânsito, a omissão se corrige por embargos de declaração (art. 1.022, II). Os slides mencionam a rescisória para os três vícios; a distinção feita aqui é a corrente na doutrina. As consequências e as soluções da tabela seguem o livro-base, conforme os slides; a letra da lei está nos arts. 492 e 1.013, § 3º.</p>
+
+  <h3>Citra petita: quando o tribunal anula e quando completa</h3>
+  <ol>
+    <li><strong>A omissão foi impugnada no recurso?</strong> Em regra, o tribunal só examina o que foi devolvido pelo recurso (arts. 1.002 e 1.013). De todo modo, o pedido não julgado pode ser renovado em ação própria.</li>
+    <li><strong>A causa está madura?</strong> Se sim, o tribunal julga desde logo o pedido omitido (art. 1.013, § 3º, III).</li>
+    <li><strong>Depende de prova ainda não produzida?</strong> Então o tribunal anula a sentença na parte omissa e devolve os autos para que o juízo de origem instrua e julgue o pedido não examinado.</li>
+  </ol>
+
+  <details class="prever">
+    <summary>Caso da aula: o autor pede R$ 50 mil de danos materiais e R$ 20 mil de danos morais. A sentença condena em R$ 65 mil por danos materiais, nada diz sobre os morais e se fundamenta apenas na transcrição de uma súmula. Quantos vícios há, e o que o tribunal faz com cada um?</summary>
+    <div>
+      <p>Três. <strong>Ultra petita</strong> nos danos materiais: o tribunal decota os R$ 15 mil excedentes, sem anular o restante (art. 492). <strong>Citra petita</strong> quanto aos danos morais: com a causa madura e a omissão impugnada, o tribunal julga o pedido omitido (art. 1.013, § 3º, III). <strong>Fundamentação deficiente:</strong> invocar súmula sem identificar seus fundamentos determinantes nem demonstrar o ajuste ao caso (art. 489, § 1º, V); é nulidade que o tribunal pode superar julgando o mérito (art. 1.013, § 3º, IV).</p>
+    </div>
+  </details>
+</section>
+
+<!-- ============ EFEITOS ============ -->
+<section id="efeitos">
+  <h2>Publicação, efeitos, hipoteca judiciária e remessa necessária</h2>
+  <h3>Publicada a sentença, o juiz esgota o seu ofício</h3>
+  <blockquote class="lei">
+    <p>Art. 494. Publicada a sentença, o juiz só poderá alterá-la:</p>
+    <p>I - para corrigir-lhe, de ofício ou a requerimento da parte, inexatidões materiais ou erros de cálculo;</p>
+    <p>II - por meio de embargos de declaração.</p>
+    <cite>CPC, art. 494</cite>
+  </blockquote>
+  <p>A regra vale para sentenças terminativas e definitivas. A essas duas exceções somam-se as hipóteses de retratação depois da apelação, já vistas: arts. 331, 332, § 3º, e 485, § 7º. Publicar não é o mesmo que intimar: a publicação torna o ato processual e irretratável; a intimação dá ciência às partes e abre o prazo para recorrer.</p>
+
+  <h3>Os efeitos da sentença</h3>
+  <ul>
+    <li><strong>Formal:</strong> esgota a função do juiz na fase cognitiva (art. 494).</li>
+    <li><strong>Materiais:</strong> a declaratória gera certeza; a constitutiva, uma situação jurídica nova; a condenatória, um título executivo.</li>
+    <li><strong>Secundários:</strong> decorrem da lei, sem necessidade de pedido. São exemplos a hipoteca judiciária (art. 495), a perempção (art. 486, § 3º) e o protesto da decisão transitada em julgado (art. 517).</li>
+  </ul>
+  <p>Segundo o livro-base, a eficácia é imediata quando a sentença basta por si (declaratórias, constitutivas e a do art. 501), e contida quando depende de atos executivos, como nas condenatórias em geral. Lembre ainda que a apelação tem, em regra, efeito suspensivo, e que a lei lista as sentenças que produzem efeitos imediatamente após a publicação (art. 1.012, caput e § 1º).</p>
+  <p>A sentença terminativa não resolve o mérito e, em regra, não impede nova ação. Mas tem efeitos que ultrapassam o processo: impede a repropositura com o mesmo vício (art. 486, § 1º), e seu capítulo de custas e honorários é título executivo e condiciona a nova ação (arts. 515, I, e 486, § 2º).</p>
+
+  <h3>Hipoteca judiciária: art. 495</h3>
+  <ol>
+    <li><strong>Título:</strong> a decisão que condena o réu a pagar prestação em dinheiro, e a que converte prestação de fazer, de não fazer ou de dar coisa em prestação pecuniária.</li>
+    <li><strong>Vale mesmo se:</strong> a condenação for genérica; o credor puder promover o cumprimento provisório ou houver arresto pendente; a decisão for impugnada por recurso com efeito suspensivo (§ 1º).</li>
+    <li><strong>Como se faz:</strong> apresentação de cópia da sentença no cartório de registro de imóveis, independentemente de ordem judicial, de declaração expressa do juiz ou de demonstração de urgência (§ 2º). Em até 15 dias, a parte informa o juízo (§ 3º).</li>
+    <li><strong>O que dá:</strong> direito de preferência quanto ao pagamento em relação a outros credores, observada a prioridade no registro (§ 4º). Os slides falam também em sequela, o vínculo do bem ao pagamento mesmo se alienado; na lei, ela aparece na regra de que é fraude à execução a alienação ou a oneração de bem em cujo registro tenha sido averbada hipoteca judiciária (art. 792, III).</li>
+    <li><strong>Risco:</strong> reformada ou invalidada a decisão, a parte responde, independentemente de culpa, pelos danos causados pela constituição da garantia (§ 5º).</li>
+  </ol>
+  <p><strong>Na aula:</strong> os slides citam julgado do STJ (RMS 12.373/RJ) segundo o qual o bem de família impenhorável não comporta hipoteca judiciária, porque a garantia não teria utilidade.</p>
+
+  <h3>Remessa necessária: art. 496</h3>
+  <p>Está sujeita ao duplo grau de jurisdição, não produzindo efeito senão depois de confirmada pelo tribunal, a sentença proferida contra a União, os Estados, o Distrito Federal, os Municípios e suas autarquias e fundações de direito público, e a que julgar procedentes, no todo ou em parte, os embargos à execução fiscal. Não interposta a apelação no prazo, o juiz ordena a remessa; se não o fizer, o presidente do tribunal avoca os autos (§ 1º).</p>
+  <div class="rolagem largo" tabindex="0" role="region" aria-label="Tabela; role para os lados se necessário">
+    <table>
+      <thead><tr><th>Ente (art. 496, § 3º)</th><th>Não há remessa se a condenação ou o proveito econômico, de valor certo e líquido, for inferior a</th></tr></thead>
+      <tbody>
+        <tr><th>União e suas autarquias e fundações de direito público</th><td>1.000 salários mínimos</td></tr>
+        <tr><th>Estados, Distrito Federal, suas autarquias e fundações, e Municípios que sejam capitais de Estado</th><td>500 salários mínimos</td></tr>
+        <tr><th>Demais Municípios e suas autarquias e fundações</th><td>100 salários mínimos</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>Também não há remessa quando a sentença estiver fundada em súmula de tribunal superior, em acórdão do STF ou do STJ em recursos repetitivos, em entendimento firmado em IRDR ou em assunção de competência, ou em orientação vinculante firmada no âmbito administrativo do próprio ente público (§ 4º).</p>
+  <p><strong>Na aula:</strong> para o livro-base, se a Fazenda apelou, o duplo grau está assegurado e a remessa não precisa ser formalizada: o § 1º só manda remeter os autos quando não houver apelação. Cuidado para não generalizar: se a apelação for parcial, a parte não impugnada da sentença continua dependendo de confirmação pelo tribunal, que é condição de eficácia (caput). Em qualquer caso, é o tribunal que julga a remessa (§ 2º). As Súmulas 45, 253 e 490 do STJ e 423 do STF estão na seção Jurisprudência.</p>
+
+  <details class="prever">
+    <summary>Caso da aula: o Município de Londrina é condenado a pagar indenização de valor líquido equivalente a 80 salários mínimos, e a Procuradoria não apela. Há remessa necessária? E se a condenação fosse ilíquida?</summary>
+    <div>
+      <p>No primeiro caso, não. Londrina não é capital, e o limite para os demais Municípios é de 100 salários mínimos (art. 496, § 3º, III). A sentença produz efeitos sem confirmação pelo tribunal.</p>
+      <p>No segundo, em regra sim: a Súmula 490 do STJ afasta a dispensa para sentenças ilíquidas. O professor propõe discutir a orientação do STJ, já sob o CPC/2015, que dispensaria a remessa quando o proveito econômico é mensurável por simples cálculo e claramente inferior ao limite. Os próprios slides marcam esse ponto como “a conferir”, e eu não o conferi na fonte.</p>
+    </div>
+  </details>
+</section>
+
+<!-- ============ JURISPRUDÊNCIA ============ -->
+<section id="jurisprudencia">
+  <h2>Jurisprudência conferida</h2>
+  <p>Súmulas, teses e enunciados abaixo foram conferidos em fontes oficiais ou institucionais em 9 de novembro de 2026. Cada cartão traz o endereço onde o teor foi verificado. Antes de citar em peça ou trabalho, abra a fonte: entendimentos mudam. Os cartões com a etiqueta “Citado nos slides” trazem julgados que o professor usa em aula, a partir do livro-base; eles não foram conferidos por mim na página do tribunal, e o cartão diz isso.</p>
+  <div class="julgados largo" id="lista-juris"></div>
+</section>
+
+<!-- ============ FLASHCARDS ============ -->
+<section id="flashcards">
+  <h2>Flashcards</h2>
+  <p>Leia a pergunta, responda mentalmente e só então vire a carta. As cartas marcadas como “ainda não” voltam ao final da fila.</p>
+  <div class="baralho">
+    <div class="fc-topo"><span id="fc-pos"></span><div class="barra" aria-hidden="true"><i id="fc-barra"></i></div><span id="fc-conta"></span></div>
+    <button type="button" class="carta" id="carta" aria-live="polite"></button>
+    <div class="carta-acoes">
+      <button type="button" class="acao sec" id="fc-nao">Ainda não sei</button>
+      <button type="button" class="acao" id="fc-sim">Já sei</button>
+    </div>
+    <div class="fc-rodape"><button type="button" class="botao-texto" id="fc-reset">Recomeçar baralho</button></div>
+  </div>
+</section>
+
+<!-- ============ QUESTÕES ============ -->
+<section id="questoes">
+  <h2>Questões</h2>
+  <p>Questões inéditas, elaboradas para este material no estilo das bancas (Certo/Errado e múltipla escolha). O tema “Casos da aula” reúne questões montadas a partir dos casos práticos e dos itens de fixação dos slides do professor. Cada resposta mostra o comentário e o fundamento. Seu progresso fica salvo neste navegador.</p>
+  <div class="filtros largo">
+    <label>Tema<select id="f-tema"></select></label>
+    <label>Formato<select id="f-tipo"><option value="">Todos</option><option value="ce">Certo/Errado</option><option value="me">Múltipla escolha</option></select></label>
+    <label>Situação<select id="f-status"><option value="">Todas</option><option value="pend">Não respondidas</option><option value="erro">Que errei</option><option value="acerto">Que acertei</option></select></label>
+    <button type="button" class="acao sec" id="q-reset">Apagar respostas</button>
+  </div>
+  <p class="resumo-q" id="q-resumo"></p>
+  <div class="lista-q largo" id="lista-q"></div>
+</section>
+
+<!-- ============ FONTES ============ -->
+<section id="fontes">
+  <h2>Fontes</h2>
+  <p>Material baseado exclusivamente no direito brasileiro. O texto legal foi conferido na publicação oficial e as referências jurisprudenciais, nos endereços indicados em cada cartão.</p>
+  <ul class="fontes" id="lista-fontes"></ul>
+  <footer>
+    <p>Material de estudo. Não substitui a leitura da lei, dos julgados e da doutrina indicada pelo seu professor, nem constitui orientação jurídica para casos concretos. Conferência das fontes em 9 de novembro de 2026.</p>
+  </footer>
+</section>
+
+</main>
+<aside class="apoio" aria-label="Apoio ao estudo">
+  <div class="bloco">
+    <h2>Questões por tema</h2>
+    <div id="ap-temas"></div>
+  </div>
+  <div class="bloco" id="ap-esboco" hidden>
+    <h2>Nesta seção</h2>
+    <ol id="ap-lista"></ol>
+  </div>
+</aside>
+</div>
+
+<script>
+/* ===================== DADOS ===================== */
+const TRIAGEM = [
+  {t:`O autor protocola petição pedindo a desistência da ação, o réu concorda e o juiz homologa.`, r:'sem', e:`Desistência é ato processual: o autor abre mão do processo, não do direito. Art. 485, VIII.`},
+  {t:`O juiz reconhece que a pretensão de cobrança está prescrita.`, r:'com', e:`Decidir sobre prescrição ou decadência é resolver o mérito, ainda que nenhuma prova tenha sido examinada. Art. 487, II.`},
+  {t:`O autor renuncia à pretensão formulada na ação e o juiz homologa a renúncia.`, r:'com', e:`A renúncia atinge o direito material e impede nova ação. Art. 487, III, c.`},
+  {t:`O juiz verifica que já existe outra ação idêntica em curso, com as mesmas partes, causa de pedir e pedido.`, r:'sem', e:`É litispendência, obstáculo processual. Art. 485, V.`},
+  {t:`As partes celebram acordo sobre o objeto do litígio e o juiz o homologa.`, r:'com', e:`A transação homologada resolve o conflito. Art. 487, III, b.`},
+  {t:`O réu alega, na contestação, que o contrato tem cláusula compromissória, e o juiz acolhe a alegação.`, r:'sem', e:`Acolhida a alegação de convenção de arbitragem, o juiz estatal não examina o pedido. Art. 485, VII.`},
+  {t:`Depois da instrução, o juiz conclui que o autor não provou o fato constitutivo do seu direito e rejeita o pedido.`, r:'com', e:`Rejeitar o pedido é julgá-lo. Art. 487, I.`},
+  {t:`O autor deixa de praticar ato que lhe cabia e o processo fica parado por mais de 30 dias. Intimado pessoalmente, não supre a falta em 5 dias, e o réu, que já contestou, requer a extinção.`, r:'sem', e:`Abandono da causa pelo autor. Art. 485, III, §§ 1º e 6º.`},
+  {t:`O réu reconhece a procedência do pedido e o juiz homologa o reconhecimento.`, r:'com', e:`O reconhecimento da procedência do pedido resolve o mérito. Art. 487, III, a.`},
+  {t:`O juiz indefere a petição inicial porque, mesmo após o prazo de emenda, ela continuou inepta.`, r:'sem', e:`Indeferimento da petição inicial. Art. 485, I, combinado com os arts. 321 e 330.`},
+  {t:`Antes de citar o réu, o juiz verifica que o direito do autor decaiu e julga liminarmente improcedente o pedido.`, r:'com', e:`Improcedência liminar por decadência é decisão de mérito. Arts. 332, § 1º, e 487, II. Não confunda com indeferimento da inicial.`},
+  {t:`Morre o autor de ação que discute direito personalíssimo, que a lei considera intransmissível aos herdeiros.`, r:'sem', e:`Não há a quem transmitir a posição processual. Art. 485, IX.`}
+];
+
+const INCISOS_485 = [
+  {n:'I', nome:'Indeferimento da petição inicial', txt:'indeferir a petição inicial', oficio:'Pelo juiz (art. 330)', repro:'Após corrigir o vício',
+   corpo:`<p>A petição inicial é indeferida quando for inepta, quando a parte for manifestamente ilegítima, quando o autor carecer de interesse processual ou quando não forem atendidas as prescrições dos arts. 106 e 321 (art. 330). É inepta a petição a que falta pedido ou causa de pedir, cujo pedido é indeterminado fora das hipóteses legais, em que da narração dos fatos não decorre logicamente a conclusão, ou que contém pedidos incompatíveis entre si (art. 330, § 1º).</p>
+   <p>Antes de indeferir, o juiz deve dar 15 dias para emenda, indicando com precisão o que deve ser corrigido (art. 321). A apelação permite retratação em 5 dias (art. 331).</p>
+   <p><strong>Na aula:</strong> o ato que defere a inicial é despacho e não gera preclusão. A inépcia pode ser reconhecida depois da contestação.</p>
+   <p><strong>Atenção:</strong> no CPC/2015 a prescrição e a decadência não são causa de indeferimento da inicial. Verificadas de plano, levam à improcedência liminar do pedido (art. 332, § 1º), que é decisão de mérito.</p>`},
+  {n:'II', nome:'Processo parado por mais de um ano por negligência das partes', txt:'o processo ficar parado durante mais de 1 (um) ano por negligência das partes', oficio:'De ofício, após intimação pessoal', repro:'Livre',
+   corpo:`<p>A inércia aqui é de ambas as partes. Antes de extinguir, o juiz manda intimá-las pessoalmente para suprir a falta em 5 dias (§ 1º). As custas são pagas proporcionalmente (§ 2º).</p>
+   <p>Exemplo: o juiz determina que ambas as partes informem o resultado das tratativas de acordo, providência que só elas podem cumprir, e nenhuma se manifesta por mais de um ano.</p>`},
+  {n:'III', nome:'Abandono da causa pelo autor por mais de 30 dias', txt:'por não promover os atos e as diligências que lhe incumbir, o autor abandonar a causa por mais de 30 (trinta) dias', oficio:'De ofício; após a contestação, a requerimento do réu', repro:'Livre, até a perempção',
+   corpo:`<p>A inércia é só do autor, que deixa de praticar ato que lhe cabia, como fornecer o endereço do réu ou recolher uma diligência. Exige intimação pessoal do autor para agir em 5 dias (§ 1º). Se o réu já ofereceu contestação, o juiz não pode extinguir de ofício: é preciso requerimento do réu (§ 6º).</p>
+   <p>O autor é condenado em despesas e honorários (§ 2º). Três extinções por esse fundamento geram perempção (art. 486, § 3º).</p>
+   <p><strong>Na aula:</strong> a intimação pessoal existe para evitar que a parte seja punida pela desídia que é só do advogado. Os slides registram uma divergência: o STJ já dispensou a intimação pessoal quando o advogado atua em causa própria (REsp 218.284/RS, de 2001), solução que o livro-base critica, por entender que a solenidade imposta pela lei não pode ser dispensada pelo intérprete.</p>`},
+  {n:'IV', nome:'Ausência de pressupostos processuais', txt:'verificar a ausência de pressupostos de constituição e de desenvolvimento válido e regular do processo', oficio:'De ofício (§ 3º)', repro:'Após corrigir o vício',
+   corpo:`<p>Pressupostos processuais são os requisitos para que o processo exista e se desenvolva validamente: capacidade de ser parte, capacidade processual, capacidade postulatória, petição inicial apta, citação válida, entre outros.</p>
+   <p><strong>Na aula:</strong> os pressupostos são divididos em subjetivos (do juiz: competência e ausência de impedimento e de suspeição, vícios que não extinguem o processo, pois a incompetência leva à remessa ao juízo competente, art. 64, § 3º, e o impedimento ou a suspeição, à remessa ao substituto legal, art. 146, § 1º; das partes: capacidade de ser parte, capacidade de estar em juízo e representação por advogado) e objetivos (regularidade formal dos atos e ausência de fatos impeditivos à formação do processo). Eles podem faltar depois de iniciado o processo: perda de capacidade, renúncia do advogado não suprida, ou morte do procurador do autor sem constituição de novo mandatário em 15 dias (art. 313, § 3º).</p>
+   <p>A extinção é a última opção. O juiz deve antes determinar o suprimento do vício (arts. 139, IX, e 317). Exemplo típico: o autor, intimado a regularizar a representação processual, não o faz no prazo. O art. 76, § 1º, I, é a regra que concretiza este inciso para os defeitos de capacidade e de representação.</p>
+   <p><strong>Atenção:</strong> a incompetência, absoluta ou relativa, em regra não extingue o processo no procedimento comum. Os autos são remetidos ao juízo competente (art. 64, § 3º).</p>`},
+  {n:'V', nome:'Perempção, litispendência ou coisa julgada', txt:'reconhecer a existência de perempção, de litispendência ou de coisa julgada', oficio:'De ofício (§ 3º)', repro:'Perempção e coisa julgada: vedada. Litispendência: após corrigir o vício',
+   corpo:`<p>São os chamados pressupostos processuais negativos: circunstâncias que não podem existir para que o processo siga.</p>
+   <p><strong>Litispendência:</strong> repete-se ação que está em curso. <strong>Coisa julgada:</strong> repete-se ação já decidida por decisão transitada em julgado (art. 337, §§ 1º a 4º). O que impede a nova ação é a decisão de mérito transitada em julgado (art. 502); uma sentença terminativa anterior não gera esse obstáculo (art. 486). Uma ação é idêntica a outra quando possui as mesmas partes, a mesma causa de pedir e o mesmo pedido (art. 337, § 2º). <strong>Perempção:</strong> o autor deu causa, por três vezes, a extinção por abandono (art. 486, § 3º).</p>`},
+  {n:'VI', nome:'Ausência de legitimidade ou de interesse processual', txt:'verificar ausência de legitimidade ou de interesse processual', oficio:'De ofício (§ 3º)', repro:'Após corrigir o vício',
+   corpo:`<p>Legitimidade é a pertinência entre as partes do processo e a relação jurídica discutida: em regra, ninguém pode pleitear direito alheio em nome próprio (art. 18). Interesse processual é a necessidade de ir a juízo somada à utilidade e adequação do provimento pedido.</p>
+   <p>Exemplo de falta de interesse: o autor pede em juízo a entrega de documento que a parte contrária já lhe entregou, de modo que não há necessidade do processo. Exemplo de ilegitimidade: o filho, em nome próprio, cobra crédito que pertence ao pai vivo e capaz.</p>
+   <p>Alegada a ilegitimidade pelo réu, o autor pode substituí-lo em 15 dias (arts. 338 e 339), o que evita a extinção.</p>
+   <p><strong>Na aula:</strong> a falta dessas condições é a “carência de ação”. Elas devem estar presentes no momento da sentença, e não só na propositura: a perda superveniente leva à extinção, e a aquisição superveniente permite julgar o mérito (art. 493). Como são matérias do art. 485, § 3º, podem ser reexaminadas em qualquer tempo e grau de jurisdição, enquanto não ocorrer o trânsito em julgado, ainda que a decisão de saneamento não tenha sido impugnada.</p>
+   <p>Dois desdobramentos do interesse, segundo o livro-base. <strong>Perda do objeto:</strong> um evento posterior torna a decisão inútil, como o pagamento da dívida antes da sentença; a sentença deve explicar por que o julgamento ficou inútil e resolver a sucumbência. <strong>Confusão entre autor e réu:</strong> por sucessão, as duas partes passam a ser a mesma pessoa (o descendente em litígio com o ascendente torna-se seu único herdeiro); sem duas partes não há lide, e o processo é extinto por este inciso. É o enquadramento do livro-base; há quem fale em falta de pressuposto processual (dualidade de partes, inciso IV), e o Código Civil trata a confusão como causa de extinção da obrigação (art. 381).</p>`},
+  {n:'VII', nome:'Convenção de arbitragem', txt:'acolher a alegação de existência de convenção de arbitragem ou quando o juízo arbitral reconhecer sua competência', oficio:'Depende de alegação do réu', repro:'Após corrigir o vício',
+   corpo:`<p>Se as partes pactuaram resolver o conflito por arbitragem (Lei 9.307/1996), o juiz estatal não julga a causa. Há duas vias: o réu alega a convenção em preliminar de contestação (art. 337, X) e o juiz acolhe; ou o próprio juízo arbitral reconhece a sua competência.</p>
+   <p>O juiz não conhece da convenção de ofício (art. 337, § 5º). Se o réu não a alega na contestação, entende-se que aceitou a jurisdição estatal e renunciou ao juízo arbitral (art. 337, § 6º).</p>
+   <p><strong>Na aula:</strong> a convenção tem duas espécies, cláusula compromissória e compromisso arbitral. Se for anterior ao processo, impede o seu curso; se superveniente, provoca a extinção. Pelo princípio da competência-competência (Kompetenz-Kompetenz), cabe ao árbitro decidir primeiro sobre a existência, a validade e a eficácia da convenção (Lei 9.307/1996, art. 8º, parágrafo único). Segundo o livro-base, a execução de título executivo com cláusula compromissória pode correr no Judiciário.</p>`},
+  {n:'VIII', nome:'Homologação da desistência da ação', txt:'homologar a desistência da ação', oficio:'Ato do autor', repro:'Livre',
+   corpo:`<p>O autor abre mão do processo, não do direito. Pode desistir até a sentença (§ 5º). Depois de oferecida a contestação, precisa do consentimento do réu (§ 4º). A desistência só produz efeitos após a homologação judicial (art. 200, parágrafo único), e o advogado precisa de poderes especiais para desistir (art. 105).</p>
+   <p>Quem desiste paga as despesas e os honorários (art. 90). A nova ação depende da prova desse pagamento (art. 486, § 2º).</p>
+   <p><strong>Na aula:</strong> a recusa do réu precisa de fundamento razoável. É legítima a oposição de quem já contestou e quer a sentença de mérito para obter coisa julgada material e evitar a repropositura (STJ, REsp 1.318.558/RS, citado nos slides). O réu revel não precisa anuir: não há contestação a proteger. Depois da sentença, restam ao autor a renúncia à pretensão (art. 487, III, c) ou a desistência do recurso (art. 998).</p>
+   <p>Atenção à diferença entre a lei e a construção jurisprudencial: o § 4º só exige o consentimento; a exigência de que a recusa seja motivada vem da doutrina e de julgados do STJ.</p>`},
+  {n:'IX', nome:'Morte da parte em ação intransmissível', txt:'em caso de morte da parte, a ação for considerada intransmissível por disposição legal', oficio:'De ofício (§ 3º)', repro:'Em regra, inviável na prática',
+   corpo:`<p>Em regra, a morte da parte suspende o processo para a habilitação dos sucessores (arts. 313, I, e 687 e seguintes). Quando o direito discutido é personalíssimo, não há a quem transmitir a posição processual, e o processo se extingue.</p>
+   <p><strong>Na aula:</strong> os exemplos do livro-base são a ação de divórcio e a de alimentos. Sendo o direito personalíssimo, ele se extingue com o titular, e não se aplica a regra geral de sucessão processual do art. 110. Nos alimentos, o exemplo é seguro para a morte do alimentando; a morte do alimentante exige cautela, porque a obrigação de prestar alimentos transmite-se aos herdeiros do devedor (CC, art. 1.700).</p>
+   <p>Para a prova da disciplina, use esses exemplos. Fora dela, cautela com o divórcio: há discussão recente nos tribunais sobre o seu prosseguimento após a morte de uma das partes, e não consegui confirmar o julgado na fonte.</p>`},
+  {n:'X', nome:'Demais casos prescritos no Código', txt:'nos demais casos prescritos neste Código', oficio:'Conforme o caso', repro:'Conforme o caso',
+   corpo:`<p>O rol do art. 485 não é exaustivo. Exemplos espalhados pelo CPC:</p>
+   <ul><li>autor que não promove a citação de litisconsorte passivo necessário no prazo assinado pelo juiz (art. 115, parágrafo único);</li>
+   <li>tutela antecipada antecedente: autor que não adita a petição inicial (art. 303, § 2º);</li>
+   <li>morte do autor, sendo transmissível o direito, sem habilitação dos sucessores no prazo designado (art. 313, § 2º, II);</li>
+   <li>consignação em pagamento sem o depósito no prazo (art. 542, parágrafo único);</li>
+   <li>morte do procurador do autor, se este não constitui novo mandatário em 15 dias (art. 313, § 3º).</li></ul>
+   <p><strong>Na aula:</strong> os slides listam aqui também o art. 76, § 1º, I (autor que não regulariza a capacidade ou a representação), que este material trata junto do inciso IV.</p>`}
+];
+
+const INCISOS_487 = [
+  {n:'I', nome:'Acolher ou rejeitar o pedido', txt:'acolher ou rejeitar o pedido formulado na ação ou na reconvenção', oficio:'Julgamento', repro:'Coisa julgada material',
+   corpo:`<p>É a sentença de mérito típica: procedência, improcedência ou procedência parcial. Vale tanto para o pedido do autor quanto para o do réu na reconvenção.</p>
+   <p>Inclui a improcedência liminar do art. 332, proferida antes da citação nas causas que dispensam fase instrutória, quando o pedido contraria súmula ou precedente obrigatório ali indicados.</p>`},
+  {n:'II', nome:'Decadência ou prescrição', txt:'decidir, de ofício ou a requerimento, sobre a ocorrência de decadência ou prescrição', oficio:'De ofício, com contraditório', repro:'Coisa julgada material',
+   corpo:`<p>O verbo é “decidir sobre”: resolve o mérito tanto a decisão que reconhece quanto a que afasta a prescrição ou a decadência, embora só a primeira encerre o processo. A decisão que rejeita a prescrição antes da sentença é interlocutória de mérito, impugnável por agravo de instrumento (art. 1.015, II).</p>
+   <p>O juiz pode agir de ofício, mas deve antes ouvir as partes (parágrafo único). A exceção é a improcedência liminar do art. 332, § 1º.</p>`},
+  {n:'III, a', nome:'Reconhecimento da procedência do pedido', txt:'homologar o reconhecimento da procedência do pedido formulado na ação ou na reconvenção', oficio:'Homologação', repro:'Coisa julgada material',
+   corpo:`<p>O réu admite que o autor tem razão quanto ao pedido. Não se confunde com confissão, que recai sobre fatos e é apenas meio de prova: quem confessa um fato pode ainda assim vencer a causa.</p>
+   <p>Quem reconhece paga despesas e honorários (art. 90). Se o réu reconhecer e, simultaneamente, cumprir integralmente a prestação, os honorários são reduzidos pela metade (art. 90, § 4º).</p>
+   <p><strong>Na aula:</strong> a confissão é a admissão de fato contrário ao próprio interesse (art. 389), é meio de prova e o juiz continua julgando; o reconhecimento alcança o próprio direito e elimina a lide. Se o reconhecimento for parcial ou condicional, não se homologa com extinção de todo o processo: o juiz julga e resolve o ponto remanescente.</p>`},
+  {n:'III, b', nome:'Transação', txt:'homologar a transação', oficio:'Homologação', repro:'Coisa julgada material',
+   corpo:`<p>As partes fazem concessões mútuas e encerram o litígio (Código Civil, art. 840). A sentença homologatória é título executivo judicial (art. 515, II) e a autocomposição pode envolver sujeito estranho ao processo e versar sobre relação jurídica que não tenha sido deduzida em juízo (art. 515, § 2º).</p>
+   <p><strong>Na aula:</strong> só se admite transação sobre direitos patrimoniais de caráter privado (CC, art. 841). Entre as partes, o acordo é perfeito desde a convergência de vontades; a homologação produz os efeitos processuais (extinção com mérito e título executivo). Por isso, segundo o livro-base, o arrependimento unilateral é ineficaz, mesmo antes da homologação; o juiz verifica a regularidade do ajuste e só deixa de homologar se houver ilicitude ou vício. A transação só se anula por dolo, coação ou erro essencial quanto à pessoa ou coisa controversa (CC, art. 849), em ação própria (CPC, art. 966, § 4º).</p>`},
+  {n:'III, c', nome:'Renúncia à pretensão', txt:'homologar a renúncia à pretensão formulada na ação ou na reconvenção', oficio:'Homologação', repro:'Coisa julgada material',
+   corpo:`<p>O autor abre mão do próprio direito material afirmado. Não depende da concordância do réu e pode ocorrer a qualquer tempo, porque o resultado equivale a uma improcedência. Exige direito disponível e poderes especiais do advogado (art. 105), assim como o reconhecimento da procedência do pedido e a transação.</p>
+   <p><strong>Na aula:</strong> a renúncia é expressa e escrita (não há renúncia tácita; se oral, é reduzida a termo), pura (não admite condição ou termo), dispensa a anuência do réu mesmo depois da contestação e é admitida até em grau de recurso, enquanto não houver coisa julgada. Não cabe sobre direitos indisponíveis, como estado das pessoas e alimentos. Na síntese do livro-base, a renúncia atinge o próprio direito material afirmado, e a coisa julgada material impede nova ação; a desistência atinge só o processo.</p>`}
+];
+
+/* JURIS, FLASH, QUESTOES e FONTES são definidos no bloco seguinte */
+</script>
+<script id="dados-verificados">
+const JURIS = [
+  {titulo:`Súmula 240 do STJ`, teor:`“A extinção do processo, por abandono da causa pelo autor, depende de requerimento do réu.”`,
+   nota:`Editada sob o CPC/1973. O CPC/2015 incorporou a regra no art. 485, § 6º, deixando expresso que ela vale depois de oferecida a contestação.`,
+   ref:`STJ, Súmula 240, DJ 6/9/2000.`, url:`https://arquivocidadao.stj.jus.br/index.php/sumula-240`},
+  {titulo:`Abandono exige intimação pessoal`, teor:`O STJ reafirma que a extinção por abandono pressupõe a desídia do autor por mais de 30 dias e a intimação pessoal da parte para suprir a falta em 5 dias.`,
+   nota:`Aplicação direta do art. 485, III e § 1º.`,
+   ref:`STJ, 4ª Turma, AgInt nos EDcl no REsp 1.947.990/SP, rel. Min. Luis Felipe Salomão, j. 25/4/2022, DJe 27/4/2022.`, url:`https://processo.stj.jus.br/SCON/GetInteiroTeorDoAcordao?num_registro=202102102523&dt_publicacao=27%2F04%2F2022`},
+  {titulo:`Desistência e entes públicos federais: Tema 524 do STJ`, teor:`Depois da contestação, o autor não pode desistir da ação sem o consentimento do réu. É legítima a oposição da União e dos demais entes federais à desistência com fundamento no art. 3º da Lei 9.469/1997, que condiciona a concordância à renúncia expressa ao direito sobre o qual se funda a ação.`,
+   nota:`Tese firmada sob o CPC/1973 (art. 267, § 4º), cuja regra corresponde ao atual art. 485, § 4º.`,
+   ref:`STJ, 1ª Seção, REsp 1.267.995/PB (repetitivo), rel. Min. Mauro Campbell Marques, j. 27/6/2012.`, url:`https://processo.stj.jus.br/repetitivos/temas_repetitivos/pesquisa.jsp?novaConsulta=true&tipo_pesquisa=T&cod_tema_inicial=524&cod_tema_final=524`},
+  {titulo:`Desistência em mandado de segurança: Tema 530 do STF`, teor:`O impetrante pode desistir do mandado de segurança independentemente da concordância da autoridade coatora ou da entidade estatal interessada, a qualquer momento antes do término do julgamento, mesmo após sentença de mérito que lhe seja favorável.`,
+   nota:`É exceção à regra geral do consentimento do réu e do limite temporal da sentença, que valem para o procedimento comum.`,
+   ref:`STF, Plenário, RE 669.367/RJ (repercussão geral), j. 2/5/2013, DJe 30/10/2014.`, url:`https://portal.stf.jus.br/processos/listarProcessos.asp?numeroProcesso=669367&classe=RE`},
+  {titulo:`Teoria da asserção`, teor:`As condições da ação, inclusive o interesse processual, são aferidas com base na narrativa da petição inicial, em abstrato, sem exame do mérito.`,
+   nota:`Se a conclusão exigir análise de provas, a decisão passa a ser de mérito.`,
+   ref:`STJ, 3ª Turma, REsp 1.609.701/MG, rel. Min. Moura Ribeiro, j. 18/5/2021, DJe 20/5/2021 (Informativo 697).`, url:`https://processo.stj.jus.br/jurisprudencia/externo/informativo/?livre=%40CNOT%3D018162`},
+  {titulo:`Perda do objeto e causalidade`, teor:`Nos embargos de terceiro extintos sem resolução de mérito por perda superveniente do objeto, os ônus sucumbenciais cabem a quem deu causa à constrição indevida.`,
+   nota:`Aplicação do art. 85, § 10: quem deu causa ao processo paga os honorários.`,
+   ref:`STJ, 3ª Turma, REsp 2.131.651/PR, rel. Min. Marco Aurélio Bellizze, j. 21/5/2024, DJe 24/5/2024 (Informativo 819).`, url:`https://processo.stj.jus.br/jurisprudencia/externo/informativo/?aplicacao=informativo&acao=pesquisar&livre=%40CNOT%3D%27020903%27`},
+  {titulo:`Honorários na execução fiscal extinta: Tema 1413 do STJ`, teor:`Com base no princípio da causalidade e no art. 85, § 10, é cabível a condenação do executado em honorários quando a execução fiscal é extinta por perda superveniente do objeto, em razão de quitação extrajudicial do débito depois do ajuizamento, ainda que antes da citação.`,
+   nota:`Mostra que nem sempre quem “perde” a sentença terminativa é quem paga: importa quem tornou o processo necessário.`,
+   ref:`STJ, 1ª Seção, Tema repetitivo 1413, rel. Min. Gurgel de Faria, j. 10/6/2026.`, url:`https://processo.stj.jus.br/repetitivos/temas_repetitivos/pesquisa.jsp?novaConsulta=true&tipo_pesquisa=T&cod_tema_inicial=1413&cod_tema_final=1413`},
+  {titulo:`Rescisória contra decisão terminativa`, teor:`Quando o vício reconhecido na decisão terminativa é insuscetível de correção e impede a repropositura da ação, a ação rescisória é a via adequada, à luz dos arts. 485, V, 486, § 1º, e 966, § 2º, I.`,
+   nota:`A data do julgamento não foi localizada na fonte consultada, que é a notícia oficial do tribunal.`,
+   ref:`STJ, 3ª Turma, REsp 2.083.367, rel. Min. Nancy Andrighi, noticiado em 29/7/2024.`, url:`https://www.stj.jus.br/sites/portalp/Paginas/Comunicacao/Noticias/2024/29072024-Improcedencia-liminar-da-acao-rescisoria-so-e-possivel-nas-hipoteses-do-artigo-332-do-CPC.aspx`},
+  {titulo:`Súmula 631 do STF`, teor:`“Extingue-se o processo de mandado de segurança se o impetrante não promove, no prazo assinado, a citação do litisconsorte passivo necessário.”`,
+   nota:`Editada em 2003, sob o CPC/1973. A regra geral equivalente está hoje no art. 115, parágrafo único, do CPC.`,
+   ref:`STF, Súmula 631, Plenário, 24/9/2003.`, url:`https://www.stf.jus.br/arquivo/cms/jurisprudenciaSumula/anexo/Enunciados_Sumulas_STF_1_a_736_Completo.pdf`},
+  {titulo:`Enunciado 5 da I Jornada de Direito Processual Civil (CJF)`, teor:`“Ao proferir decisão parcial de mérito ou decisão parcial fundada no art. 485 do CPC, condenar-se-á proporcionalmente o vencido a pagar honorários ao advogado do vencedor, nos termos do art. 85 do CPC.”`,
+   nota:`Enunciado doutrinário: orienta a interpretação, mas não vincula.`,
+   ref:`CJF, I Jornada de Direito Processual Civil, 2017.`, url:`https://www.cjf.jus.br/cjf/corregedoria-da-justica-federal/centro-de-estudos-judiciarios-1/publicacoes-1/i-jornada-de-direito-processual-civil/i-jornada-de-direito-processual-civil-enunciados-aprovados/@@download/arquivo`},
+  {titulo:`Enunciados 161 e 521 do FPPC`, teor:`161: “É de mérito a decisão que rejeita a alegação de prescrição ou de decadência.” 521: “Apenas a decadência fixada em lei pode ser conhecida de ofício pelo juiz.”`,
+   nota:`Enunciados doutrinários, conferidos na Carta de Florianópolis (VIII FPPC, março de 2017). Não foi possível conferir as edições posteriores: verifique a numeração e a vigência no caderno mais recente.`,
+   ref:`Fórum Permanente de Processualistas Civis, Carta de Florianópolis, 2017 (cópia hospedada pelo Instituto DC).`, url:`https://institutodc.com.br/wp-content/uploads/2017/06/FPPC-Carta-de-Florianopolis.pdf`},
+  {aula:true, titulo:`Recusa do réu à desistência`, teor:`Segundo os slides, é legítima a recusa do réu que, já tendo contestado, se opõe à desistência para obter coisa julgada material e evitar a repropositura. A recusa precisa de fundamento razoável.`,
+   nota:`Não conferido na página do STJ. Uma fonte secundária (artigo no Jus.com.br) transcreve a ementa e indica: 3ª Turma, rel. Min. Nancy Andrighi, j. 4/6/2013, DJe 17/6/2013, no sentido de que a discordância do réu deve ter motivo relevante.`,
+   ref:`STJ, REsp 1.318.558/RS, citado nos slides da disciplina a partir do livro-base.`, url:`https://jus.com.br/artigos/92743/a-desistencia-da-acao-e-sua-repropositura-posterior`},
+  {aula:true, titulo:`Teoria da asserção no livro-base`, teor:`Segundo os slides, se o juiz, ao analisar as condições da ação, realiza cognição profunda sobre as alegações da petição, depois de esgotados os meios de prova, o que ele profere é juízo sobre o mérito.`,
+   nota:`Não conferido na fonte: a busca não localizou o acórdão. Para a mesma ideia com fonte oficial, veja o cartão do REsp 1.609.701/MG.`,
+   ref:`STJ, 3ª Turma, REsp 1.157.383/RS, rel. Min. Nancy Andrighi, 14/8/2012, conforme os slides da disciplina.`, url:``},
+  {aula:true, titulo:`Extinção por óbice processual é exceção`, teor:`Segundo os slides, o STJ afirmou que o processo civil existe para possibilitar decisões de mérito, e que a extinção por meros óbices processuais deve ser sempre medida de exceção.`,
+   nota:`Não conferido na fonte.`,
+   ref:`STJ, 3ª Turma, REsp 802.497/MG, rel. Min. Nancy Andrighi, 2008, conforme os slides da disciplina.`, url:``},
+  {aula:true, titulo:`Advogado em causa própria e intimação pessoal`, teor:`Segundo os slides, o STJ dispensou a intimação pessoal para a extinção por abandono quando o autor é advogado em causa própria. O livro-base discorda e acompanha o voto vencido.`,
+   nota:`Não conferido na fonte. Julgado de 2001, sob o CPC/1973 (art. 267, § 1º, hoje art. 485, § 1º).`,
+   ref:`STJ, 4ª Turma, REsp 218.284/RS, 2001, conforme os slides da disciplina.`, url:``},
+  {titulo:`Súmula 45 do STJ`, teor:`“No reexame necessário, é defeso, ao Tribunal, agravar a condenação imposta à Fazenda Pública.”`,
+   nota:`A remessa necessária existe em favor da Fazenda: o tribunal não pode piorar a situação dela ao julgá-la.`,
+   ref:`STJ, Súmula 45, de 16/6/1992, DJ 26/6/1992.`, url:`https://arquivocidadao.stj.jus.br/index.php/sumula-45`},
+  {titulo:`Súmula 253 do STJ`, teor:`“O art. 557 do CPC, que autoriza o relator a decidir o recurso, alcança o reexame necessário.”`,
+   nota:`Refere-se ao CPC/1973. Os poderes do relator estão hoje no art. 932 do CPC/2015.`,
+   ref:`STJ, Súmula 253, de 20/6/2001, DJ 15/8/2001.`, url:`https://arquivocidadao.stj.jus.br/index.php/sumula-253`},
+  {titulo:`Súmula 490 do STJ`, teor:`“A dispensa de reexame necessário, quando o valor da condenação ou do direito controvertido for inferior a sessenta salários mínimos, não se aplica a sentenças ilíquidas.”`,
+   nota:`O limite de 60 salários mínimos era o do CPC/1973; os limites atuais estão no art. 496, § 3º. Os slides indicam aplicação temperada sob o CPC/2015 para condenações mensuráveis por simples cálculo, ponto que o professor marca como “a conferir”.`,
+   ref:`STJ, Corte Especial, Súmula 490, de 28/6/2012.`, url:`https://arquivocidadao.stj.jus.br/index.php/sumula-490`},
+  {aula:true, titulo:`Súmulas 423 e 150 do STF`, teor:`423: “Não transita em julgado a sentença por haver omitido o recurso ex officio, que se considera interposto ex lege.” 150: “Prescreve a execução no mesmo prazo de prescrição da ação.”`,
+   nota:`Teor transcrito dos slides, não conferido por mim. A Súmula 423 trata da remessa necessária; a 150 não, e é citada nos slides a propósito da prescrição da pretensão executiva. O endereço abaixo é a compilação oficial de súmulas do STF, para você conferir.`,
+   ref:`STF, Súmulas 150 e 423, conforme os slides da disciplina.`, url:`https://www.stf.jus.br/arquivo/cms/jurisprudenciaSumula/anexo/Enunciados_Sumulas_STF_1_a_736_Completo.pdf`},
+  {aula:true, titulo:`Dever de responder aos argumentos`, teor:`Segundo os slides, o STJ decidiu que o julgador não é obrigado a responder a todas as questões suscitadas quando já encontrou motivo suficiente para decidir, e que o art. 489, § 1º, IV, confirmou a jurisprudência anterior.`,
+   nota:`Não conferido na fonte. Os próprios slides marcam o julgado como “a conferir” e registram que a linha é mais restritiva que a do livro-base.`,
+   ref:`STJ, 1ª Seção, EDcl no MS 21.315/DF, 2016, conforme os slides da disciplina.`, url:``},
+  {aula:true, titulo:`Distinção e superação: só precedentes vinculantes`, teor:`Segundo os slides, o STJ entendeu que o dever de demonstrar distinção ou superação (art. 489, § 1º, VI) só se aplica às súmulas e precedentes vinculantes, não aos apenas persuasivos.`,
+   nota:`Não conferido na fonte.`,
+   ref:`STJ, 3ª Turma, REsp 1.698.774/RS, 2020, conforme os slides da disciplina.`, url:``},
+  {aula:true, titulo:`Fundamentação por remissão`, teor:`Segundo os slides: o STF considera a técnica legítima (AI 825.520 AgR-ED/SP, 2ª Turma, 2011); o STJ anula o acórdão que só se reporta à sentença, sem trecho nem motivação própria (AgRg no REsp 1.223.861/RJ, 5ª Turma, 2013); e o agravo interno não pode ser julgado pela mera reprodução da decisão agravada (REsp 1.622.386/MT, 3ª Turma, 2016).`,
+   nota:`Não conferidos na fonte.`,
+   ref:`Julgados citados nos slides da disciplina, a partir do livro-base.`, url:``},
+  {aula:true, titulo:`Hipoteca judiciária e bem de família`, teor:`Segundo os slides, o STJ decidiu que o bem de família impenhorável não comporta hipoteca judiciária, porque a constituição da garantia sobre bem impenhorável não teria utilidade.`,
+   nota:`Não conferido na fonte.`,
+   ref:`STJ, 4ª Turma, RMS 12.373/RJ, conforme os slides da disciplina.`, url:``}
+];
+const FLASH = [
+  {p:`Por qual ato do juiz o processo é extinto?`, r:`Por sentença (art. 316). Se a decisão atingir só parte do processo, é interlocutória e cabe agravo de instrumento (arts. 354, parágrafo único, e 356, § 5º).`},
+  {p:`Quais matérias do art. 485 o juiz conhece de ofício, em qualquer tempo e grau de jurisdição?`, r:`Incisos IV, V, VI e IX: pressupostos processuais; perempção, litispendência e coisa julgada; legitimidade e interesse; intransmissibilidade da ação (art. 485, § 3º).`},
+  {p:`Processo parado por negligência das partes: qual o prazo e o que o juiz deve fazer antes de extinguir?`, r:`Mais de 1 ano (art. 485, II). Antes, intimação pessoal das partes para suprir a falta em 5 dias (§ 1º).`},
+  {p:`Abandono da causa pelo autor: qual o prazo e quais as duas exigências para a extinção?`, r:`Mais de 30 dias (art. 485, III). Intimação pessoal para agir em 5 dias (§ 1º) e, se já houver contestação, requerimento do réu (§ 6º).`},
+  {p:`Até quando o autor pode desistir da ação? E quando precisa do consentimento do réu?`, r:`Até a sentença (art. 485, § 5º). O consentimento do réu é necessário depois de oferecida a contestação (§ 4º).`},
+  {p:`Desistência da ação e renúncia à pretensão: qual resolve o mérito?`, r:`A renúncia (art. 487, III, c), que atinge o direito material e impede nova ação. A desistência é terminativa (art. 485, VIII) e permite repropositura.`},
+  {p:`O que é perempção?`, r:`A perda do direito de propor nova ação contra o réu com o mesmo objeto, depois de o autor dar causa, por 3 vezes, a sentença fundada em abandono. O direito ainda pode ser alegado em defesa (art. 486, § 3º).`},
+  {p:`Em quais casos a nova ação depende da correção do vício?`, r:`Litispendência e incisos I, IV, VI e VII do art. 485: indeferimento da inicial, pressupostos processuais, legitimidade ou interesse, e arbitragem (art. 486, § 1º).`},
+  {p:`O juiz pode reconhecer a convenção de arbitragem de ofício?`, r:`Não. O réu deve alegá-la em preliminar de contestação. Se não alegar, aceita a jurisdição estatal e renuncia ao juízo arbitral (art. 337, §§ 5º e 6º).`},
+  {p:`Reconhecer a prescrição é resolver o mérito?`, r:`Sim (art. 487, II). Pode ser de ofício, mas as partes devem ser ouvidas antes, salvo na improcedência liminar do art. 332, § 1º (art. 487, parágrafo único).`},
+  {p:`Quais atos de autocomposição o juiz homologa com resolução de mérito?`, r:`Reconhecimento da procedência do pedido, transação e renúncia à pretensão (art. 487, III, a, b e c).`},
+  {p:`O que o art. 317 exige do juiz antes de uma decisão sem resolução de mérito?`, r:`Conceder à parte oportunidade para, se possível, corrigir o vício.`},
+  {p:`O que diz o art. 488?`, r:`Desde que possível, o juiz resolverá o mérito sempre que a decisão for favorável à parte a quem aproveitaria a sentença terminativa do art. 485.`},
+  {p:`Em quais hipóteses a apelação permite retratação do juiz, e em que prazo?`, r:`Indeferimento da inicial (art. 331), improcedência liminar (art. 332, § 3º) e qualquer sentença do art. 485 (§ 7º). Sempre 5 dias.`},
+  {p:`O tribunal reforma uma sentença terminativa. Deve devolver os autos ao primeiro grau?`, r:`Não necessariamente. Se o processo estiver em condições de imediato julgamento, deve decidir desde logo o mérito (art. 1.013, § 3º, I).`},
+  {p:`Qual a diferença entre coisa julgada formal e material?`, r:`A formal torna a decisão imutável dentro do processo. A material torna imutável e indiscutível a decisão de mérito não mais sujeita a recurso, também fora dele (art. 502).`},
+  {p:`Cabe ação rescisória contra decisão que não é de mérito?`, r:`Excepcionalmente, quando a decisão transitada em julgado impedir nova propositura da demanda ou a admissibilidade do recurso correspondente (art. 966, § 2º).`},
+  {p:`Juiz verifica a prescrição ao ler a petição inicial. Indefere a inicial ou julga improcedente?`, r:`Pode julgar liminarmente improcedente o pedido (art. 332, § 1º), por decisão de mérito. Não é caso de indeferimento da inicial: a prescrição não está no rol do art. 330.`},
+  {p:`A incompetência do juízo leva à extinção do processo?`, r:`Em regra, não. Acolhida a alegação de incompetência, os autos são remetidos ao juízo competente (art. 64, § 3º).`},
+  {p:`Quem paga despesas e honorários quando há desistência, renúncia ou reconhecimento do pedido?`, r:`A parte que desistiu, renunciou ou reconheceu (art. 90). Na perda do objeto, quem deu causa ao processo (art. 85, § 10).`},
+  {p:`Morre o autor de uma ação de cobrança. O processo é extinto pelo art. 485, IX?`, r:`Não. O crédito é transmissível: o processo é suspenso para habilitação dos sucessores (art. 313, I e § 2º, II). O inciso IX vale para ações que a lei considera intransmissíveis, por envolverem direito personalíssimo.`},
+  {p:`O que é a teoria da asserção?`, r:`Teoria doutrinária, adotada pelo STJ, segundo a qual legitimidade e interesse são aferidos pelas afirmações do autor na petição inicial, tomadas como verdadeiras em tese. Se a conclusão depender de prova, a decisão é de mérito. Não está escrita na lei.`},
+  {p:`Desistência do recurso: depende da anuência do recorrido? Até quando pode ocorrer?`, r:`Não depende da anuência do recorrido nem dos litisconsortes, e pode ocorrer a qualquer tempo (art. 998). Não havendo outro recurso pendente, a decisão recorrida transita em julgado; o recurso adesivo da outra parte não é conhecido (art. 997, § 2º, III).`},
+  {p:`O que são heterocomposição e autocomposição no art. 487?`, r:`Heterocomposição: o juiz decide (incisos I e II). Autocomposição: as partes resolvem e o juiz homologa (inciso III: reconhecimento do pedido, transação e renúncia).`},
+  {p:`Morre o advogado do autor. O que acontece com o processo?`, r:`O juiz manda a parte constituir novo mandatário em 15 dias. Se o autor não o fizer, o processo é extinto sem resolução de mérito; se o falecido era o advogado do réu, o processo segue à revelia dele (art. 313, § 3º).`},
+  {p:`“Julgo improcedente a ação”: o que há de errado na fórmula?`, r:`O juiz acolhe ou rejeita o pedido, não a ação (arts. 487, I, e 490). O correto é “julgo improcedente o pedido”.`},
+  {p:`Reconhecimento do pedido e confissão são a mesma coisa?`, r:`Não. A confissão recai sobre fatos (art. 389), é meio de prova e o juiz continua julgando. O reconhecimento alcança o próprio direito, elimina a lide e é homologado por sentença de mérito (art. 487, III, a).`},
+  {p:`Não havendo retratação, o juiz de primeiro grau examina a admissibilidade da apelação?`, r:`Não. Os autos são remetidos ao tribunal independentemente de juízo de admissibilidade (art. 1.010, § 3º).`},
+  {p:`Quais são os elementos essenciais da sentença?`, r:`Relatório, fundamentos e dispositivo (art. 489, I a III).`},
+  {p:`Segundo o livro-base, o que acontece se faltar cada elemento da sentença?`, r:`Sem relatório ou sem fundamentos: nulidade. Sem dispositivo: ato inexistente, porque não há decisão.`},
+  {p:`O art. 489, § 1º, vale só para sentenças?`, r:`Não. Vale para qualquer decisão judicial: interlocutória, sentença ou acórdão.`},
+  {p:`Diferencie sentença extra, ultra e citra petita.`, r:`Extra: decide fora do pedido. Ultra: concede mais do que foi pedido. Citra: deixa de examinar um dos pedidos (arts. 141, 490 e 492).`},
+  {p:`O que o tribunal faz com a sentença ultra petita?`, r:`Decota o excesso, sem anular o restante. A nulidade é parcial.`},
+  {p:`Publicada a sentença, em que casos o juiz pode alterá-la?`, r:`Para corrigir inexatidões materiais ou erros de cálculo, de ofício ou a requerimento, e por embargos de declaração (art. 494). Somam-se as retratações dos arts. 331, 332, § 3º, e 485, § 7º.`},
+  {p:`A hipoteca judiciária depende de trânsito em julgado ou de ordem do juiz?`, r:`Não. Vale mesmo com recurso de efeito suspensivo pendente, e é feita com a cópia da sentença no registro de imóveis, sem ordem judicial (art. 495, §§ 1º e 2º).`},
+  {p:`Quais os limites de valor que dispensam a remessa necessária?`, r:`Condenação ou proveito, de valor certo e líquido, inferior a 1.000 salários mínimos (União), 500 (Estados, DF e Municípios capitais) e 100 (demais Municípios), incluídas as respectivas autarquias e fundações (art. 496, § 3º).`},
+  {p:`Classifique as sentenças definitivas pela tutela concedida.`, r:`Declaratória (certeza jurídica), constitutiva (cria, modifica ou extingue relação jurídica) e condenatória (declara o direito e impõe prestação). A homologatória chancela a autocomposição.`},
+  {p:`Quando a obrigação de fazer se converte em perdas e danos?`, r:`Só se o autor o requerer ou se for impossível a tutela específica ou o resultado prático equivalente (art. 499), sem prejuízo da multa (art. 500). Nas hipóteses do parágrafo único do art. 499, mesmo requerida a conversão, o juiz concede primeiro a faculdade de cumprir a tutela específica.`},
+  {p:`A tutela inibitória exige prova de dano ou de culpa?`, r:`Não. Para inibir ou remover o ilícito, é irrelevante demonstrar dano, culpa ou dolo (art. 497, parágrafo único).`}
+];
+const QUESTOES = [
+  {id:'q01', tipo:'ce', tema:'Panorama', nivel:'Básico', correta:true,
+   enun:`Nos termos do CPC, a extinção do processo dar-se-á por sentença, e, ressalvadas as disposições expressas dos procedimentos especiais, sentença é o pronunciamento por meio do qual o juiz, com fundamento nos arts. 485 e 487, põe fim à fase cognitiva do procedimento comum, bem como extingue a execução.`,
+   com:`A assertiva combina a regra do art. 316 com a definição legal de sentença do art. 203, § 1º.`, fund:`CPC, arts. 316 e 203, § 1º`},
+  {id:'q02', tipo:'ce', tema:'Panorama', nivel:'Básico', correta:false,
+   enun:`A sentença que homologa a desistência da ação, uma vez transitada em julgado, faz coisa julgada material e impede que o autor proponha novamente a mesma demanda.`,
+   com:`A desistência gera sentença terminativa, que faz apenas coisa julgada formal. O autor pode propor de novo a ação, comprovando o pagamento das custas e dos honorários do processo anterior. A descrição da assertiva corresponde à renúncia à pretensão.`, fund:`CPC, arts. 485, VIII, 486, caput e § 2º, e 502`},
+  {id:'q03', tipo:'me', tema:'Panorama', nivel:'Básico', correta:2,
+   enun:`Assinale a alternativa que contém hipótese em que há resolução de mérito.`,
+   alts:[`Homologação da desistência da ação.`,`Acolhimento da alegação de existência de convenção de arbitragem.`,`Decisão, de ofício, sobre a ocorrência de decadência.`,`Reconhecimento da existência de litispendência.`,`Indeferimento da petição inicial por inépcia.`],
+   com:`Decidir sobre decadência ou prescrição é resolver o mérito, ainda que de ofício. As demais alternativas reproduzem incisos do art. 485 (VIII, VII, V e I).`, fund:`CPC, art. 487, II`},
+  {id:'q04', tipo:'ce', tema:'Art. 485', nivel:'Intermediário', correta:false,
+   enun:`O juiz conhecerá de ofício, em qualquer tempo e grau de jurisdição, enquanto não ocorrer o trânsito em julgado, da existência de convenção de arbitragem.`,
+   com:`O § 3º do art. 485 alcança apenas os incisos IV, V, VI e IX. A convenção de arbitragem (inciso VII) depende de alegação do réu em preliminar de contestação, e a falta de alegação implica aceitação da jurisdição estatal e renúncia ao juízo arbitral.`, fund:`CPC, arts. 485, § 3º, e 337, §§ 5º e 6º`},
+  {id:'q05', tipo:'ce', tema:'Art. 485', nivel:'Básico', correta:false,
+   enun:`Verificado que o autor abandonou a causa por mais de 30 dias, basta a intimação do seu advogado pelo Diário da Justiça para que o juiz, persistindo a inércia, extinga o processo sem resolução de mérito.`,
+   com:`Nas hipóteses dos incisos II e III, a própria parte deve ser intimada pessoalmente para suprir a falta no prazo de 5 dias. A intimação apenas do advogado não atende à exigência legal.`, fund:`CPC, art. 485, III e § 1º`},
+  {id:'q06', tipo:'me', tema:'Art. 485', nivel:'Básico', correta:1,
+   enun:`Quanto à extinção do processo por inércia, assinale a alternativa que indica corretamente os prazos previstos no art. 485 do CPC.`,
+   alts:[`Processo parado por mais de 6 meses por negligência das partes; abandono pelo autor por mais de 30 dias; 5 dias para suprir a falta.`,`Processo parado por mais de 1 ano por negligência das partes; abandono pelo autor por mais de 30 dias; 5 dias para suprir a falta.`,`Processo parado por mais de 1 ano por negligência das partes; abandono pelo autor por mais de 60 dias; 15 dias para suprir a falta.`,`Processo parado por mais de 3 anos por negligência das partes; abandono pelo autor por mais de 30 dias; 48 horas para suprir a falta.`,`Processo parado por mais de 1 ano por negligência das partes; abandono pelo autor por mais de 30 dias; 15 dias para suprir a falta.`],
+   com:`Mais de 1 ano (inciso II), mais de 30 dias (inciso III) e 5 dias após a intimação pessoal (§ 1º). O prazo de 48 horas era o do CPC/1973 e ainda aparece como distrator.`, fund:`CPC, art. 485, II, III e § 1º`},
+  {id:'q07', tipo:'ce', tema:'Art. 485', nivel:'Intermediário', correta:false,
+   enun:`A desistência da ação pode ser apresentada até o trânsito em julgado da sentença, desde que, oferecida a contestação, haja consentimento do réu.`,
+   com:`A segunda parte está correta, mas o limite temporal está errado: a desistência pode ser apresentada até a sentença. Depois dela, o que o autor pode fazer é renunciar à pretensão ou desistir do recurso, institutos diferentes.`, fund:`CPC, art. 485, §§ 4º e 5º`},
+  {id:'q08', tipo:'ce', tema:'Art. 485', nivel:'Intermediário', correta:false,
+   enun:`Citado o réu, mas ainda no curso do prazo de resposta e antes de oferecida a contestação, a desistência da ação pelo autor depende do consentimento do réu.`,
+   com:`O marco legal não é a citação, e sim o oferecimento da contestação. Antes dela, o autor desiste sem precisar da concordância do réu, e a desistência produz efeitos com a homologação judicial.`, fund:`CPC, arts. 485, § 4º, e 200, parágrafo único`},
+  {id:'q09', tipo:'me', tema:'Art. 485', nivel:'Intermediário', correta:3,
+   enun:`Em ação de cobrança já contestada, o autor deixa de cumprir diligência que lhe cabia e o processo fica paralisado por mais de 30 dias. Intimado pessoalmente, não supre a falta em 5 dias. O réu nada requer. O juiz, de ofício, extingue o processo por abandono. A sentença`,
+   alts:[`está correta, porque o abandono é matéria de ordem pública, conhecível de ofício em qualquer tempo e grau de jurisdição.`,`está correta, porque a intimação pessoal do autor supre a necessidade de manifestação do réu.`,`está incorreta, porque o abandono pelo autor só se configura após 1 ano de paralisação.`,`está incorreta, porque, oferecida a contestação, a extinção por abandono depende de requerimento do réu.`,`está incorreta, porque o abandono da causa conduz ao julgamento de improcedência do pedido.`],
+   com:`Depois da contestação, o réu tem interesse em obter sentença de mérito, e por isso a extinção por abandono depende de requerimento seu. O abandono (inciso III) não está entre as matérias que o § 3º autoriza conhecer de ofício.`, fund:`CPC, art. 485, III, §§ 1º, 3º e 6º`},
+  {id:'q10', tipo:'ce', tema:'Art. 485', nivel:'Intermediário', correta:false,
+   enun:`No procedimento comum, acolhida a alegação de incompetência absoluta, o juiz deve extinguir o processo sem resolução de mérito, por ausência de pressuposto de desenvolvimento válido e regular do processo.`,
+   com:`Acolhida a alegação de incompetência, os autos são remetidos ao juízo competente. A incompetência, em regra, não conduz à extinção do processo no procedimento comum.`, fund:`CPC, art. 64, § 3º`},
+  {id:'q11', tipo:'ce', tema:'Art. 485', nivel:'Intermediário', correta:false,
+   enun:`Falecido o autor no curso de ação de cobrança de dívida contratual, o juiz deve extinguir o processo sem resolução de mérito, com fundamento na intransmissibilidade da ação.`,
+   com:`O direito de crédito é transmissível aos sucessores. A morte da parte suspende o processo para a habilitação. A extinção só ocorre, sem resolução de mérito, se os sucessores do autor, intimados, não promoverem a habilitação no prazo designado. O inciso IX do art. 485 é reservado a ações intransmissíveis por disposição legal.`, fund:`CPC, arts. 313, I e § 2º, II, e 485, IX`},
+  {id:'q12', tipo:'me', tema:'Art. 485', nivel:'Básico', correta:0,
+   enun:`De acordo com o art. 485, § 3º, do CPC, o juiz conhecerá de ofício, em qualquer tempo e grau de jurisdição, enquanto não ocorrer o trânsito em julgado, das matérias relativas a`,
+   alts:[`pressupostos processuais; perempção, litispendência e coisa julgada; legitimidade e interesse processual; intransmissibilidade da ação.`,`indeferimento da petição inicial; abandono da causa; legitimidade e interesse processual; convenção de arbitragem.`,`pressupostos processuais; convenção de arbitragem; desistência da ação; intransmissibilidade da ação.`,`negligência das partes; abandono da causa; perempção, litispendência e coisa julgada; desistência da ação.`,`todas as hipóteses do art. 485, por serem matérias de ordem pública.`],
+   com:`O § 3º menciona os incisos IV, V, VI e IX. Ficam de fora, entre outras, a convenção de arbitragem (VII), a desistência (VIII) e, havendo contestação, o abandono (III, c/c § 6º).`, fund:`CPC, art. 485, § 3º`},
+  {id:'q13', tipo:'ce', tema:'Art. 485', nivel:'Intermediário', correta:false,
+   enun:`O CPC/2015 manteve a possibilidade jurídica do pedido, ao lado da legitimidade e do interesse processual, como hipótese expressa de extinção do processo sem resolução de mérito.`,
+   com:`O Código vigente menciona apenas legitimidade e interesse. A possibilidade jurídica do pedido, que figurava no CPC/1973, não foi reproduzida, e a tendência doutrinária é tratá-la como questão de mérito.`, fund:`CPC, arts. 17 e 485, VI`},
+  {id:'q14', tipo:'me', tema:'Art. 485', nivel:'Avançado', correta:4,
+   enun:`O inciso X do art. 485 remete aos “demais casos prescritos neste Código”. Assinale a alternativa que NÃO corresponde a hipótese de extinção do processo sem resolução de mérito prevista no CPC.`,
+   alts:[`O autor não adita a petição inicial no procedimento da tutela antecipada requerida em caráter antecedente.`,`O autor da consignação em pagamento não realiza o depósito no prazo legal.`,`O autor, em primeiro grau, não sana a irregularidade de sua representação no prazo designado.`,`O autor não requer, no prazo assinado, a citação de litisconsorte passivo necessário.`,`O juiz acolhe a alegação de incompetência relativa formulada pelo réu.`],
+   com:`Acolhida a incompetência, os autos são remetidos ao juízo competente (art. 64, § 3º). As demais alternativas trazem hipóteses legais de extinção: arts. 303, § 2º; 542, parágrafo único; 76, § 1º, I; e 115, parágrafo único.`, fund:`CPC, arts. 64, § 3º, 76, 115, 303 e 542`},
+  {id:'q15', tipo:'ce', tema:'Art. 487', nivel:'Intermediário', correta:false,
+   enun:`Oferecida a contestação, a homologação da renúncia à pretensão formulada na ação depende do consentimento do réu.`,
+   com:`A exigência de consentimento do réu é própria da desistência da ação. A renúncia atinge o direito material, resolve o mérito em favor do réu e não depende de sua concordância.`, fund:`CPC, arts. 485, § 4º, e 487, III, c`},
+  {id:'q16', tipo:'ce', tema:'Art. 487', nivel:'Básico', correta:true,
+   enun:`Ressalvada a hipótese de improcedência liminar do pedido, a prescrição e a decadência não serão reconhecidas sem que antes seja dada às partes oportunidade de manifestar-se.`,
+   com:`É a regra do parágrafo único do art. 487, que aplica a vedação à decisão-surpresa mesmo às matérias que o juiz pode conhecer de ofício.`, fund:`CPC, arts. 10, 332, § 1º, e 487, parágrafo único`},
+  {id:'q17', tipo:'me', tema:'Art. 487', nivel:'Intermediário', correta:2,
+   enun:`Citado em ação de cobrança, o réu peticiona reconhecendo a procedência do pedido e, simultaneamente, deposita o valor integral da dívida. Nesse caso, o juiz deve`,
+   alts:[`extinguir o processo sem resolução de mérito, por perda superveniente do interesse processual, sem condenação em honorários.`,`homologar o reconhecimento, sem resolução de mérito, condenando o réu ao pagamento integral dos honorários.`,`homologar o reconhecimento, com resolução de mérito, e os honorários devidos pelo réu serão reduzidos pela metade.`,`julgar procedente o pedido com base na confissão, ficando o réu isento de despesas e honorários.`,`homologar o reconhecimento, com resolução de mérito, dividindo-se igualmente as despesas entre as partes.`],
+   com:`O reconhecimento da procedência do pedido é homologado por sentença de mérito. Quem reconhece paga despesas e honorários, mas, se cumprir simultânea e integralmente a prestação, os honorários são reduzidos pela metade. A divisão igual das despesas é regra da transação em que as partes nada dispuseram.`, fund:`CPC, arts. 487, III, a, e 90, caput e §§ 2º e 4º`},
+  {id:'q18', tipo:'ce', tema:'Art. 487', nivel:'Intermediário', correta:true,
+   enun:`A sentença que homologa a transação resolve o mérito, e a autocomposição judicial pode envolver sujeito estranho ao processo e versar sobre relação jurídica que não tenha sido deduzida em juízo.`,
+   com:`A homologação da transação está entre as hipóteses de resolução de mérito, e a decisão homologatória de autocomposição judicial é título executivo judicial, com a amplitude subjetiva e objetiva descrita.`, fund:`CPC, arts. 487, III, b, e 515, II e § 2º`},
+  {id:'q19', tipo:'me', tema:'Art. 487', nivel:'Intermediário', correta:1,
+   enun:`Ao examinar a petição inicial de ação de cobrança, em causa que dispensa a fase instrutória, o juiz verifica desde logo que a pretensão está prescrita. Nessa situação, o CPC autoriza o juiz a`,
+   alts:[`indeferir a petição inicial, por sentença sem resolução de mérito.`,`julgar liminarmente improcedente o pedido, por sentença com resolução de mérito, independentemente da citação do réu.`,`determinar a emenda da petição inicial em 15 dias, sob pena de indeferimento.`,`extinguir o processo sem resolução de mérito, por falta de interesse processual.`,`reconhecer a prescrição somente se o réu, depois de citado, a alegar em contestação.`],
+   com:`A prescrição verificada de plano autoriza a improcedência liminar, que é decisão de mérito e constitui a ressalva expressa à exigência de oitiva prévia das partes. No CPC/2015, prescrição e decadência não figuram entre as causas de indeferimento da inicial.`, fund:`CPC, arts. 330, 332, § 1º, e 487, II e parágrafo único`},
+  {id:'q20', tipo:'ce', tema:'Art. 487', nivel:'Básico', correta:false,
+   enun:`Há resolução de mérito apenas quando o juiz acolhe ou rejeita o pedido formulado pelo autor, de modo que as sentenças meramente homologatórias são sempre terminativas.`,
+   com:`Também resolvem o mérito a decisão sobre prescrição ou decadência e as homologações de reconhecimento da procedência do pedido, transação e renúncia à pretensão. Entre as homologações, apenas a da desistência da ação é terminativa.`, fund:`CPC, arts. 485, VIII, e 487, II e III`},
+  {id:'q21', tipo:'ce', tema:'Repropositura', nivel:'Intermediário', correta:false,
+   enun:`Extinto o processo por ilegitimidade passiva, o autor pode propor novamente a mesma ação, contra o mesmo réu e sem qualquer alteração, pois a sentença terminativa não obsta a repropositura.`,
+   com:`Nos casos de litispendência e dos incisos I, IV, VI e VII do art. 485, a propositura da nova ação depende da correção do vício que levou à sentença sem resolução do mérito.`, fund:`CPC, art. 486, § 1º`},
+  {id:'q22', tipo:'ce', tema:'Repropositura', nivel:'Intermediário', correta:false,
+   enun:`Ocorre perempção quando o autor der causa, por três vezes, à extinção do processo por desistência da ação.`,
+   com:`A perempção decorre de três sentenças fundadas em abandono da causa (art. 485, III). Extinções por desistência não são computadas.`, fund:`CPC, art. 486, § 3º`},
+  {id:'q23', tipo:'me', tema:'Repropositura', nivel:'Intermediário', correta:3,
+   enun:`Reconhecida a perempção, o autor`,
+   alts:[`perde o direito material, que não poderá ser invocado em nenhuma hipótese.`,`poderá propor nova ação contra o mesmo réu, desde que pague em dobro as custas dos processos anteriores.`,`poderá propor nova ação contra o mesmo réu após o decurso de um ano.`,`não poderá propor nova ação contra o réu com o mesmo objeto, mas poderá alegar em defesa o seu direito.`,`ficará impedido de demandar contra o mesmo réu, qualquer que seja o objeto da nova ação.`],
+   com:`A perempção atinge o direito de demandar aquele réu sobre aquele objeto, não o direito material, que continua podendo ser alegado em defesa.`, fund:`CPC, art. 486, § 3º`},
+  {id:'q24', tipo:'ce', tema:'Repropositura', nivel:'Básico', correta:true,
+   enun:`Proposta novamente a ação após sentença que não resolveu o mérito, a petição inicial não será despachada sem a prova do pagamento ou do depósito das custas e dos honorários de advogado.`,
+   com:`Reprodução do § 2º do art. 486. No mesmo sentido, o art. 92 condiciona a repropositura ao pagamento das despesas e honorários quando a sentença terminativa foi proferida a requerimento do réu.`, fund:`CPC, arts. 486, § 2º, e 92`},
+  {id:'q25', tipo:'ce', tema:'Repropositura', nivel:'Avançado', correta:true,
+   enun:`É rescindível a decisão transitada em julgado que, embora não seja de mérito, impeça nova propositura da demanda.`,
+   com:`Em regra a rescisória ataca decisão de mérito, mas o § 2º do art. 966 estende o cabimento à decisão terminativa que impeça a nova propositura da demanda ou a admissibilidade do recurso correspondente.`, fund:`CPC, art. 966, § 2º`},
+  {id:'q26', tipo:'me', tema:'Repropositura', nivel:'Intermediário', correta:3,
+   enun:`Assinale a hipótese em que a propositura de nova ação NÃO depende, segundo o art. 486, § 1º, do CPC, da correção de vício que tenha levado à sentença terminativa.`,
+   alts:[`Indeferimento da petição inicial.`,`Ausência de pressuposto de constituição válida do processo.`,`Ausência de legitimidade.`,`Homologação da desistência da ação.`,`Acolhimento da alegação de convenção de arbitragem.`],
+   com:`O § 1º lista a litispendência e os incisos I, IV, VI e VII do art. 485. Na desistência não há vício a corrigir: o autor pode repropor a ação, comprovando o pagamento das custas e honorários.`, fund:`CPC, art. 486, caput e §§ 1º e 2º`},
+  {id:'q27', tipo:'ce', tema:'Repropositura', nivel:'Básico', correta:false,
+   enun:`A sentença terminativa, mesmo depois de esgotados os recursos, não produz coisa julgada de nenhuma espécie.`,
+   com:`Segundo a doutrina, toda sentença não mais sujeita a recurso produz coisa julgada formal, que impede a rediscussão dentro do mesmo processo. O que a sentença terminativa não produz é a coisa julgada material, própria das decisões de mérito.`, fund:`Doutrina; CPC, arts. 486 e 502`},
+  {id:'q28', tipo:'ce', tema:'Primazia do mérito', nivel:'Básico', correta:true,
+   enun:`Antes de proferir decisão sem resolução de mérito, o juiz deverá conceder à parte oportunidade para, se possível, corrigir o vício.`,
+   com:`Texto do art. 317, uma das principais expressões da primazia do julgamento de mérito.`, fund:`CPC, art. 317`},
+  {id:'q29', tipo:'me', tema:'Primazia do mérito', nivel:'Avançado', correta:2,
+   enun:`Encerrada a instrução, o juiz constata que há dúvida razoável sobre o interesse processual do autor, questão suscitada pelo réu em preliminar. Ao mesmo tempo, está convencido, pelas provas produzidas, de que o pedido é improcedente. À luz do art. 488 do CPC, o juiz deve`,
+   alts:[`extinguir o processo sem resolução de mérito, porque as questões processuais precedem necessariamente o exame do mérito.`,`suspender o processo até que o autor demonstre seu interesse processual.`,`julgar improcedente o pedido, pois a decisão de mérito é favorável à parte a quem aproveitaria a sentença terminativa.`,`julgar procedente o pedido, em atenção à primazia do julgamento de mérito.`,`intimar o réu para dizer se prefere a extinção sem resolução de mérito ou a improcedência.`],
+   com:`A sentença terminativa aproveitaria ao réu. Como a decisão de mérito também lhe é favorável, e mais vantajosa por fazer coisa julgada material, o juiz deve resolver o mérito, desde que possível.`, fund:`CPC, art. 488`},
+  {id:'q30', tipo:'ce', tema:'Primazia do mérito', nivel:'Básico', correta:false,
+   enun:`Verificando que a petição inicial apresenta defeito capaz de dificultar o julgamento de mérito, o juiz deve indeferi-la de plano sempre que o vício for evidente.`,
+   com:`O juiz deve determinar que o autor emende ou complete a inicial em 15 dias, indicando com precisão o que deve ser corrigido. O indeferimento só ocorre se o autor não cumprir a diligência.`, fund:`CPC, art. 321`},
+  {id:'q31', tipo:'ce', tema:'Primazia do mérito', nivel:'Intermediário', correta:true,
+   enun:`Alegando o réu, na contestação, ser parte ilegítima, o juiz facultará ao autor, em 15 dias, a alteração da petição inicial para substituição do réu.`,
+   com:`A regra evita a extinção por ilegitimidade passiva. Feita a substituição, o autor reembolsa as despesas e paga honorários ao procurador do réu excluído.`, fund:`CPC, arts. 338 e 339`},
+  {id:'q32', tipo:'me', tema:'Recursos', nivel:'Intermediário', correta:1,
+   enun:`Em ação proposta contra dois réus, o juiz, na decisão de saneamento, reconhece a ilegitimidade passiva de um deles e o exclui do processo, que prossegue em relação ao outro. Contra essa decisão cabe`,
+   alts:[`apelação, por se tratar de pronunciamento fundado no art. 485 do CPC.`,`agravo de instrumento, por se tratar de decisão que diz respeito a apenas parcela do processo.`,`apelação, com possibilidade de retratação em 5 dias.`,`nenhum recurso imediato, devendo a questão ser suscitada em preliminar de apelação.`,`recurso ordinário.`],
+   com:`A decisão fundada no art. 485 que atinge apenas parcela do processo não é sentença, e sim decisão interlocutória, impugnável por agravo de instrumento.`, fund:`CPC, arts. 354, parágrafo único, e 1.015, VII`},
+  {id:'q33', tipo:'ce', tema:'Recursos', nivel:'Intermediário', correta:false,
+   enun:`O juízo de retratação na apelação é restrito às sentenças de indeferimento da petição inicial e de improcedência liminar do pedido.`,
+   com:`Interposta a apelação em qualquer dos casos de que tratam os incisos do art. 485, o juiz terá 5 dias para retratar-se.`, fund:`CPC, arts. 331, 332, § 3º, e 485, § 7º`},
+  {id:'q34', tipo:'me', tema:'Recursos', nivel:'Básico', correta:0,
+   enun:`Interposta apelação contra sentença que extinguiu o processo por ausência de interesse processual, o juiz`,
+   alts:[`terá 5 dias para retratar-se.`,`terá 15 dias para retratar-se.`,`não poderá retratar-se, porque a retratação é exclusiva do indeferimento da petição inicial.`,`poderá retratar-se a qualquer tempo, enquanto os autos não forem remetidos ao tribunal.`,`só poderá alterar a sentença para corrigir erro material ou em embargos de declaração.`],
+   com:`A retratação em 5 dias alcança todas as hipóteses do art. 485, como exceção à regra do art. 494.`, fund:`CPC, arts. 485, § 7º, e 494`},
+  {id:'q35', tipo:'ce', tema:'Recursos', nivel:'Intermediário', correta:false,
+   enun:`Ao reformar sentença fundada no art. 485 do CPC, o tribunal deve, em qualquer caso, determinar o retorno dos autos ao primeiro grau para julgamento do mérito, sob pena de supressão de instância.`,
+   com:`Se o processo estiver em condições de imediato julgamento, o tribunal deve decidir desde logo o mérito. É a chamada teoria da causa madura.`, fund:`CPC, art. 1.013, § 3º, I`},
+  {id:'q36', tipo:'ce', tema:'Recursos', nivel:'Básico', correta:true,
+   enun:`Indeferida a petição inicial e interposta apelação, se não houver retratação, o juiz mandará citar o réu para responder ao recurso.`,
+   com:`O réu, que ainda não integrava o processo, é citado para responder ao recurso. Se a sentença for reformada, o prazo para contestação corre da intimação do retorno dos autos.`, fund:`CPC, art. 331, §§ 1º e 2º`},
+  {id:'q37', tipo:'ce', tema:'Jurisprudência', nivel:'Básico', correta:true,
+   enun:`Segundo enunciado da súmula do STJ, a extinção do processo por abandono da causa pelo autor depende de requerimento do réu, orientação que o CPC/2015 incorporou ao exigir esse requerimento quando já oferecida a contestação.`,
+   com:`É o teor da Súmula 240 do STJ, editada sob o CPC/1973. O art. 485, § 6º, do CPC/2015 positivou a regra e delimitou o seu alcance: depois de oferecida a contestação.`, fund:`STJ, Súmula 240; CPC, art. 485, § 6º`},
+  {id:'q38', tipo:'me', tema:'Jurisprudência', nivel:'Intermediário', correta:2,
+   enun:`Concedida a segurança por sentença e pendente o julgamento de recurso, o impetrante requer a desistência do mandado de segurança. Conforme a tese fixada pelo STF em repercussão geral (Tema 530), a desistência`,
+   alts:[`é inadmissível, porque a desistência da ação só pode ser apresentada até a sentença.`,`depende da concordância da autoridade coatora e da pessoa jurídica interessada.`,`é admissível independentemente da aquiescência da parte contrária, mesmo após sentença de mérito favorável ao impetrante.`,`é admissível, mas equivale a renúncia ao direito e impede a propositura de ação pelas vias ordinárias.`,`só é admissível se o impetrante comprovar a perda superveniente do interesse processual.`],
+   com:`No julgamento do RE 669.367, o STF assentou que o impetrante pode desistir do mandado de segurança a qualquer momento antes do término do julgamento, independentemente de aquiescência da parte contrária, mesmo após sentença concessiva. As alternativas A e B descrevem a regra do procedimento comum, afastada nessa hipótese.`, fund:`STF, RE 669.367/RJ, Tema 530 da repercussão geral; compare com CPC, art. 485, §§ 4º e 5º`},
+  {id:'q39', tipo:'ce', tema:'Jurisprudência', nivel:'Avançado', correta:true,
+   enun:`De acordo com tese firmada pelo STJ em recurso repetitivo, é legítima a oposição da União à desistência da ação formulada após a contestação quando fundada na exigência legal de que o autor renuncie expressamente ao direito sobre o qual se funda a ação.`,
+   com:`É a tese do Tema 524 (REsp 1.267.995/PB): após a contestação, a desistência depende do consentimento do réu, e é legítima a oposição com fundamento no art. 3º da Lei 9.469/1997, que condiciona a concordância à renúncia expressa ao direito.`, fund:`STJ, Tema repetitivo 524; Lei 9.469/1997, art. 3º; CPC, art. 485, § 4º`},
+  {id:'q40', tipo:'me', tema:'Jurisprudência', nivel:'Intermediário', correta:1,
+   enun:`Segundo a teoria da asserção, adotada pelo STJ, a legitimidade e o interesse processual devem ser aferidos`,
+   alts:[`após a instrução, com base nas provas produzidas pelas partes.`,`com base nas afirmações feitas pelo autor na petição inicial, consideradas em abstrato, sem exame do mérito.`,`exclusivamente a partir das alegações do réu na contestação.`,`apenas se houver requerimento do réu, vedado o conhecimento de ofício.`,`somente no julgamento da apelação, por se tratar de matéria de ordem pública.`],
+   com:`Pela teoria da asserção, o juiz examina legitimidade e interesse à luz da narrativa da petição inicial. Se a conclusão depender do exame das provas, a decisão será de mérito. Lembre que legitimidade e interesse são conhecíveis de ofício (art. 485, § 3º).`, fund:`STJ, REsp 1.609.701/MG (Informativo 697); CPC, arts. 17 e 485, VI e § 3º`},
+  {id:'q41', tipo:'me', tema:'Casos da aula', nivel:'Intermediário', correta:0,
+   enun:`Citado, o réu não ofereceu contestação e tornou-se revel. O autor, então, peticiona desistindo da ação, sem que o réu seja ouvido. Nessa situação, o juiz deve`,
+   alts:[`homologar a desistência, pois o consentimento do réu só é exigido depois de oferecida a contestação.`,`intimar o réu revel para dizer se consente, sob pena de nulidade da homologação.`,`indeferir o pedido, porque a citação válida estabiliza a demanda e impede a desistência.`,`julgar procedente o pedido, em razão dos efeitos da revelia.`,`homologar a desistência como renúncia à pretensão, com resolução de mérito.`],
+   com:`É o Processo B do caso prático 2 dos slides. O marco legal é o oferecimento da contestação: sem ela, não há consentimento a colher. A desistência só produz efeitos depois de homologada.`, fund:`CPC, arts. 200, parágrafo único, e 485, VIII e § 4º`},
+  {id:'q42', tipo:'ce', tema:'Casos da aula', nivel:'Intermediário', correta:true,
+   enun:`Em ação revisional de contrato bancário, o autor desiste da ação depois da contestação. O banco discorda, afirmando que quer a sentença de mérito para evitar nova demanda idêntica. Conforme a orientação estudada em aula, a recusa é legítima e o juiz não deve homologar a desistência.`,
+   com:`É o Processo A do caso prático 2. Oferecida a contestação, a desistência depende do consentimento do réu. A recusa fundada no interesse em obter coisa julgada material é considerada motivo razoável, na linha do REsp 1.318.558/RS, citado nos slides.`, fund:`CPC, art. 485, § 4º; STJ, REsp 1.318.558/RS (citado nos slides)`},
+  {id:'q43', tipo:'ce', tema:'Casos da aula', nivel:'Intermediário', correta:false,
+   enun:`O reconhecimento parcial da procedência do pedido deve ser homologado pelo juiz, com extinção do processo com resolução de mérito quanto a todo o objeto.`,
+   com:`Item de fixação do Módulo 2. O reconhecimento parcial não elimina toda a lide: não há extinção total, e o processo prossegue quanto ao ponto remanescente. A parcela reconhecida pode ser objeto de decisão parcial, impugnável por agravo de instrumento. A responsabilidade pelas despesas é proporcional à parcela reconhecida.`, fund:`CPC, arts. 487, III, a, 354, parágrafo único, e 90, § 1º; Theodoro Jr., conforme os slides`},
+  {id:'q44', tipo:'ce', tema:'Casos da aula', nivel:'Avançado', correta:false,
+   enun:`Em audiência de conciliação, autor e réu assinam termo de acordo. Antes da homologação, o autor peticiona dizendo ter se arrependido e pede o prosseguimento do feito. Segundo o entendimento adotado em aula, o arrependimento impede o juiz de homologar a transação.`,
+   com:`É o caso prático 4. Para o livro-base, a transação é negócio perfeito entre as partes desde a convergência de vontades, e o arrependimento unilateral é ineficaz, mesmo antes da homologação. O juiz homologa, com resolução de mérito e formação de título executivo judicial. Eventual vício de consentimento se discute em ação própria.`, fund:`CPC, arts. 487, III, b, 515, II, e 966, § 4º; CC, arts. 840 e 849; Theodoro Jr., conforme os slides`},
+  {id:'q45', tipo:'me', tema:'Casos da aula', nivel:'Intermediário', correta:3,
+   enun:`Encerrada a instrução de ação de cobrança, o juiz, sem provocação do réu e sem ouvir as partes, julga improcedente o pedido por prescrição. O autor tinha prova de causa interruptiva do prazo, mas o tema nunca foi debatido. Assinale a alternativa correta.`,
+   alts:[`A sentença é terminativa e válida, pois a prescrição é matéria de ordem pública.`,`A sentença é de mérito e válida, pois o juiz pode reconhecer a prescrição de ofício em qualquer hipótese, sem ouvir as partes.`,`A sentença é terminativa e nula; afastada a prescrição, o tribunal deve sempre devolver os autos ao primeiro grau.`,`A sentença é de mérito, mas viola a exigência de oitiva prévia das partes; afastada a prescrição na apelação, o tribunal julga desde logo o mérito, se possível.`,`A sentença é de mérito e válida, pois a dispensa de oitiva prévia da improcedência liminar se estende a qualquer fase do processo.`],
+   com:`É o caso prático 3. Decidir sobre prescrição é resolver o mérito, mas ela não pode ser reconhecida sem prévia oportunidade de manifestação, sob pena de decisão-surpresa. A ressalva do art. 332, § 1º, vale só para a improcedência liminar. Reformada a sentença, o tribunal, se possível, julga o mérito sem devolver os autos.`, fund:`CPC, arts. 10, 487, II e parágrafo único, e 1.013, § 4º`},
+  {id:'q46', tipo:'ce', tema:'Casos da aula', nivel:'Intermediário', correta:false,
+   enun:`A legitimidade e o interesse processual devem ser aferidos exclusivamente no momento da propositura da ação, de modo que fatos posteriores não podem levar à extinção do processo nem autorizar o julgamento do mérito.`,
+   com:`Como visto em aula, as condições da ação devem existir no momento da sentença. A perda superveniente leva à extinção; a aquisição superveniente permite julgar o mérito. O juiz deve tomar em consideração, de ofício ou a requerimento, o fato superveniente que influa no julgamento.`, fund:`CPC, arts. 485, VI e § 3º, e 493`},
+  {id:'q47', tipo:'me', tema:'Casos da aula', nivel:'Básico', correta:2,
+   enun:`Proferida sentença de improcedência, o autor apela e, depois, resolve desistir do recurso. A desistência do recurso`,
+   alts:[`depende da anuência do recorrido, por já ter sido oferecida a contestação.`,`só pode ser apresentada até a sentença.`,`independe da anuência do recorrido e pode ocorrer a qualquer tempo.`,`equivale à desistência da ação e permite a repropositura da demanda.`,`equivale à renúncia à pretensão e depende de homologação para produzir efeitos.`],
+   com:`O recorrente pode desistir do recurso a qualquer tempo, sem a anuência do recorrido ou dos litisconsortes. Não havendo outro recurso pendente, o resultado é o trânsito em julgado da decisão recorrida, aqui uma sentença de mérito. As alternativas A e B descrevem a desistência da ação.`, fund:`CPC, arts. 998 e 485, §§ 4º e 5º`},
+  {id:'q48', tipo:'ce', tema:'Casos da aula', nivel:'Básico', correta:true,
+   enun:`Nos termos do art. 313, § 3º, do CPC, falecido o procurador do autor, o juiz determinará que a parte constitua novo mandatário em 15 dias; não o fazendo o autor, o processo será extinto sem resolução de mérito.`,
+   com:`É a regra do art. 313, § 3º. Se o falecido for o procurador do réu e este não constituir outro, o processo prossegue à sua revelia. Em aula, o exemplo serve também para a primazia do mérito: com a causa madura e a prova favorável ao réu, o art. 488 aponta para a improcedência.`, fund:`CPC, arts. 313, § 3º, e 488`},
+  {id:'q49', tipo:'me', tema:'Casos da aula', nivel:'Avançado', correta:2,
+   enun:`No curso de ação de cobrança movida pelo filho contra o pai, este falece e o autor é seu único herdeiro. Segundo o livro-base adotado na disciplina, o processo deve ser`,
+   alts:[`extinto com resolução de mérito, por renúncia tácita à pretensão.`,`suspenso até a partilha dos bens.`,`extinto sem resolução de mérito, por falta de interesse processual, diante da confusão entre autor e réu.`,`julgado procedente, pois o réu não pode mais se defender.`,`extinto sem resolução de mérito, por intransmissibilidade da ação.`],
+   com:`Com a sucessão, as duas partes passam a ser a mesma pessoa. Sem duas partes não há lide, e o processo é extinto pelo inciso VI do art. 485 (o CPC/1973 tinha inciso próprio para a confusão). Não é caso do inciso IX: o crédito é transmissível, e é justamente a transmissão que gera a confusão.`, fund:`CPC, art. 485, VI; Theodoro Jr., conforme os slides`},
+  {id:'q50', tipo:'ce', tema:'Casos da aula', nivel:'Intermediário', correta:false,
+   enun:`Interposta apelação contra sentença terminativa e não havendo retratação, o juiz de primeiro grau deve examinar a admissibilidade do recurso antes de remeter os autos ao tribunal.`,
+   com:`Os autos são remetidos ao tribunal independentemente de juízo de admissibilidade. O juiz de primeiro grau apenas processa o recurso e, nas hipóteses legais, decide se se retrata.`, fund:`CPC, arts. 485, § 7º, e 1.010, § 3º`},
+  {id:'q51', tipo:'me', tema:'Classificação', nivel:'Básico', correta:1,
+   enun:`A sentença que decreta o divórcio classifica-se, quanto à tutela concedida, como`,
+   alts:[`declaratória.`,`constitutiva.`,`condenatória.`,`terminativa.`,`homologatória, em qualquer caso.`],
+   com:`A sentença constitutiva cria, modifica ou extingue uma relação jurídica. O divórcio extingue o vínculo conjugal, e o efeito se produz com a própria sentença, sem necessidade de execução.`, fund:`Classificação doutrinária, conforme o livro-base`},
+  {id:'q52', tipo:'ce', tema:'Classificação', nivel:'Intermediário', correta:false,
+   enun:`A sentença declaratória jamais constitui título executivo judicial, atributo exclusivo das sentenças condenatórias.`,
+   com:`São títulos executivos judiciais as decisões proferidas no processo civil que reconheçam a exigibilidade de obrigação de pagar quantia, de fazer, de não fazer ou de entregar coisa. A lei não exige que a decisão seja condenatória: basta que reconheça a exigibilidade da obrigação.`, fund:`CPC, art. 515, I`},
+  {id:'q53', tipo:'ce', tema:'Classificação', nivel:'Básico', correta:true,
+   enun:`Segundo a classificação adotada em aula, a sentença de improcedência tem natureza declaratória negativa.`,
+   com:`Ao rejeitar o pedido, o juiz declara que o autor não tem o direito afirmado. Por isso, toda improcedência é declaratória negativa, qualquer que fosse a natureza da tutela pedida.`, fund:`Classificação doutrinária, conforme o livro-base; CPC, arts. 19 e 487, I`},
+  {id:'q54', tipo:'me', tema:'Estrutura e fundamentação', nivel:'Básico', correta:3,
+   enun:`São elementos essenciais da sentença, segundo o art. 489 do CPC,`,
+   alts:[`a ementa, o relatório e o dispositivo.`,`o relatório, os fundamentos e a ementa.`,`o preâmbulo, os fundamentos e a conclusão.`,`o relatório, os fundamentos e o dispositivo.`,`o relatório, o voto e o dispositivo.`],
+   com:`O relatório registra o caso e as principais ocorrências; nos fundamentos o juiz analisa as questões de fato e de direito; no dispositivo resolve as questões principais submetidas pelas partes.`, fund:`CPC, art. 489, I a III`},
+  {id:'q55', tipo:'ce', tema:'Estrutura e fundamentação', nivel:'Básico', correta:true,
+   enun:`Não se considera fundamentada a decisão que se limita a invocar precedente ou enunciado de súmula, sem identificar seus fundamentos determinantes nem demonstrar que o caso sob julgamento se ajusta àqueles fundamentos.`,
+   com:`Texto do inciso V do § 1º do art. 489. Não basta citar a súmula: é preciso mostrar por que ela se aplica ao caso.`, fund:`CPC, art. 489, § 1º, V`},
+  {id:'q56', tipo:'ce', tema:'Estrutura e fundamentação', nivel:'Básico', correta:false,
+   enun:`As exigências de fundamentação do art. 489, § 1º, do CPC aplicam-se às sentenças e aos acórdãos, mas não às decisões interlocutórias.`,
+   com:`O § 1º alcança qualquer decisão judicial, “seja ela interlocutória, sentença ou acórdão”.`, fund:`CPC, art. 489, § 1º`},
+  {id:'q57', tipo:'ce', tema:'Estrutura e fundamentação', nivel:'Intermediário', correta:false,
+   enun:`Os motivos da sentença fazem coisa julgada quando forem importantes para determinar o alcance da parte dispositiva.`,
+   com:`Os motivos não fazem coisa julgada, “ainda que importantes para determinar o alcance da parte dispositiva da sentença”. Eles ajudam a interpretar o dispositivo, mas não se tornam imutáveis.`, fund:`CPC, art. 504, I`},
+  {id:'q58', tipo:'ce', tema:'Estrutura e fundamentação', nivel:'Intermediário', correta:false,
+   enun:`Segundo o livro-base adotado na disciplina, a falta de dispositivo torna a sentença nula, e não inexistente.`,
+   com:`Adaptada de item de fixação do Módulo 3. Para o livro-base, a falta de relatório ou de fundamentos gera nulidade, mas a falta de dispositivo torna o ato inexistente: sem dispositivo não há decisão, e portanto não há sentença. Há doutrina que trata o caso como nulidade; para a prova da disciplina, siga o livro-base.`, fund:`CPC, art. 489, III; Theodoro Jr., conforme os slides`},
+  {id:'q59', tipo:'me', tema:'Estrutura e fundamentação', nivel:'Intermediário', correta:2,
+   enun:`Em ação relativa à obrigação de pagar quantia, na qual o autor formulou pedido genérico, a decisão`,
+   alts:[`será sempre ilíquida, cabendo a definição de juros e correção à fase de liquidação.`,`deverá julgar improcedente o pedido se o valor não ficar provado.`,`definirá desde logo a extensão da obrigação, o índice de correção monetária, a taxa de juros e o termo inicial de ambos, salvo se não for possível determinar o montante de modo definitivo ou se a apuração depender de prova demorada ou excessivamente dispendiosa.`,`só poderá ser líquida se o autor emendar a petição inicial para formular pedido certo.`,`definirá apenas o valor principal, pois juros e correção são pedidos implícitos e independem de decisão.`],
+   com:`A regra é a sentença líquida, mesmo diante de pedido genérico. As duas exceções estão nos incisos do art. 491, e nesses casos o valor é apurado em liquidação.`, fund:`CPC, art. 491, caput e § 1º`},
+  {id:'q60', tipo:'ce', tema:'Estrutura e fundamentação', nivel:'Básico', correta:true,
+   enun:`Para a concessão da tutela específica destinada a inibir a prática, a reiteração ou a continuação de um ilícito, é irrelevante a demonstração da ocorrência de dano ou da existência de culpa ou dolo.`,
+   com:`A tutela inibitória se volta contra o ilícito, não contra o dano. Por isso dispensa a prova de dano, culpa ou dolo.`, fund:`CPC, art. 497, parágrafo único`},
+  {id:'q61', tipo:'me', tema:'Congruência', nivel:'Intermediário', correta:4,
+   enun:`O autor pede R$ 50 mil de danos materiais e R$ 20 mil de danos morais. A sentença condena o réu em R$ 65 mil por danos materiais e nada diz sobre os danos morais. A sentença é`,
+   alts:[`extra petita quanto aos danos materiais e ultra petita quanto aos morais.`,`apenas ultra petita.`,`apenas citra petita.`,`extra petita quanto aos dois pedidos.`,`ultra petita quanto aos danos materiais e citra petita quanto aos danos morais.`],
+   com:`É o caso prático 6. Conceder mais do que foi pedido é julgamento ultra petita; deixar de examinar um dos pedidos é julgamento citra petita. Não há julgamento extra petita, porque a sentença não decidiu coisa diversa da pedida.`, fund:`CPC, arts. 141, 490 e 492`},
+  {id:'q62', tipo:'ce', tema:'Congruência', nivel:'Intermediário', correta:false,
+   enun:`Reconhecido que a sentença é ultra petita, o tribunal deve anulá-la integralmente e determinar o retorno dos autos para novo julgamento.`,
+   com:`Na sentença ultra petita a nulidade é parcial, limitada ao excesso. O tribunal decota o que ultrapassou o pedido e mantém o restante.`, fund:`CPC, art. 492; Theodoro Jr., conforme os slides`},
+  {id:'q63', tipo:'ce', tema:'Congruência', nivel:'Intermediário', correta:true,
+   enun:`Se o processo estiver em condições de imediato julgamento, o tribunal que constatar a omissão da sentença no exame de um dos pedidos poderá julgá-lo desde logo.`,
+   com:`É a aplicação da causa madura à sentença citra petita. Se o pedido omitido depender de prova ainda não produzida, a solução é anular e devolver os autos.`, fund:`CPC, art. 1.013, § 3º, III`},
+  {id:'q64', tipo:'ce', tema:'Efeitos e remessa', nivel:'Básico', correta:true,
+   enun:`Publicada a sentença, a única alteração que o juiz pode fazer de ofício, sem provocação da parte, é a correção de inexatidões materiais ou de erros de cálculo.`,
+   com:`Adaptada de item de fixação do Módulo 3. De ofício, só cabe a correção de inexatidões materiais e erros de cálculo. As outras formas de alteração dependem de provocação: embargos de declaração, ou apelação nas hipóteses de retratação.`, fund:`CPC, art. 494`},
+  {id:'q65', tipo:'ce', tema:'Efeitos e remessa', nivel:'Intermediário', correta:false,
+   enun:`A hipoteca judiciária depende do trânsito em julgado da sentença e de ordem judicial para ser registrada.`,
+   com:`A decisão produz a hipoteca judiciária mesmo que impugnada por recurso com efeito suspensivo, e o registro é feito com a apresentação de cópia da sentença no cartório, independentemente de ordem judicial.`, fund:`CPC, art. 495, § 1º, III, e § 2º`},
+  {id:'q66', tipo:'ce', tema:'Efeitos e remessa', nivel:'Intermediário', correta:false,
+   enun:`Reformada a decisão que serviu de título à hipoteca judiciária, o credor só responde pelos danos causados ao devedor se comprovada a sua culpa.`,
+   com:`A responsabilidade é objetiva: a parte responde independentemente de culpa, e a indenização é liquidada e executada nos próprios autos.`, fund:`CPC, art. 495, § 5º`},
+  {id:'q67', tipo:'me', tema:'Efeitos e remessa', nivel:'Intermediário', correta:0,
+   enun:`Um Município que não é capital de Estado é condenado a pagar indenização de valor certo e líquido equivalente a 80 salários mínimos. A Procuradoria não apela. Nesse caso,`,
+   alts:[`não há remessa necessária, porque a condenação é inferior a 100 salários mínimos.`,`há remessa necessária, porque toda sentença contra a Fazenda Pública se sujeita ao duplo grau.`,`não há remessa necessária, porque o limite para qualquer Município é de 500 salários mínimos.`,`há remessa necessária, porque o limite para Municípios é de 60 salários mínimos.`,`a remessa depende de requerimento do Município.`],
+   com:`É o Processo A do caso prático 5. Para os Municípios que não são capitais, e suas autarquias e fundações, dispensa-se a remessa quando a condenação ou o proveito econômico, de valor certo e líquido, for inferior a 100 salários mínimos.`, fund:`CPC, art. 496, § 3º, III`},
+  {id:'q68', tipo:'ce', tema:'Efeitos e remessa', nivel:'Básico', correta:true,
+   enun:`Conforme súmula do STJ, no reexame necessário é defeso ao tribunal agravar a condenação imposta à Fazenda Pública.`,
+   com:`É o teor da Súmula 45 do STJ. A remessa necessária não pode resultar em situação pior para o ente público em favor de quem foi instituída.`, fund:`STJ, Súmula 45; CPC, art. 496`}
+];
+const FONTES = [
+  {desc:`Código de Processo Civil, Lei nº 13.105, de 16 de março de 2015, texto compilado. Todos os dispositivos citados foram conferidos nesta página em 9/11/2026.`, url:`https://www.planalto.gov.br/ccivil_03/_ato2015-2018/2015/lei/l13105.htm`},
+  {desc:`Código Civil, Lei nº 10.406, de 10 de janeiro de 2002 (arts. 210, 211 e 840).`, url:`https://www.planalto.gov.br/ccivil_03/leis/2002/l10406compilada.htm`},
+  {desc:`Lei de Arbitragem, Lei nº 9.307, de 23 de setembro de 1996.`, url:`https://www.planalto.gov.br/ccivil_03/leis/l9307.htm`},
+  {desc:`Lei nº 9.469, de 10 de julho de 1997 (art. 3º).`, url:`https://www.planalto.gov.br/ccivil_03/leis/l9469.htm`},
+  {desc:`Súmulas, temas repetitivos e acórdãos do STJ e do STF, enunciados do CJF e do FPPC: endereços indicados em cada cartão da seção Jurisprudência conferida.`, url:``},
+  {desc:`Os arts. 316, 317 e 485 a 488 do CPC não têm marca de alteração no texto compilado do Planalto. A Lei nº 14.195/2021 alterou o art. 921 (prescrição intercorrente na execução), fora do recorte deste material.`, url:`https://www.planalto.gov.br/ccivil_03/_ato2019-2022/2021/lei/L14195.htm`},
+  {desc:`Slides da disciplina Processo Civil de Conhecimento (6PUB066, UEL), “Extinção do processo e sentença”, Prof. Eduardo da Silva Calixto, de 19/10/2026: usados para alinhar ênfase, vocabulário e casos (Módulos 1, 2 e 3).`, url:``},
+  {desc:`THEODORO JÚNIOR, Humberto. Curso de Direito Processual Civil. v. 1. 64. ed. Rio de Janeiro: Forense, 2023. Livro-base da disciplina. As posições atribuídas ao livro-base neste material foram extraídas dos slides, não da leitura direta da obra.`, url:``},
+  {desc:`Constituição da República de 1988 (art. 93, IX).`, url:`https://www.planalto.gov.br/ccivil_03/constituicao/constituicao.htm`},
+  {desc:`Lei nº 14.833, de 2024, que incluiu o parágrafo único do art. 499 do CPC (redação conferida no texto compilado do CPC).`, url:``}
+];
+</script>
+<script>
+/* ===================== MOTOR ===================== */
+const CHAVE = 'extincao-processo-v1';
+const $ = (s, r=document) => r.querySelector(s);
+const el = (tag, attrs={}, html='') => { const e=document.createElement(tag); for(const k in attrs){ if(k==='class') e.className=attrs[k]; else e.setAttribute(k, attrs[k]); } if(html) e.innerHTML=html; return e; };
+let estado = {resp:{}, cartas:{}, tema:''};
+try { const s = JSON.parse(localStorage.getItem(CHAVE)); if (s && typeof s==='object') estado = Object.assign(estado, s); } catch(e){}
+const salvar = () => { try { localStorage.setItem(CHAVE, JSON.stringify(estado)); } catch(e){} };
+
+/* tema */
+const corNavegador = () => { if (!estado.tema) return; document.querySelectorAll('meta[name=theme-color]').forEach(m => { m.removeAttribute('media'); m.content = estado.tema === 'dark' ? '#121821' : '#F1EADB'; }); };
+if (estado.tema){ document.documentElement.dataset.theme = estado.tema; corNavegador(); }
+$('#tema-btn').addEventListener('click', () => {
+  const escuroAgora = document.documentElement.dataset.theme ? document.documentElement.dataset.theme==='dark' : matchMedia('(prefers-color-scheme: dark)').matches;
+  estado.tema = escuroAgora ? 'light' : 'dark';
+  document.documentElement.dataset.theme = estado.tema; corNavegador(); salvar();
+});
+
+/* incisos */
+function montarIncisos(alvo, dados, classeEtq){
+  const box = $(alvo);
+  dados.forEach(d => {
+    const det = el('details');
+    det.innerHTML = `<summary><span class="num">${d.n}</span><span class="nome">${d.nome}</span><span class="sinais"><span class="etq neutra">${d.oficio}</span><span class="etq ${classeEtq}">${d.repro}</span></span></summary><div class="corpo"><p class="txt">“${d.txt}”</p>${d.corpo}</div>`;
+    box.appendChild(det);
+  });
+}
+montarIncisos('#lista-485', INCISOS_485, 'sem');
+montarIncisos('#lista-487', INCISOS_487, 'com');
+
+/* triagem */
+(function(){
+  let i = 0, acertos = 0;
+  const trilho = $('#trilho'), caso = $('#tri-caso'), conta = $('#tri-conta'), ret = $('#tri-retorno'), prox = $('#tri-prox');
+  const botoes = [...document.querySelectorAll('#triagem .escolhas button')];
+  function mostrar(){
+    trilho.dataset.ativo = ''; ret.innerHTML = ''; prox.hidden = true;
+    botoes.forEach(b => { b.disabled = false; b.classList.remove('marcada'); });
+    if (i >= TRIAGEM.length){
+      conta.textContent = 'Triagem concluída';
+      caso.textContent = `Você classificou corretamente ${acertos} de ${TRIAGEM.length} situações. ` + (acertos === TRIAGEM.length ? 'Sua intuição está afiada: use o conteúdo para firmar os fundamentos.' : 'As que você errou são exatamente os pontos em que vale ler com mais calma.');
+      botoes.forEach(b => b.disabled = true);
+      prox.hidden = false; prox.textContent = 'Refazer a triagem';
+      return;
+    }
+    conta.textContent = `Situação ${i+1} de ${TRIAGEM.length}. Acertos até aqui: ${acertos}`;
+    caso.textContent = TRIAGEM[i].t;
+    prox.textContent = 'Próxima situação';
+  }
+  botoes.forEach(b => b.addEventListener('click', () => {
+    const item = TRIAGEM[i], ok = b.dataset.r === item.r;
+    if (ok) acertos++;
+    trilho.dataset.ativo = item.r;
+    botoes.forEach(x => x.disabled = true); b.classList.add('marcada');
+    ret.innerHTML = `<div class="retorno ${ok?'ok':'no'}"><b>${ok?'Isso mesmo.':'Não é esse o trilho.'}</b> ${item.e}</div>`;
+    prox.hidden = false; prox.focus();
+  }));
+  prox.addEventListener('click', () => { if (i >= TRIAGEM.length){ i = 0; acertos = 0; } else i++; mostrar(); (botoes.find(b => !b.disabled) || prox).focus({preventScroll:true}); });
+  mostrar();
+})();
+
+/* jurisprudência e fontes */
+(function(){
+  const box = $('#lista-juris');
+  if (!JURIS.length) box.appendChild(el('p', {class:'vazio'}, 'Nenhum item carregado.'));
+  JURIS.forEach(j => box.appendChild(el('article', {class:'julgado'}, `<h3>${j.titulo}</h3>${j.aula?'<p><span class="etq neutra">Citado nos slides</span></p>':''}<p>${j.teor}</p>${j.nota?`<p>${j.nota}</p>`:''}<p class="ref">${j.ref}${j.url?` <a href="${j.url}" target="_blank" rel="noopener">Abrir fonte</a>`:''}</p>`)));
+  const lf = $('#lista-fontes');
+  FONTES.forEach(f => lf.appendChild(el('li', {}, `${f.desc}${f.url?` <a href="${f.url}" target="_blank" rel="noopener">${f.url}</a>`:''}`)));
+})();
+
+/* flashcards */
+(function(){
+  let fila = [], virada = false;
+  const carta = $('#carta'), conta = $('#fc-conta');
+  function reiniciar(){ fila = FLASH.map((_,i)=>i).filter(i => !estado.cartas[i]); virada = false; desenhar(); }
+  function desenhar(){
+    const dom = Object.values(estado.cartas).filter(Boolean).length;
+    conta.textContent = `${dom} de ${FLASH.length} dominadas`;
+    $('#fc-barra').style.width = FLASH.length ? (100*dom/FLASH.length)+'%' : '0';
+    $('#fc-pos').textContent = fila.length ? (fila.length === 1 ? 'Resta 1 carta' : `Restam ${fila.length} cartas`) : 'Baralho concluído';
+    if (!FLASH.length){ carta.innerHTML = '<span class="lado">Baralho vazio</span>'; return; }
+    if (!fila.length){ carta.dataset.virada = '1'; carta.innerHTML = '<span class="lado">Fim do baralho</span><span class="texto">Você marcou todas as cartas como dominadas. Recomece o baralho daqui a alguns dias para testar a retenção.</span><span class="dica">Use “Recomeçar baralho” para voltar ao início</span>'; placar(); return; }
+    const c = FLASH[fila[0]];
+    carta.dataset.virada = virada ? '1' : '0';
+    carta.innerHTML = virada ? `<span class="lado">Resposta</span><span class="texto">${c.r}</span><span class="dica">Clique ou toque para voltar à pergunta</span>` : `<span class="lado">Pergunta</span><span class="texto">${c.p}</span><span class="dica">Responda mentalmente e clique ou toque para ver a resposta</span>`;
+    placar();
+  }
+  carta.addEventListener('click', () => { if (fila.length){ virada = !virada; desenhar(); } });
+  $('#fc-sim').addEventListener('click', () => { if (!fila.length) return; estado.cartas[fila.shift()] = true; virada = false; salvar(); desenhar(); });
+  $('#fc-nao').addEventListener('click', () => { if (!fila.length) return; fila.push(fila.shift()); virada = false; desenhar(); });
+  $('#fc-reset').addEventListener('click', () => { if (confirm('Recomeçar o baralho? As cartas marcadas como dominadas voltam para a fila.')){ estado.cartas = {}; salvar(); reiniciar(); } });
+  reiniciar();
+})();
+
+/* questões */
+const LETRAS = ['A','B','C','D','E'];
+function placar(){
+  const ids = QUESTOES.map(q => q.id);
+  const resp = ids.filter(id => estado.resp[id] !== undefined);
+  const ac = QUESTOES.filter(q => estado.resp[q.id] !== undefined && estado.resp[q.id] === q.correta).length;
+  $('#pl-resp').textContent = resp.length; $('#pl-total').textContent = QUESTOES.length; $('#pl-acertos').textContent = ac;
+  $('#pl-pct').textContent = resp.length ? `(${Math.round(100*ac/resp.length)}%)` : '';
+  $('#pl-barra').style.width = QUESTOES.length ? (100*resp.length/QUESTOES.length)+'%' : '0';
+  $('#pl-cartas').textContent = Object.values(estado.cartas).filter(Boolean).length; $('#pl-cartas-total').textContent = FLASH.length;
+  const box = $('#ap-temas');
+  if (box){
+    box.innerHTML = '';
+    [...new Set(QUESTOES.map(q => q.tema))].forEach(t => {
+      const qs = QUESTOES.filter(q => q.tema === t), r = qs.filter(q => estado.resp[q.id] !== undefined), a = r.filter(q => estado.resp[q.id] === q.correta);
+      const linha = el('div', {class:'tema-linha'}, `<span></span><span><b>${r.length}</b> de ${qs.length}${r.length ? `, ${a.length} ${a.length === 1 ? 'acerto' : 'acertos'}` : ''}</span><div class="barra" aria-hidden="true"><i style="width:${100*r.length/qs.length}%"></i></div>`);
+      const bt = el('button', {type:'button', title:`Filtrar questões de ${t}`}); bt.textContent = t;
+      bt.addEventListener('click', () => { $('#f-tema').value = t; $('#f-tipo').value = ''; $('#f-status').value = ''; $('#f-tema').dispatchEvent(new Event('change')); $('#questoes').scrollIntoView(); });
+      linha.firstElementChild.appendChild(bt); box.appendChild(linha);
+    });
+  }
+}
+function desenharQuestao(q, num){
+  const art = el('article', {class:'questao', id:'q-'+q.id});
+  const respondida = estado.resp[q.id] !== undefined;
+  art.innerHTML = `<header><b>${num}</b><span class="etq neutra">${q.tipo==='ce'?'Certo/Errado':'Múltipla escolha'}</span><span class="etq neutra">${q.tema}</span><span class="etq neutra">${q.nivel}</span></header><p class="enun">${q.enun}</p>`;
+  const ops = el('div', {class:'opcoes'+(q.tipo==='ce'?' ce':'')});
+  const lista = q.tipo==='ce' ? [{v:true,t:'Certo'},{v:false,t:'Errado'}] : q.alts.map((t,i)=>({v:i,t}));
+  lista.forEach((o,i) => {
+    const b = el('button', {type:'button'}, q.tipo==='ce' ? o.t : `<span class="letra">${LETRAS[i]}</span><span>${o.t}</span>`);
+    if (respondida){
+      b.disabled = true;
+      if (o.v === q.correta) b.classList.add('certa');
+      else if (o.v === estado.resp[q.id]) b.classList.add('errada');
+    }
+    b.addEventListener('click', () => { estado.resp[q.id] = o.v; salvar(); const novo = desenharQuestao(q, num); art.replaceWith(novo); placar(); resumo(); const c = novo.querySelector('.comentario'); if (c) c.focus({preventScroll:true}); });
+    ops.appendChild(b);
+  });
+  art.appendChild(ops);
+  if (respondida){
+    const ok = estado.resp[q.id] === q.correta;
+    const gab = q.tipo==='ce' ? (q.correta?'Certo':'Errado') : LETRAS[q.correta];
+    art.appendChild(el('div', {class:'comentario', tabindex:'-1', role:'status'}, `<p class="veredito ${ok?'ok':'no'}">${ok?'Você acertou.':'Você errou.'} Gabarito: ${gab}</p><div>${q.com}</div><p class="fund">Fundamento: ${q.fund}</p>`));
+  }
+  return art;
+}
+function filtradas(){
+  const t = $('#f-tema').value, tp = $('#f-tipo').value, st = $('#f-status').value;
+  return QUESTOES.map((q,i)=>({q,num:i+1})).filter(({q}) => {
+    if (t && q.tema !== t) return false;
+    if (tp && q.tipo !== tp) return false;
+    const r = estado.resp[q.id];
+    if (st==='pend' && r !== undefined) return false;
+    if (st==='erro' && (r === undefined || r === q.correta)) return false;
+    if (st==='acerto' && r !== q.correta) return false;
+    return true;
+  });
+}
+function resumo(){ $('#q-resumo').textContent = `Mostrando ${filtradas().length} de ${QUESTOES.length} questões.`; }
+function listar(){
+  const box = $('#lista-q'); box.innerHTML = '';
+  const f = filtradas();
+  if (!f.length) box.appendChild(el('p', {class:'vazio'}, 'Nenhuma questão com esses filtros. Mude a seleção acima para ver outras.'));
+  f.forEach(({q,num}) => box.appendChild(desenharQuestao(q, num)));
+  resumo();
+}
+(function(){
+  const sel = $('#f-tema'); sel.appendChild(el('option', {value:''}, 'Todos'));
+  [...new Set(QUESTOES.map(q => q.tema))].forEach(t => sel.appendChild(el('option', {value:t}, t)));
+  const CAMPOS = {tema:'#f-tema', formato:'#f-tipo', situacao:'#f-status'};
+  try { const u = new URLSearchParams(location.search); for (const k in CAMPOS){ const v = u.get(k), c = $(CAMPOS[k]); if (v && [...c.options].some(o => o.value === v)) c.value = v; } } catch(e){}
+  const gravarUrl = () => { try { const u = new URLSearchParams(location.search); for (const k in CAMPOS){ const v = $(CAMPOS[k]).value; if (v) u.set(k, v); else u.delete(k); } const qs = u.toString(); history.replaceState(null, '', location.pathname + (qs ? '?' + qs : '') + location.hash); } catch(e){} };
+  ['#f-tema','#f-tipo','#f-status'].forEach(s => $(s).addEventListener('change', () => { listar(); gravarUrl(); }));
+  $('#q-reset').addEventListener('click', () => { if (confirm('Apagar todas as suas respostas às questões? Isso não pode ser desfeito.')){ estado.resp = {}; salvar(); listar(); placar(); } });
+  listar(); placar();
+})();
+
+/* navegação: seção atual */
+(function(){
+  const links = [...document.querySelectorAll('.lateral nav a')];
+  const mapa = new Map(links.map(a => [a.getAttribute('href').slice(1), a]));
+  document.querySelectorAll('main section > h3').forEach((h, i) => { if (!h.id) h.id = 'sub-' + (i + 1); });
+  const esboco = sec => {
+    const bloco = $('#ap-esboco'), lista = $('#ap-lista'); if (!bloco) return;
+    const hs = [...sec.querySelectorAll(':scope > h3')];
+    lista.innerHTML = ''; bloco.hidden = !hs.length;
+    hs.forEach(h => { const li = el('li'); const a = el('a', {href:'#' + h.id}); a.textContent = h.textContent; li.appendChild(a); lista.appendChild(li); });
+  };
+  if (!('IntersectionObserver' in window)) return;
+  const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting){ links.forEach(a => a.removeAttribute('aria-current')); const a = mapa.get(e.target.id); if (a) a.setAttribute('aria-current','true'); esboco(e.target); } }), {rootMargin:'-20% 0px -70% 0px'});
+  document.querySelectorAll('main section').forEach(s => io.observe(s));
+})();
+</script>
+</body>
+</html>
