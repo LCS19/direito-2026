@@ -317,9 +317,63 @@ details.prever summary:hover{text-decoration:underline;text-underline-offset:3px
   .incisos .sinais{grid-column:2;justify-content:flex-start}
   .incisos .corpo{padding-left:18px}
 }
+.pdf-btn{display:block;width:100%;margin-top:16px;text-align:center}
+.pdf-dica{margin:8px 0 0;font-size:13px;color:var(--tinta-suave);line-height:1.35}
+.so-impressao{display:none}
+
+/* impressão e PDF: só o conteúdo, com margem larga à direita para anotações */
+@page{size:A4;margin:16mm 52mm 18mm 16mm}
 @media print{
-  .lateral,.apoio,.pular,.triagem,.trilho,.filtros,.tema-btn,.carta-acoes,.fc-topo,.fc-rodape{display:none}
-  .pagina{display:block} body{background:#fff;font-size:12pt}
+  :root:root:root{--fundo:#fff;--superficie:#fff;--superficie-2:#f4f4f4;--tinta:#111;--tinta-suave:#444;--linha:#999;--linha-ctrl:#777;
+    --sem:#7a4300;--sem-fundo:#fff;--sem-traco:#a8701a;--com:#1f3577;--com-fundo:#fff;--com-traco:#5068b8;color-scheme:light}
+  html{font-size:100%}
+  body{background:#fff;color:#111;font-size:10.5pt;line-height:1.5}
+  .lateral,.apoio,.pular,.triagem,#flashcards,#questoes,.tema-btn,.pdf-btn,.pdf-dica{display:none!important}
+  .so-impressao{display:block}
+  .pagina{display:block}
+  main{padding:0}
+  section{max-width:none;margin:0;padding-top:0}
+  section + section{margin-top:22pt}
+  #inicio{padding-top:0}
+  h1{font-size:30pt;line-height:1;margin-bottom:8pt}
+  .chamada{font-size:11.5pt;max-width:none;margin-top:6pt}
+  .trilho{max-width:105mm;margin-top:10pt}
+  .trilho-legenda{font-size:9pt}
+  h2{font-size:19pt;margin:0 0 8pt;padding-top:8pt;border-top:1.5pt solid #111;break-after:avoid}
+  h3{font-size:12.5pt;margin:14pt 0 5pt;break-after:avoid}
+  h4{font-size:11pt;break-after:avoid}
+  p,li{orphans:3;widows:3}
+  a{color:inherit;text-decoration:none}
+  blockquote.lei{background:none;border-left:2.5pt solid #111;padding:4pt 0 4pt 10pt;font-size:9.5pt;break-inside:avoid}
+  blockquote.lei.sem{border-left-color:#a8701a} blockquote.lei.com{border-left-color:#5068b8}
+  .nota{background:none;border:.75pt solid #777;font-size:9.5pt;padding:7pt 9pt;break-inside:avoid}
+  details.prever{border:.75pt dashed #555;padding:0 9pt;break-inside:avoid}
+  details.prever summary{list-style:none;font-size:10pt;padding:7pt 0}
+  details.prever summary::-webkit-details-marker{display:none}
+  details.prever > div{font-size:9.5pt}
+  .incisos{display:block;margin:8pt 0}
+  .incisos details{border:0;border-top:.75pt solid #999;border-radius:0;background:none;padding:6pt 0}
+  .incisos summary{display:block;padding:0;list-style:none}
+  .incisos summary::-webkit-details-marker{display:none}
+  .incisos .num{display:inline;font-size:13pt;margin-right:6pt}
+  .incisos .nome{display:inline;font-size:11pt}
+  .incisos .sinais{display:flex;margin-top:3pt}
+  .incisos .corpo{padding:3pt 0 0;font-size:10pt}
+  .etq{border:.5pt solid #777;background:none!important;font-size:8pt;padding:0 5pt}
+  .rolagem{overflow:visible;border:0;margin:8pt 0;background:none}
+  table{min-width:0;font-size:8.8pt;line-height:1.35;border:.75pt solid #777}
+  th,td{padding:4pt 6pt;border-bottom:.5pt solid #999}
+  thead th{background:#eee;font-size:8.8pt}
+  thead{display:table-header-group}
+  tr{break-inside:avoid}
+  .julgados{display:block}
+  .julgado{border:0;border-top:.5pt solid #999;border-radius:0;background:none;padding:6pt 0;font-size:9.5pt;break-inside:avoid}
+  .julgado h3{font-size:10.5pt;margin:0 0 3pt}
+  .julgado .ref{font-size:8pt}
+  .julgado .ref a{display:none}
+  .fontes li{font-size:9pt}
+  footer{margin-top:16pt;font-size:8pt}
+  *{box-shadow:none!important}
 }
 </style>
 </head>
@@ -357,6 +411,8 @@ details.prever summary:hover{text-decoration:underline;text-underline-offset:3px
     <p>Acertos: <strong id="pl-acertos">0</strong> <span id="pl-pct"></span></p>
     <p>Flashcards dominados: <strong id="pl-cartas">0</strong> de <strong id="pl-cartas-total">0</strong></p>
     <button class="tema-btn" id="tema-btn" type="button">Alternar tema claro/escuro</button>
+    <button class="acao sec pdf-btn" id="pdf-btn" type="button">Baixar conteúdo em PDF</button>
+    <p class="pdf-dica">Abre a janela de impressão. Em “Destino”, escolha “Salvar como PDF”. Sai só o conteúdo, com margem para anotações.</p>
   </div>
 </aside>
 
@@ -365,6 +421,7 @@ details.prever summary:hover{text-decoration:underline;text-underline-offset:3px
 <!-- ============ ABERTURA ============ -->
 <section id="inicio">
   <h1>Todo processo acaba. A&nbsp;pergunta é como.</h1>
+  <p class="so-impressao">Extinção do processo e sentença. Processo civil brasileiro, CPC/2015. Material de estudo: versão para impressão e anotações.</p>
   <p class="chamada">O CPC conhece dois finais. No art. 485, o juiz encerra o processo sem dizer quem tem razão. No art. 487, ele diz. Quase tudo neste tema decorre de saber em qual dos dois trilhos uma situação cai.</p>
 
   <div class="trilho largo" id="trilho" data-ativo="">
@@ -414,7 +471,7 @@ details.prever summary:hover{text-decoration:underline;text-underline-offset:3px
     <div><p>Definitiva. O critério não é o quanto o juiz trabalhou, e sim o que a lei classifica como mérito. Decidir sobre prescrição ou decadência é resolver o mérito (art. 487, II), e a sentença faz coisa julgada material. É uma das confusões mais cobradas em prova.</p></div>
   </details>
 
-  <div class="nota"><strong>Na aula: vocabulário e dois avisos</strong><p>O professor usa “condições da ação” para legitimidade e interesse, e “carência de ação” para a falta delas. Também separa heterocomposição (o juiz decide: art. 487, I e II) de autocomposição homologada (as partes resolvem: art. 487, III).</p><p>Segundo o livro-base, a sentença, sozinha, não encerra a relação processual: isso só ocorre com a coisa julgada formal, quando se esgotam os recursos. E, se a sentença for condenatória, o processo ainda prossegue no cumprimento de sentença.</p></div>
+  <div class="nota"><strong>Na aula: vocabulário e dois avisos</strong><p>O professor usa “condições da ação” para legitimidade e interesse, e “carência de ação” para a falta delas. Também separa heterocomposição (o juiz decide: art. 487, I e II) de autocomposição homologada (as partes resolvem: art. 487, III).</p><p>Segundo o livro-base, a sentença, sozinha, não encerra a relação processual: isso só ocorre com a coisa julgada formal, quando se esgotam os recursos. E, se a sentença for condenatória, o processo ainda prossegue no cumprimento de sentença (arts. 513 e 523).</p></div>
   <h3>Em que momento a sentença terminativa pode vir</h3>
   <ul>
     <li>Logo após a propositura: indeferimento da petição inicial (arts. 330 e 485, I).</li>
@@ -489,7 +546,19 @@ details.prever summary:hover{text-decoration:underline;text-underline-offset:3px
 
   <h3>Julgamento e autocomposição</h3>
   <p>Nos incisos I e II quem decide é o juiz: é a heterocomposição. No inciso I ele diz quem tem razão; no inciso II, decide se o tempo consumiu a pretensão ou o direito. No inciso III quem resolve o conflito são as próprias partes, e o juiz apenas homologa: é a autocomposição. Para o Código, lide e mérito são sinônimos. A lei trata os três grupos da mesma forma porque em todos o conflito fica resolvido de modo definitivo, com coisa julgada material. Há uma diferença no modo de atacar a decisão: os atos de disposição das partes homologados pelo juízo estão sujeitos à anulação, nos termos da lei (art. 966, § 4º), de modo que contra a autocomposição homologada a via é, em regra, a ação anulatória, e não a rescisória.</p>
+  <p><strong>Na aula:</strong> as três formas de autocomposição têm requisitos comuns: direito disponível, capacidade plena das partes e poderes especiais do advogado (art. 105). O juiz verifica a regularidade do ato, não o mérito do ajuste. Os efeitos são a coisa julgada material e, quando houver obrigação exigível, a formação de título executivo judicial (art. 515, II); na renúncia, o título se limita, em regra, às despesas e aos honorários (art. 90). O reconhecimento do pedido e a renúncia são atos unilaterais; a transação é negócio bilateral. Na reconvenção os papéis se invertem: quem reconhece o pedido é o autor, e quem renuncia à pretensão é o réu.</p>
 
+  <h3>Mérito e sentença se desatrelaram</h3>
+  <p>Nem toda decisão de mérito é sentença, e nem toda sentença é de mérito. O quadro da aula cruza as duas coisas.</p>
+  <div class="rolagem largo" tabindex="0" role="region" aria-label="Tabela; role para os lados se necessário">
+    <table>
+      <thead><tr><th></th><th class="c-com">Com resolução de mérito</th><th class="c-sem">Sem resolução de mérito</th></tr></thead>
+      <tbody>
+        <tr><th>Sentença</th><td>Art. 487: encerra a fase cognitiva; se condenatória, segue o cumprimento (arts. 513 e 523). Recurso: apelação.</td><td>Art. 485: extingue o processo; coisa julgada apenas formal. Recurso: apelação.</td></tr>
+        <tr><th>Decisão interlocutória</th><td>Julgamento antecipado parcial do mérito (art. 356). Recurso: agravo de instrumento (§ 5º).</td><td>Extinção parcial ou exclusão de litisconsorte (arts. 354, parágrafo único, e 1.015, VII). Recurso: agravo de instrumento.</td></tr>
+      </tbody>
+    </table>
+  </div>
   <div class="nota"><strong>Na aula: julga-se o pedido, nunca “a ação”</strong><p>A praxe forense escreve “julgo improcedente a ação”. A linguagem do Código é outra: o juiz resolve o mérito acolhendo ou rejeitando, no todo ou em parte, os pedidos formulados pelas partes (arts. 487, I, e 490). Escreva “julgo improcedente o pedido”.</p></div>
   <details class="prever">
     <summary>Pense antes de abrir: o autor quer encerrar o processo. Qual a diferença entre ele desistir da ação e renunciar à pretensão?</summary>
@@ -517,6 +586,7 @@ details.prever summary:hover{text-decoration:underline;text-underline-offset:3px
     </table>
   </div>
   <p>As ações declaratórias, segundo o livro-base, são imprescritíveis, mas perdem o interesse quando o direito que justificaria a tutela já se extinguiu.</p>
+  <p><strong>Na aula:</strong> os slides lembram ainda que a execução prescreve no mesmo prazo da ação (Súmula 150 do STF) e remetem, quanto à prescrição intercorrente, ao art. 921, § 4º, e ao art. 924, V, do CPC e ao art. 206-A do Código Civil, vistos no bloco anterior da disciplina.</p>
   <div class="nota"><strong>Uma ressalva de direito material</strong><p>A decadência que o juiz conhece de ofício é a estabelecida por lei (Código Civil, art. 210). A decadência convencional precisa ser alegada pela parte a quem aproveita, e o juiz não pode suprir a alegação (Código Civil, art. 211).</p></div>
 </section>
 
@@ -537,7 +607,7 @@ details.prever summary:hover{text-decoration:underline;text-underline-offset:3px
   </div>
   <div class="nota"><strong>Na aula: e as mandamentais e executivas?</strong><p>Parte da doutrina acrescenta duas categorias, as sentenças mandamentais e as executivas (classificação quinária). Para o livro-base, elas realizam a essência das condenatórias: o que muda é o procedimento de execução, não a sentença. Na prova da disciplina, siga a classificação em três espécies.</p></div>
   <h3>Natureza e função da sentença definitiva</h3>
-  <p>Segundo o livro-base, a sentença de mérito tem a estrutura de um silogismo: a premissa maior é a norma jurídica, a premissa menor são os fatos provados, e a conclusão acolhe ou rejeita o pedido e emite um comando. Ela é ao mesmo tempo ato de inteligência e ato de vontade: sem a vontade não teria força obrigatória, e sem a razão seria puro arbítrio. Sua função é declaratória, mesmo quando o juiz preenche lacuna por analogia ou princípios gerais, e seu alcance fica limitado ao caso concreto.</p>
+  <p>Segundo o livro-base, a sentença de mérito tem a estrutura de um silogismo: a premissa maior é a norma jurídica, a premissa menor são os fatos provados, e a conclusão acolhe ou rejeita o pedido e emite um comando. Ela é ao mesmo tempo ato de inteligência e ato de vontade: sem a vontade não teria força obrigatória, e sem a razão seria puro arbítrio. Sua função é declaratória, mesmo quando o juiz preenche lacuna por analogia ou princípios gerais, e seu alcance fica limitado ao caso concreto. Na imagem de Chiovenda, citada pelo livro-base, o juiz apenas preenche a ordem em branco que o legislador assinou: quem obriga o devedor a pagar é a lei, não a vontade do juiz.</p>
 </section>
 
 <!-- ============ REPROPOSITURA ============ -->
@@ -590,7 +660,7 @@ details.prever summary:hover{text-decoration:underline;text-underline-offset:3px
 <!-- ============ PRIMAZIA ============ -->
 <section id="primazia">
   <h2>Primazia do julgamento de mérito</h2>
-  <p>O CPC/2015 tratou a sentença terminativa como último recurso. O processo existe para resolver o conflito, e as partes “têm o direito de obter em prazo razoável a solução integral do mérito” (art. 4º). Dessa ideia saem regras espalhadas por todo o Código, que obrigam o juiz a tentar salvar o processo antes de extingui-lo.</p>
+  <p>O CPC/2015 tratou a sentença terminativa como último recurso. O processo existe para resolver o conflito, e as partes “têm o direito de obter em prazo razoável a solução integral do mérito” (art. 4º), o que inclui a atividade satisfativa. E todos os sujeitos do processo devem cooperar entre si para que se obtenha, em tempo razoável, decisão de mérito justa e efetiva (art. 6º). Dessas ideias saem regras espalhadas por todo o Código, que obrigam o juiz a tentar salvar o processo antes de extingui-lo.</p>
   <blockquote class="lei">
     <p>Art. 317. Antes de proferir decisão sem resolução de mérito, o juiz deverá conceder à parte oportunidade para, se possível, corrigir o vício.</p>
     <p>Art. 488. Desde que possível, o juiz resolverá o mérito sempre que a decisão for favorável à parte a quem aproveitaria eventual pronunciamento nos termos do art. 485.</p>
@@ -617,7 +687,7 @@ details.prever summary:hover{text-decoration:underline;text-underline-offset:3px
   </details>
   <h3>Na aula: o exemplo do livro-base e um limite</h3>
   <p>Morre o advogado do autor e este, intimado, não constitui outro em 15 dias. A regra isolada manda extinguir o processo sem resolução de mérito (art. 313, § 3º). Mas, se a causa estiver madura e a prova for favorável ao réu, o sistema aponta outra solução: julgar improcedente o pedido (art. 488). O direito à tutela jurisdicional pertence ao autor e também ao réu. É nessa linha a ideia, atribuída ao STJ nos slides (REsp 802.497/MG), de que a extinção por meros óbices processuais deve ser medida de exceção.</p>
-  <p>O limite: quando extingue o processo sem resolução de mérito, o juiz não deve opinar sobre o mérito. A fórmula “extingo por ilegitimidade; ainda que assim não fosse, o pedido seria improcedente” é criticada pelo livro-base, porque a segunda parte é juízo emitido sem jurisdição.</p>
+  <p>Para o livro-base, o processo tem dupla função: compor o conflito, pela sentença definitiva, e verificar se estão presentes as condições para chegar a ela, pela sentença terminativa. Daí o limite: quando extingue o processo sem resolução de mérito, o juiz não deve opinar sobre o mérito. A fórmula “extingo por ilegitimidade; ainda que assim não fosse, o pedido seria improcedente” é criticada pelo livro-base, porque a segunda parte é juízo emitido sem jurisdição.</p>
 </section>
 
 <!-- ============ RECURSOS ============ -->
@@ -700,7 +770,7 @@ details.prever summary:hover{text-decoration:underline;text-underline-offset:3px
     <table>
       <thead><tr><th>Elemento</th><th>Para que serve</th><th>Se faltar (livro-base)</th></tr></thead>
       <tbody>
-        <tr><th>Relatório</th><td>Conta a história do processo e delimita o pedido e as controvérsias que o juiz terá de resolver.</td><td>Nulidade.</td></tr>
+        <tr><th>Relatório</th><td>Conta a história do processo e delimita o pedido e as controvérsias que o juiz terá de resolver. Deve ser claro, preciso e sintético, sem deixar de descrever com minúcia o objeto da decisão.</td><td>Nulidade. Os slides registram que, para Pontes de Miranda, o relatório é condição de validade da sentença.</td></tr>
         <tr><th>Fundamentos</th><td>Trazem as premissas da decisão: a análise das questões de fato e de direito.</td><td>Nulidade (CF, art. 93, IX; CPC, art. 11).</td></tr>
         <tr><th>Dispositivo</th><td>É a decisão propriamente dita, o elemento substancial do julgado.</td><td>Ato inexistente: sem dispositivo não há sentença.</td></tr>
       </tbody>
@@ -739,11 +809,11 @@ details.prever summary:hover{text-decoration:underline;text-underline-offset:3px
 
   <h3>Ponderação e interpretação da sentença</h3>
   <p>Havendo colisão entre normas, o juiz deve justificar o objeto e os critérios gerais da ponderação efetuada, enunciando as razões que autorizam a interferência na norma afastada e as premissas fáticas que fundamentam a conclusão (art. 489, § 2º). E a decisão judicial deve ser interpretada a partir da conjugação de todos os seus elementos e em conformidade com o princípio da boa-fé (§ 3º).</p>
-  <p>Segundo o livro-base, o ponto de partida para interpretar a sentença é o pedido: entre dois sentidos possíveis, prevalece o que a mantém dentro dos limites do pedido. A interpretação não serve para corrigir erro do juiz.</p>
+  <p>Segundo o livro-base, o ponto de partida para interpretar a sentença é o pedido: entre dois sentidos possíveis, prevalece o que a mantém dentro dos limites do pedido. A interpretação não serve para corrigir erro do juiz. Vale a máxima de que a sentença se interpreta estritamente (<i lang="la">sententia est stricti iuris</i>).</p>
 
   <h3>Clareza, precisão e certeza</h3>
   <ul>
-    <li><strong>Clareza:</strong> a sentença deve ser inteligível e não admitir leituras ambíguas. Obscuridade e contradição se corrigem por embargos de declaração (art. 1.022, I). A falta de clareza nem sempre gera nulidade.</li>
+    <li><strong>Clareza:</strong> a sentença deve ser inteligível e não admitir leituras ambíguas. Obscuridade e contradição se corrigem por embargos de declaração (art. 1.022, I). A falta de clareza nem sempre gera nulidade: segundo o livro-base, só a sentença totalmente ininteligível, e não embargada, é ineficaz e rescindível.</li>
     <li><strong>Precisão:</strong> a sentença fica dentro dos limites do pedido, sem dar coisa diversa, nem mais, nem menos (arts. 490 e 492).</li>
     <li><strong>Certeza:</strong> a decisão deve ser certa, ainda que resolva relação jurídica condicional (art. 492, parágrafo único).</li>
   </ul>
@@ -758,7 +828,7 @@ details.prever summary:hover{text-decoration:underline;text-underline-offset:3px
     <li><strong>Tutela inibitória:</strong> para inibir a prática, a reiteração ou a continuação de um ilícito, ou removê-lo, é irrelevante demonstrar dano, culpa ou dolo (art. 497, parágrafo único).</li>
     <li><strong>Perdas e danos:</strong> a obrigação só se converte em perdas e danos se o autor o requerer ou se for impossível a tutela específica ou o resultado prático equivalente (art. 499), sem prejuízo da multa (art. 500).</li>
     <li><strong>Declaração de vontade:</strong> transitada em julgado, a sentença de procedência produz todos os efeitos da declaração não emitida (art. 501).</li>
-    <li><strong>Entrega de coisa:</strong> ao conceder a tutela específica, o juiz fixa o prazo para o cumprimento (art. 498).</li>
+    <li><strong>Entrega de coisa:</strong> ao conceder a tutela específica, o juiz fixa o prazo para o cumprimento (art. 498). Valem, no que couber, as mesmas técnicas das obrigações de fazer e de não fazer (art. 538, § 3º).</li>
   </ul>
   <div class="nota"><strong>Atualização: Lei 14.833/2024</strong><p>A lei incluiu o parágrafo único do art. 499: nas hipóteses de responsabilidade contratual dos arts. 441, 618 e 757 do Código Civil, e de responsabilidade subsidiária e solidária, se requerida a conversão em perdas e danos, o juiz concederá primeiramente a faculdade para o cumprimento da tutela específica. Os slides avisam que a edição de 2023 do livro-base não traz essa regra.</p></div>
 </section>
@@ -766,7 +836,7 @@ details.prever summary:hover{text-decoration:underline;text-underline-offset:3px
 <!-- ============ CONGRUÊNCIA ============ -->
 <section id="congruencia">
   <h2>Limites da sentença: demanda e congruência</h2>
-  <p>Dois princípios cercam o que o juiz pode decidir. Pelo <strong>princípio da demanda</strong>, o pedido é a condição da jurisdição: o juiz não instaura o processo de ofício, salvo as exceções previstas em lei (art. 2º), e não conhece de questões que dependem de iniciativa da parte (art. 141), o que protege a imparcialidade. Pelo <strong>princípio da congruência</strong>, o pedido é o limite da jurisdição: o juiz decide o mérito nos limites propostos pelas partes (arts. 141 e 492) e resolve todos os pedidos formulados (art. 490), o que protege o contraditório.</p>
+  <p>Dois princípios cercam o que o juiz pode decidir. Pelo <strong>princípio da demanda</strong> (<i lang="la">ne procedat iudex ex officio</i>), o pedido é a condição da jurisdição: o juiz não instaura o processo de ofício, salvo as exceções previstas em lei (art. 2º), e não conhece de questões que dependem de iniciativa da parte (art. 141), o que protege a imparcialidade. Pelo <strong>princípio da congruência</strong> (<i lang="la">ne eat iudex ultra petita partium</i>; os slides usam <i lang="la">iudex secundum allegata partium iudicare debet</i>), o pedido é o limite da jurisdição: o juiz decide o mérito nos limites propostos pelas partes (arts. 141 e 492) e resolve todos os pedidos formulados (art. 490), o que protege o contraditório.</p>
   <blockquote class="lei">
     <p>Art. 492. É vedado ao juiz proferir decisão de natureza diversa da pedida, bem como condenar a parte em quantidade superior ou em objeto diverso do que lhe foi demandado.</p>
     <cite>CPC, art. 492, caput</cite>
@@ -778,7 +848,7 @@ details.prever summary:hover{text-decoration:underline;text-underline-offset:3px
     <table>
       <thead><tr><th>Vício</th><th>O que é</th><th>Consequência</th><th>No tribunal</th></tr></thead>
       <tbody>
-        <tr><th>Extra petita</th><td>Decide fora do pedido, ou o acolhe por causa de pedir não invocada.</td><td>Nulidade.</td><td>Anula; se a causa estiver madura, julga desde logo (art. 1.013, § 3º, II).</td></tr>
+        <tr><th>Extra petita</th><td>Decide fora do pedido, ou o acolhe por causa de pedir não invocada, salvo matéria de ordem pública.</td><td>Nulidade.</td><td>Anula; se a causa estiver madura, julga desde logo (art. 1.013, § 3º, II).</td></tr>
         <tr><th>Ultra petita</th><td>Concede mais do que foi pedido.</td><td>Nulidade parcial, limitada ao excesso.</td><td>Decota o excesso, sem anular o resto.</td></tr>
         <tr><th>Citra petita</th><td>Deixa de examinar um dos pedidos. A omissão de questão ou argumento relevante é, em regra, falta de fundamentação (art. 489, § 1º, IV).</td><td>Nulidade, se alegada e não suprível.</td><td>Completa o julgamento, se a causa estiver madura (art. 1.013, § 3º, III).</td></tr>
       </tbody>
@@ -788,7 +858,7 @@ details.prever summary:hover{text-decoration:underline;text-underline-offset:3px
 
   <h3>Citra petita: quando o tribunal anula e quando completa</h3>
   <ol>
-    <li><strong>A omissão foi impugnada no recurso?</strong> Em regra, o tribunal só examina o que foi devolvido pelo recurso (arts. 1.002 e 1.013). De todo modo, o pedido não julgado pode ser renovado em ação própria.</li>
+    <li><strong>A omissão foi impugnada no recurso?</strong> Em regra, o tribunal só examina o que foi devolvido pelo recurso (arts. 1.002 e 1.013). Os slides dizem que, sem impugnação, o tribunal não anula de ofício, salvo conexão profunda com o que foi decidido. De todo modo, o pedido não julgado pode ser renovado em ação própria.</li>
     <li><strong>A causa está madura?</strong> Se sim, o tribunal julga desde logo o pedido omitido (art. 1.013, § 3º, III).</li>
     <li><strong>Depende de prova ainda não produzida?</strong> Então o tribunal anula a sentença na parte omissa e devolve os autos para que o juízo de origem instrua e julgue o pedido não examinado.</li>
   </ol>
@@ -817,10 +887,11 @@ details.prever summary:hover{text-decoration:underline;text-underline-offset:3px
   <ul>
     <li><strong>Formal:</strong> esgota a função do juiz na fase cognitiva (art. 494).</li>
     <li><strong>Materiais:</strong> a declaratória gera certeza; a constitutiva, uma situação jurídica nova; a condenatória, um título executivo.</li>
-    <li><strong>Secundários:</strong> decorrem da lei, sem necessidade de pedido. São exemplos a hipoteca judiciária (art. 495), a perempção (art. 486, § 3º) e o protesto da decisão transitada em julgado (art. 517).</li>
+    <li><strong>Secundários:</strong> decorrem da lei, sem necessidade de pedido. São exemplos a hipoteca judiciária (art. 495), a perempção (art. 486, § 3º) e o protesto da decisão transitada em julgado (art. 517). Os slides incluem nesta lista os efeitos do art. 501; aqui eles são tratados como efeito material (principal), porque são o próprio objeto do pedido.</li>
   </ul>
-  <p>Segundo o livro-base, a eficácia é imediata quando a sentença basta por si (declaratórias, constitutivas e a do art. 501), e contida quando depende de atos executivos, como nas condenatórias em geral. Lembre ainda que a apelação tem, em regra, efeito suspensivo, e que a lei lista as sentenças que produzem efeitos imediatamente após a publicação (art. 1.012, caput e § 1º).</p>
-  <p>A sentença terminativa não resolve o mérito e, em regra, não impede nova ação. Mas tem efeitos que ultrapassam o processo: impede a repropositura com o mesmo vício (art. 486, § 1º), e seu capítulo de custas e honorários é título executivo e condiciona a nova ação (arts. 515, I, e 486, § 2º).</p>
+  <p>Segundo o livro-base, a eficácia é imediata quando a sentença basta por si (declaratórias, constitutivas e a do art. 501), e contida quando depende de atos executivos, como nas condenatórias em geral, cumpridas por mandado, medidas coercitivas ou expropriação, em regra na fase de cumprimento de sentença do mesmo processo (arts. 513 e 523). Lembre ainda que a apelação tem, em regra, efeito suspensivo, e que a lei lista as sentenças que produzem efeitos imediatamente após a publicação (art. 1.012, caput e § 1º).</p>
+  <p>Os slides resumem que a sentença terminativa produz efeitos apenas dentro do processo. Leia isso como regra geral: ela não resolve o mérito, faz só coisa julgada formal e, em regra, não impede nova ação (art. 486, caput). Mas há efeitos que ultrapassam o processo, e as questões costumam cobrá-los: impede a repropositura com o mesmo vício (art. 486, § 1º), e seu capítulo de custas e honorários é título executivo e condiciona a nova ação (arts. 515, I, e 486, § 2º).</p>
+  <p><strong>Na aula:</strong> para o livro-base, a entrega da prestação jurisdicional só se completa com o trânsito em julgado.</p>
 
   <h3>Hipoteca judiciária: art. 495</h3>
   <ol>
@@ -995,7 +1066,7 @@ const INCISOS_487 = [
    <p><strong>Na aula:</strong> a confissão é a admissão de fato contrário ao próprio interesse (art. 389), é meio de prova e o juiz continua julgando; o reconhecimento alcança o próprio direito e elimina a lide. Se o reconhecimento for parcial ou condicional, não se homologa com extinção de todo o processo: o juiz julga e resolve o ponto remanescente.</p>`},
   {n:'III, b', nome:'Transação', txt:'homologar a transação', oficio:'Homologação', repro:'Coisa julgada material',
    corpo:`<p>As partes fazem concessões mútuas e encerram o litígio (Código Civil, art. 840). A sentença homologatória é título executivo judicial (art. 515, II) e a autocomposição pode envolver sujeito estranho ao processo e versar sobre relação jurídica que não tenha sido deduzida em juízo (art. 515, § 2º).</p>
-   <p><strong>Na aula:</strong> só se admite transação sobre direitos patrimoniais de caráter privado (CC, art. 841). Entre as partes, o acordo é perfeito desde a convergência de vontades; a homologação produz os efeitos processuais (extinção com mérito e título executivo). Por isso, segundo o livro-base, o arrependimento unilateral é ineficaz, mesmo antes da homologação; o juiz verifica a regularidade do ajuste e só deixa de homologar se houver ilicitude ou vício. A transação só se anula por dolo, coação ou erro essencial quanto à pessoa ou coisa controversa (CC, art. 849), em ação própria (CPC, art. 966, § 4º).</p>`},
+   <p><strong>Na aula:</strong> só se admite transação sobre direitos patrimoniais de caráter privado (CC, art. 841). Entre as partes, segundo o livro-base, o acordo é perfeito desde a convergência de vontades (CC, art. 840); quando recai sobre direitos contestados em juízo, a lei pede escritura pública ou termo nos autos, assinado pelos transigentes e homologado pelo juiz (CC, art. 842), forma que condiciona os efeitos processuais, e não a força vinculante entre as partes; a homologação produz os efeitos processuais (extinção com mérito e título executivo). Por isso, segundo o livro-base, o arrependimento unilateral é ineficaz, mesmo antes da homologação; o juiz verifica a regularidade do ajuste e só deixa de homologar se houver ilicitude ou vício. A transação só se anula por dolo, coação ou erro essencial quanto à pessoa ou coisa controversa (CC, art. 849), em ação própria (CPC, art. 966, § 4º).</p>`},
   {n:'III, c', nome:'Renúncia à pretensão', txt:'homologar a renúncia à pretensão formulada na ação ou na reconvenção', oficio:'Homologação', repro:'Coisa julgada material',
    corpo:`<p>O autor abre mão do próprio direito material afirmado. Não depende da concordância do réu e pode ocorrer a qualquer tempo, porque o resultado equivale a uma improcedência. Exige direito disponível e poderes especiais do advogado (art. 105), assim como o reconhecimento da procedência do pedido e a transação.</p>
    <p><strong>Na aula:</strong> a renúncia é expressa e escrita (não há renúncia tácita; se oral, é reduzida a termo), pura (não admite condição ou termo), dispensa a anuência do réu mesmo depois da contestação e é admitida até em grau de recurso, enquanto não houver coisa julgada. Não cabe sobre direitos indisponíveis, como estado das pessoas e alimentos. Na síntese do livro-base, a renúncia atinge o próprio direito material afirmado, e a coisa julgada material impede nova ação; a desistência atinge só o processo.</p>`}
@@ -1114,7 +1185,10 @@ const FLASH = [
   {p:`Quais os limites de valor que dispensam a remessa necessária?`, r:`Condenação ou proveito, de valor certo e líquido, inferior a 1.000 salários mínimos (União), 500 (Estados, DF e Municípios capitais) e 100 (demais Municípios), incluídas as respectivas autarquias e fundações (art. 496, § 3º).`},
   {p:`Classifique as sentenças definitivas pela tutela concedida.`, r:`Declaratória (certeza jurídica), constitutiva (cria, modifica ou extingue relação jurídica) e condenatória (declara o direito e impõe prestação). A homologatória chancela a autocomposição.`},
   {p:`Quando a obrigação de fazer se converte em perdas e danos?`, r:`Só se o autor o requerer ou se for impossível a tutela específica ou o resultado prático equivalente (art. 499), sem prejuízo da multa (art. 500). Nas hipóteses do parágrafo único do art. 499, mesmo requerida a conversão, o juiz concede primeiro a faculdade de cumprir a tutela específica.`},
-  {p:`A tutela inibitória exige prova de dano ou de culpa?`, r:`Não. Para inibir ou remover o ilícito, é irrelevante demonstrar dano, culpa ou dolo (art. 497, parágrafo único).`}
+  {p:`A tutela inibitória exige prova de dano ou de culpa?`, r:`Não. Para inibir ou remover o ilícito, é irrelevante demonstrar dano, culpa ou dolo (art. 497, parágrafo único).`},
+  {p:`O que o art. 6º do CPC exige dos sujeitos do processo?`, r:`Que cooperem entre si para que se obtenha, em tempo razoável, decisão de mérito justa e efetiva. Com o art. 4º, é a base da primazia do julgamento de mérito.`},
+  {p:`Quais os requisitos comuns ao reconhecimento do pedido, à transação e à renúncia?`, r:`Direito disponível, capacidade plena das partes e poderes especiais do advogado (art. 105). O juiz verifica a regularidade, não o mérito do ajuste. Efeitos: coisa julgada material e, havendo obrigação exigível, título executivo judicial (art. 515, II); na renúncia, só quanto a despesas e honorários (art. 90).`},
+  {p:`Decisão de mérito é sempre sentença?`, r:`Não. O julgamento antecipado parcial do mérito (art. 356) é decisão interlocutória, impugnável por agravo de instrumento (§ 5º). E há sentença sem mérito: a do art. 485.`}
 ];
 const QUESTOES = [
   {id:'q01', tipo:'ce', tema:'Panorama', nivel:'Básico', correta:true,
@@ -1343,7 +1417,17 @@ const QUESTOES = [
    com:`É o Processo A do caso prático 5. Para os Municípios que não são capitais, e suas autarquias e fundações, dispensa-se a remessa quando a condenação ou o proveito econômico, de valor certo e líquido, for inferior a 100 salários mínimos.`, fund:`CPC, art. 496, § 3º, III`},
   {id:'q68', tipo:'ce', tema:'Efeitos e remessa', nivel:'Básico', correta:true,
    enun:`Conforme súmula do STJ, no reexame necessário é defeso ao tribunal agravar a condenação imposta à Fazenda Pública.`,
-   com:`É o teor da Súmula 45 do STJ. A remessa necessária não pode resultar em situação pior para o ente público em favor de quem foi instituída.`, fund:`STJ, Súmula 45; CPC, art. 496`}
+   com:`É o teor da Súmula 45 do STJ. A remessa necessária não pode resultar em situação pior para o ente público em favor de quem foi instituída.`, fund:`STJ, Súmula 45; CPC, art. 496`},
+  {id:'q69', tipo:'ce', tema:'Primazia do mérito', nivel:'Básico', correta:true,
+   enun:`Todos os sujeitos do processo devem cooperar entre si para que se obtenha, em tempo razoável, decisão de mérito justa e efetiva.`,
+   com:`Texto do art. 6º do CPC. Repare que o dever de cooperação alcança todos os sujeitos do processo, inclusive o juiz, e que o objetivo declarado é a decisão de mérito, não a simples extinção do processo.`, fund:`CPC, art. 6º`},
+  {id:'q70', tipo:'ce', tema:'Art. 487', nivel:'Intermediário', correta:false,
+   enun:`Ao homologar a transação, o juiz deve examinar o mérito do ajuste e recusar a homologação quando entender que o acordo é desvantajoso para uma das partes capazes.`,
+   com:`Conforme visto em aula, na autocomposição o juiz verifica a regularidade do ato (direito disponível, capacidade das partes, poderes especiais do advogado), não o mérito do ajuste. A conveniência do acordo é assunto das partes.`, fund:`CPC, arts. 105 e 487, III, b; Theodoro Jr., conforme os slides`},
+  {id:'q71', tipo:'me', tema:'Art. 487', nivel:'Intermediário', correta:3,
+   enun:`No curso do processo, o juiz julga antecipadamente um dos dois pedidos formulados, por ser incontroverso, e determina o prosseguimento quanto ao outro. Esse pronunciamento é`,
+   alts:[`sentença de mérito, impugnável por apelação.`,`sentença terminativa, impugnável por apelação.`,`despacho, irrecorrível.`,`decisão interlocutória de mérito, impugnável por agravo de instrumento.`,`decisão interlocutória sem conteúdo de mérito, impugnável apenas em preliminar de apelação.`],
+   com:`É o julgamento antecipado parcial do mérito. Como não encerra a fase cognitiva, não é sentença: é decisão interlocutória, ainda que de mérito, e o recurso é o agravo de instrumento.`, fund:`CPC, arts. 203, §§ 1º e 2º, e 356, I e § 5º`}
 ];
 const FONTES = [
   {desc:`Código de Processo Civil, Lei nº 13.105, de 16 de março de 2015, texto compilado. Todos os dispositivos citados foram conferidos nesta página em 9/11/2026.`, url:`https://www.planalto.gov.br/ccivil_03/_ato2015-2018/2015/lei/l13105.htm`},
@@ -1375,6 +1459,17 @@ $('#tema-btn').addEventListener('click', () => {
   estado.tema = escuroAgora ? 'light' : 'dark';
   document.documentElement.dataset.theme = estado.tema; corNavegador(); salvar();
 });
+
+/* PDF e impressão: abre todos os blocos recolhidos, imprime e restaura */
+(function(){
+  let fechados = [], titulo = document.title;
+  const abrir = () => { fechados = [...document.querySelectorAll('details:not([open])')]; fechados.forEach(d => d.open = true); document.title = 'Extinção do processo e sentença - conteúdo'; };
+  const restaurar = () => { fechados.forEach(d => d.open = false); fechados = []; document.title = titulo; };
+  addEventListener('beforeprint', abrir);
+  addEventListener('afterprint', restaurar);
+  $('#pdf-btn').addEventListener('click', () => { abrir(); requestAnimationFrame(() => print()); });
+  try { if (new URLSearchParams(location.search).has('imprimir')) addEventListener('load', () => { document.querySelectorAll('details').forEach(d => d.open = true); }); } catch(e){}
+})();
 
 /* incisos */
 function montarIncisos(alvo, dados, classeEtq){
